@@ -49,12 +49,18 @@
         <lombok.version>1.18.24</lombok.version>
         <admin4j.common.prometheus>0.0.1-SNAPSHOT</admin4j.common.prometheus>
         <admin4j.common.core>0.0.1-SNAPSHOT</admin4j.common.core>
+        <admin4j.chat.bot>0.0.1</admin4j.chat.bot>
     </properties>
 
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
             <!--            admin4j-->
+            <dependency>
+                <groupId>com.admin4j</groupId>
+                <artifactId>chat-bot</artifactId>
+                <version>${admin4j.chat.bot}</version>
+            </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>common-prometheus-starter</artifactId>
