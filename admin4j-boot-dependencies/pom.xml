@@ -7,7 +7,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-boot-dependencies</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <packaging>pom</packaging>
     <name>admin4j-boot-dependencies</name>
     <description>based on Spring boot dependencies</description>
@@ -47,7 +47,7 @@
         <common-pool.version>2.11.1</common-pool.version>
         <logstash.version>7.2</logstash.version>
         <lombok.version>1.18.24</lombok.version>
-        <admin4j.common.prometheus>0.0.1-SNAPSHOT</admin4j.common.prometheus>
+        <admin4j.common.prometheus>0.1</admin4j.common.prometheus>
         <admin4j.common.core>0.0.1-SNAPSHOT</admin4j.common.core>
         <admin4j.chat.bot>0.0.1</admin4j.chat.bot>
     </properties>

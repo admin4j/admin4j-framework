@@ -10,7 +10,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>common</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <name>admin4j-common</name>
     <description>Spring boot 工具包</description>
     <url>https://github.com/admin4j</url>
@@ -28,7 +28,7 @@
             <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>admin4j-boot-dependencies</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
