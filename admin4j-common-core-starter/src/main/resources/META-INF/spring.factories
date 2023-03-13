@@ -1,7 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.admin4j.common.core.config.JacksonConfig,\
-  com.admin4j.common.core.config.SpringConfig,\
-  com.admin4j.common.core.config.IdWordConfiguration,\
-  com.admin4j.common.core.config.TomcatConfig
-
-  

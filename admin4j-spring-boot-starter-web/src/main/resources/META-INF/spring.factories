@@ -1,0 +1,8 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.admin4j.web.config.JacksonConfig,\
+  com.admin4j.web.config.SpringWebConfig,\
+  com.admin4j.web.config.IdWordConfiguration,\
+  com.admin4j.web.config.TomcatConfig,\
+  com.admin4j.web.exception.handler.GlobalExceptionHandler
+
+  

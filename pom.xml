@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
-    <modules>
-        <module>admin4j-common-core-starter</module>
-        <module>common-prometheus-starter</module>
-    </modules>
 
     <groupId>com.admin4j</groupId>
-    <artifactId>common</artifactId>
-    <version>0.1</version>
-    <name>admin4j-common</name>
-    <description>Spring boot 工具包</description>
-    <url>https://github.com/admin4j</url>
+    <artifactId>framework</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
+    <name>${project.artifactId}</name>
+    <description>admin4j - 基础脚手架</description>
+    <modules>
+        <module>admin4j-dependencies</module>
+        <module>admin4j-spring-boot-starter-web</module>
+        <module>admin4j-spring-boot-starter-lock</module>
+        <module>admin4j-common</module>
+        <module>admin4j-parent</module>
+    </modules>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <admin4j-version>0.0.1-SNAPSHOT</admin4j-version>
+        <admin4j-dependencies-version>0.0.1-SNAPSHOT</admin4j-dependencies-version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.admin4j</groupId>
-                <artifactId>admin4j-boot-dependencies</artifactId>
-                <version>0.1</version>
+                <artifactId>admin4j-dependencies</artifactId>
+                <version>${admin4j-dependencies-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -46,6 +55,7 @@
             </snapshots>
         </repository>
     </repositories>
+
     <build>
         <plugins>
             <plugin>
@@ -135,6 +145,7 @@
             </plugin>
         </plugins>
     </build>
+
 
     <!-- 开源签名证书 -->
     <licenses>

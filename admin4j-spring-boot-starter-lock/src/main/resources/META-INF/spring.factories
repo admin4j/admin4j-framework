@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.admin4j.lock.config.DistributedLockAutoConfiguration,\
+  com.admin4j.lock.config.DLockGlobalExceptionHandler
