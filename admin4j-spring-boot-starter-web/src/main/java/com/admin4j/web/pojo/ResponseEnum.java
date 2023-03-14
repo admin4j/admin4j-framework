@@ -105,6 +105,7 @@ public enum ResponseEnum implements IResponse {
      * 分布式锁异常
      */
     ERROR_D_LOCK(5300, "服务器内部错误 5300"),
+    ERROR_D_IDEMPOTENT(5301, "服务器内部错误 5301"),
 
 
     REQUEST_THROTTLED_EXCEPTION(5900, "请求速率受限"),

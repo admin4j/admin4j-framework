@@ -2,6 +2,7 @@ package com.admin4j.lock.config;
 
 import com.admin4j.common.pojo.AbstractExceptionHandler;
 import com.admin4j.lock.exception.DistributedLockException;
+import com.admin4j.lock.exception.IdempotentException;
 import com.admin4j.web.pojo.R;
 import com.admin4j.web.pojo.ResponseEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -33,5 +34,13 @@ public class DLockGlobalExceptionHandler extends AbstractExceptionHandler {
         log.error("distributedLockException：" + e.getMessage(), e);
         handlerException(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_D_LOCK, e.getMessage()));
+    }
+
+    @ExceptionHandler(IdempotentException.class)
+    @ConditionalOnClass(R.class)
+    public ResponseEntity<R> idempotentException(IdempotentException e) {
+        log.error("idempotentException：" + e.getMessage(), e);
+        handlerException(e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_D_IDEMPOTENT, e.getMessage()));
     }
 }
