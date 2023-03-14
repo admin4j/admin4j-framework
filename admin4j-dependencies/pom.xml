@@ -6,11 +6,12 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
     <description>基础 bom 文件，管理整个项目的依赖版本</description>
+    <url>https://github.com/admin4j/admin4j-common</url>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -77,17 +78,17 @@
             <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>admin4j-common</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.3</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>admin4j-spring-boot-starter-web</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>admin4j-spring-boot-starter-lock</artifactId>
-                <version>0.1</version>
+                <version>0.0.3</version>
             </dependency>
             <!-- 业务相关 end -->
 
