@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 @Slf4j
+@ConditionalOnClass(R.class)
 public class DLockGlobalExceptionHandler extends AbstractExceptionHandler {
 
 
@@ -29,7 +30,6 @@ public class DLockGlobalExceptionHandler extends AbstractExceptionHandler {
      * @return
      */
     @ExceptionHandler(DistributedLockException.class)
-    @ConditionalOnClass(R.class)
     public ResponseEntity<R> distributedLockException(DistributedLockException e) {
         log.error("distributedLockException：" + e.getMessage(), e);
         handlerException(e);
@@ -37,7 +37,6 @@ public class DLockGlobalExceptionHandler extends AbstractExceptionHandler {
     }
 
     @ExceptionHandler(IdempotentException.class)
-    @ConditionalOnClass(R.class)
     public ResponseEntity<R> idempotentException(IdempotentException e) {
         log.error("idempotentException：" + e.getMessage(), e);
         handlerException(e);

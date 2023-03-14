@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
  * @since 2023/3/13 14:14
  */
 public class SpringConfig {
-    @Bean
+    @Bean("admin4jSpringUtils")
     public SpringUtils springUtils() {
         return new SpringUtils();
     }

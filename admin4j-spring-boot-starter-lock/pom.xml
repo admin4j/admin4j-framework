@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.admin4j</groupId>
         <artifactId>framework</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
 
     <artifactId>admin4j-spring-boot-starter-lock</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <description>Spring Boot 分布式锁</description>
 
     <properties>
@@ -32,6 +32,12 @@
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-actuator</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -44,6 +50,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.admin4j</groupId>
