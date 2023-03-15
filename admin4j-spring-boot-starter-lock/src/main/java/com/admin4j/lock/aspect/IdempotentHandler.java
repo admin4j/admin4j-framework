@@ -9,7 +9,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 
 import java.lang.reflect.Method;
 
@@ -33,9 +33,9 @@ public class IdempotentHandler extends AbstractDLockHandler {
      */
     @Around("@annotation(idempotent)")
     public Object around(ProceedingJoinPoint joinPoint, Idempotent idempotent) throws Throwable {
-
+        
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        DistributedLock distributedLock = AnnotationUtils.findAnnotation(method, DistributedLock.class);
+        DistributedLock distributedLock = AnnotatedElementUtils.getMergedAnnotation(method, DistributedLock.class);
         return super.around(joinPoint, distributedLock);
     }
 

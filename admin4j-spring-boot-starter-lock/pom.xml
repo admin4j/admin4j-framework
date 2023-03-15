@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>admin4j-spring-boot-starter-lock</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <description>Spring Boot 分布式锁</description>
 
     <properties>
