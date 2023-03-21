@@ -6,21 +6,22 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>framework</artifactId>
-    <version>0.0.3</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
     <description>admin4j - 基础脚手架</description>
     <url>https://github.com/admin4j/admin4j-common</url>
     <modules>
-        <module>admin4j-dependencies</module>
-        <module>admin4j-spring-boot-starter-web</module>
-        <module>admin4j-spring-boot-starter-lock</module>
         <module>admin4j-common</module>
         <module>admin4j-parent</module>
+        <module>admin4j-dependencies</module>
+        <module>web-spring-boot-starter</module>
+        <module>lock-spring-boot-starter</module>
+        <module>prometheus-spring-boot-starter</module>
     </modules>
     <properties>
-        <admin4j-version>0.0.1</admin4j-version>
+        <revision>0.0.4</revision>
         <admin4j-dependencies-version>0.0.4</admin4j-dependencies-version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -31,6 +32,18 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <!--根据注释自动生成 /META-INF/spring-configuration-metadata.json-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!--        idea 配置文件自动提示功能-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <dependencyManagement>
@@ -60,6 +73,33 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <!-- 避免IDE将 .flattened-pom.xml 自动识别为功能模块 -->
+                    <flattenedPomFilename>pom-xml-flattened</flattenedPomFilename>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
@@ -77,6 +117,14 @@
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                        </exclude>
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+                        </exclude>
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-autoconfigure-processor</artifactId>
                         </exclude>
                     </excludes>
                 </configuration>

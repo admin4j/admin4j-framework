@@ -156,6 +156,16 @@
                 <artifactId>redisson</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.alicp.jetcache</groupId>
+                <artifactId>jetcache-starter-redis-lettuce</artifactId>
+                <version>2.7.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.esotericsoftware.kryo</groupId>
+                <artifactId>kryo5</artifactId>
+                <version>5.4.0</version>
+            </dependency>
 
             <!-- 监控相关 -->
             <dependency>
