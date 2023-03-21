@@ -34,7 +34,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<R> baseException(BaseException e) {
         log.error("基础异常:" + e.getMessage(), e);
         handlerException(e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e));
     }
 
 
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<R> baseException(BizException e) {
         log.error("业务异常:" + e.getMessage(), e);
         handlerException(e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e));
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)

@@ -1,5 +1,7 @@
 package com.admin4j.framework.web.pojo;
 
+import com.admin4j.framework.web.exception.assertion.Assert;
+import com.admin4j.framework.web.exception.assertion.AssertException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ResponseEnum implements IResponse {
+public enum ResponseEnum implements IResponse, Assert {
 
     /**
      * 操作成功
@@ -63,9 +65,9 @@ public enum ResponseEnum implements IResponse {
     VERIFY_ERROR(4000, "VERIFY_ERROR"),
 
     /**
-     * 断言空指针错误
+     * 断言错误
      */
-    ASSERT_NULL_ERROR(4001, "ASSERT_NULL_ERROR"),
+    ASSERT_ERROR(4001, "服务器内部错误 4001"),
 
 
     /**
@@ -87,6 +89,7 @@ public enum ResponseEnum implements IResponse {
 
 
     BIZ_ERROR(5200, "服务器内部错误 5200"),
+
     /**
      * 发生SQL异常 SQLException
      */
@@ -125,4 +128,25 @@ public enum ResponseEnum implements IResponse {
      */
     final String msg;
 
+    /**
+     * 创建异常
+     *
+     * @param t      异常
+     * @param errMsg msg
+     * @return
+     */
+    @Override
+    public AssertException newException(Throwable t, String errMsg) {
+        return new AssertException(this, t, errMsg);
+    }
+
+    @Override
+    public AssertException newException(Throwable t) {
+        return new AssertException(this, t);
+    }
+
+    @Override
+    public AssertException newException(String errMsg) {
+        return new AssertException(this, errMsg);
+    }
 }

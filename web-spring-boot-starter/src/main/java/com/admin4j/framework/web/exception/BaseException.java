@@ -65,6 +65,7 @@ public class BaseException extends RuntimeException implements IResponse {
     public BaseException(IResponse response, Object[] args, String message) {
         super(StringUtils.defaultString(message, response.getMsg()));
         setResponse(response);
+        setMsg(message);
         this.args = args;
     }
 

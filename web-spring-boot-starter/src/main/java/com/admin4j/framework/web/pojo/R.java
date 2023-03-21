@@ -118,16 +118,16 @@ public class R<T> extends CommonResult<T> {
     }
 
 
-    public static <T> R<T> fail(ResponseEnum responseEnum) {
-        return fail(responseEnum.getCode(), responseEnum.getMsg());
+    public static <T> R<T> fail(IResponse response) {
+        return fail(response.getCode(), response.getMsg());
     }
 
-    public static <T> R<T> fail(ResponseEnum responseEnum, Object[] i18nArgs) {
-        return R.fail(responseEnum.getCode(), responseEnum.getMsg(), i18nArgs);
+    public static <T> R<T> fail(IResponse response, Object[] i18nArgs) {
+        return R.fail(response.getCode(), response.getMsg(), i18nArgs);
     }
 
-    public static <T> R<T> fail(ResponseEnum responseEnum, String msg) {
-        return fail(responseEnum.getCode(), msg);
+    public static <T> R<T> fail(IResponse response, String msg) {
+        return fail(response.getCode(), msg);
     }
 
     /**
