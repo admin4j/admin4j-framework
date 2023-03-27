@@ -1,5 +1,8 @@
 package com.admin4j.framework.web.pojo;
 
+import com.admin4j.common.pojo.CommonResult;
+import com.admin4j.common.pojo.IResponse;
+import com.admin4j.common.pojo.ResponseEnum;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;

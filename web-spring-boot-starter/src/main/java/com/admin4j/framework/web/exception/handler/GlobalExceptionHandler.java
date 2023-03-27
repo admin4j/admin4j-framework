@@ -1,10 +1,10 @@
 package com.admin4j.framework.web.exception.handler;
 
-import com.admin4j.common.pojo.AbstractExceptionHandler;
-import com.admin4j.framework.web.exception.BaseException;
-import com.admin4j.framework.web.exception.BizException;
+import com.admin4j.common.exception.BaseException;
+import com.admin4j.common.exception.BizException;
+import com.admin4j.common.exception.handler.AbstractExceptionHandler;
+import com.admin4j.common.pojo.ResponseEnum;
 import com.admin4j.framework.web.pojo.R;
-import com.admin4j.framework.web.pojo.ResponseEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

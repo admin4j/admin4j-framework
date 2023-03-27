@@ -1,5 +1,6 @@
 package com.admin4j.framework.web.pojo;
 
+import com.admin4j.common.pojo.ResponseEnum;
 import org.junit.jupiter.api.Test;
 
 /**

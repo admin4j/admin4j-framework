@@ -1,6 +1,6 @@
-package com.admin4j.framework.web.exception;
+package com.admin4j.common.exception;
 
-import com.admin4j.common.exception.BaseException;
+
 import com.admin4j.common.pojo.IResponse;
 import com.admin4j.common.pojo.ResponseEnum;
 

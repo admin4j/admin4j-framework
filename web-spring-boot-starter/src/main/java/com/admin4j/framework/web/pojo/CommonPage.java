@@ -1,5 +1,7 @@
 package com.admin4j.framework.web.pojo;
 
+import com.admin4j.common.pojo.CommonResult;
+import com.admin4j.common.pojo.ResponseEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

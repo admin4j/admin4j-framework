@@ -13,16 +13,17 @@
     <description>admin4j - 基础脚手架</description>
     <url>https://github.com/admin4j/admin4j-common</url>
     <modules>
-        <module>admin4j-common</module>
+        <module>admin4j-spring-web-common</module>
         <module>admin4j-parent</module>
         <module>admin4j-dependencies</module>
         <module>web-spring-boot-starter</module>
         <module>lock-spring-boot-starter</module>
         <module>prometheus-spring-boot-starter</module>
+        <module>security-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.0.4</revision>
-        <admin4j-dependencies-version>0.0.4</admin4j-dependencies-version>
+        <admin4j-dependencies-version>0.0.5</admin4j-dependencies-version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
