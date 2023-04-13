@@ -20,6 +20,7 @@
         <module>lock-spring-boot-starter</module>
         <module>prometheus-spring-boot-starter</module>
         <module>security-spring-boot-starter</module>
+        <module>oss-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.0.4</revision>

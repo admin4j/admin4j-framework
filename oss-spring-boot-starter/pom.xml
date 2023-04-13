@@ -1,0 +1,40 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.admin4j</groupId>
+        <artifactId>framework</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>oss-spring-boot-starter</artifactId>
+    <version>0.0.4</version>
+    <packaging>jar</packaging>
+    <description>封装基于Amazon S3的OSS对象存储服务。在SpringBoot 中通过封装，简单地方式将文件存储到
+        MinIO、阿里云OSS、华为云OBS、七牛云Kodo、腾讯云COS等支持
+        S3 协议的平台
+    </description>
+
+    <name>oss-spring-boot-starter</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.447</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
