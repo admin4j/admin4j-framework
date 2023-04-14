@@ -11,6 +11,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "admin4j.oss")
 public class OssProperties {
     /**
+     * 是否启用
+     */
+    private boolean enable = false;
+    /**
      * 对象存储服务的URL
      */
     private String endpoint;
@@ -40,6 +44,11 @@ public class OssProperties {
      * 默认的bucketName
      */
     private String bucketName;
+    /**
+     * 预览 url（cdn url）.
+     * 默认null 使用oss 预览方式
+     */
+    private String previewUrl;
 
     /**
      * 最大线程数，默认： 100

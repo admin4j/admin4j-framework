@@ -2,7 +2,9 @@ package com.admin4j.oss.configuration;
 
 import com.admin4j.oss.OssProperties;
 import com.admin4j.oss.OssTemplate;
+import com.admin4j.oss.UploadFileService;
 import com.admin4j.oss.impl.OssTemplateImpl;
+import com.admin4j.oss.impl.SimpleOSSUploadFileService;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -13,9 +15,12 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author andanyang
@@ -23,10 +28,11 @@ import org.springframework.context.annotation.Bean;
  */
 @RequiredArgsConstructor
 @EnableConfigurationProperties(OssProperties.class)
+@ConditionalOnProperty(value = "enable", prefix = "admin4j.oss")
 public class OssAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(AmazonS3.class)
     public AmazonS3 ossClient(OssProperties ossProperties) {
         // 客户端配置，主要是全局的配置信息
         ClientConfiguration clientConfiguration = new ClientConfiguration();
@@ -48,5 +54,14 @@ public class OssAutoConfiguration {
     @ConditionalOnBean(AmazonS3.class)
     public OssTemplate ossTemplate(AmazonS3 amazonS3, OssProperties ossProperties) {
         return new OssTemplateImpl(amazonS3, ossProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(UploadFileService.class)
+    @ConditionalOnClass(MultipartFile.class)
+    @ConditionalOnBean(OssTemplate.class)
+    public UploadFileService uploadFileService(OssTemplate ossTemplate, OssProperties ossProperties) {
+
+        return new SimpleOSSUploadFileService(ossTemplate, ossProperties);
     }
 }
