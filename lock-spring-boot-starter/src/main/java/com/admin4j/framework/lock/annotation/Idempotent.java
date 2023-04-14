@@ -11,7 +11,7 @@ import java.lang.annotation.*;
  * @author andanyang
  * @since 2023/3/14 8:43
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
