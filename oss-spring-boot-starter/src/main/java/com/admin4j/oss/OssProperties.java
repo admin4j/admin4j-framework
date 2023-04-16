@@ -43,7 +43,7 @@ public class OssProperties {
     /**
      * 默认的bucketName
      */
-    private String bucketName;
+    private String defaultBucketName;
     /**
      * 预览 url（cdn url）.
      * 默认null 使用oss 预览方式

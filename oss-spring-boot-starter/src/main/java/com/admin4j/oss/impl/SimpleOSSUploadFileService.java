@@ -130,7 +130,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      * @return 默认的桶名称
      */
     protected String defaultBucketName() {
-        return ossProperties.getBucketName();
+        return ossProperties.getDefaultBucketName();
     }
 
     /**
