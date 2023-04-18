@@ -17,10 +17,11 @@
         <module>admin4j-parent</module>
         <module>admin4j-dependencies</module>
         <module>web-spring-boot-starter</module>
-        <module>lock-spring-boot-starter</module>
+        <module>admin4j-lock</module>
         <module>prometheus-spring-boot-starter</module>
         <module>security-spring-boot-starter</module>
         <module>oss-spring-boot-starter</module>
+        <module>zookeeper-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.0.5</revision>
@@ -126,7 +127,11 @@
                         </exclude>
                         <exclude>
                             <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+                            <artifactId>spring-boot-autoconfigure</artifactId>
+                        </exclude>
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
                         </exclude>
                     </excludes>
                 </configuration>

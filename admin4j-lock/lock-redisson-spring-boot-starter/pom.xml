@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.admin4j</groupId>
+        <artifactId>admin4j-lock</artifactId>
+        <version>0.1.0</version>
+    </parent>
+    <artifactId>lock-redisson-spring-boot-starter</artifactId>
+    <name>lock-redisson-spring-boot-starter</name>
+    <version>0.1.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.admin4j</groupId>
+            <artifactId>lock-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-actuator</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+</project>

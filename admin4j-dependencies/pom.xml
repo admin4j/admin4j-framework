@@ -87,8 +87,38 @@
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
+                <artifactId>admin4j-lock</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j</groupId>
+                <artifactId>lock-core</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j</groupId>
                 <artifactId>lock-spring-boot-starter</artifactId>
-                <version>0.0.4</version>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j</groupId>
+                <artifactId>lock-redisson-spring-boot-starter</artifactId>
+                <version>0.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j</groupId>
+                <artifactId>zookeeper-spring-boot-starter</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>5.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>5.4.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
@@ -102,7 +132,7 @@
                 <artifactId>junit</artifactId>
                 <version>4.13.2</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk-s3</artifactId>
