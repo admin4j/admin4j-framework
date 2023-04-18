@@ -28,8 +28,8 @@ public class IdempotentAspect extends AbstractDLockHandler {
     /**
      * 切面环绕通知
      *
-     * @param joinPoint       ProceedingJoinPoint
-     * @param distributedLock DistributedLock
+     * @param joinPoint  ProceedingJoinPoint
+     * @param idempotent idempotent
      * @return Object
      */
     @Around("@annotation(idempotent)")
@@ -47,6 +47,7 @@ public class IdempotentAspect extends AbstractDLockHandler {
         lockInfo.setWaitTimeOutSeconds(idempotent.waitTimeOutSeconds());
         lockInfo.setTenant(idempotent.tenant());
         lockInfo.setUser(true);
+        lockInfo.setExecutor(idempotent.executor());
 
         return super.around(joinPoint, lockInfo);
     }

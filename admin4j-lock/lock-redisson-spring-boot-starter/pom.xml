@@ -8,12 +8,13 @@
     </parent>
     <artifactId>lock-redisson-spring-boot-starter</artifactId>
     <name>lock-redisson-spring-boot-starter</name>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 
     <dependencies>
         <dependency>
             <groupId>com.admin4j</groupId>
             <artifactId>lock-core</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.redisson</groupId>

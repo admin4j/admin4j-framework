@@ -1,4 +1,4 @@
-package com.admin4j.framework.lock.config;
+package com.admin4j.framework.lock.configuration;
 
 
 import com.admin4j.common.util.SpringUtils;
@@ -28,6 +28,6 @@ public class DistributedLockAutoConfiguration implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        DistributedLockUtil.setLockExecutor(SpringUtils.getBean(LockExecutor.class));
+        DistributedLockUtil.setDefaultLockExecutor(SpringUtils.getBean(LockExecutor.class));
     }
 }

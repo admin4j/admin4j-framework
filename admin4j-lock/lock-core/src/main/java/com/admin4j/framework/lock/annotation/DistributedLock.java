@@ -1,6 +1,7 @@
 package com.admin4j.framework.lock.annotation;
 
 
+import com.admin4j.framework.lock.LockExecutor;
 import com.admin4j.framework.lock.constant.LockModel;
 import com.admin4j.framework.lock.key.DLockKeyGenerator;
 import com.admin4j.framework.lock.util.DistributedLockUtil;
@@ -46,8 +47,6 @@ public @interface DistributedLock {
     /**
      * The bean name of the custom  {@link DLockKeyGenerator } to use.
      * Mutually exclusive with the key attribute.
-     *
-     * @return
      */
     String keyGenerator() default "";
 
@@ -72,8 +71,6 @@ public @interface DistributedLock {
      * 最多等待x秒
      * If waitSeconds <0 , no wait TimeOut
      * waitSeconds = 0  使用 tryLock 模式，获取不到锁就就失败
-     *
-     * @return
      */
     int waitTimeOutSeconds() default -1;
 
@@ -93,5 +90,11 @@ public @interface DistributedLock {
      */
     boolean user() default false;
 
+    /**
+     * 分布式锁执行器。
+     *
+     * @return 默认spring注入的执行器
+     */
+    Class<? extends LockExecutor> executor() default LockExecutor.class;
 
 }

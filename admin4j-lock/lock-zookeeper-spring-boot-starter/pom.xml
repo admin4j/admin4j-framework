@@ -9,7 +9,7 @@
 
     <artifactId>lock-zookeeper-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 
     <name>lock-zookeeper-spring-boot-starter</name>
     <description>基于 zookeeper 的 分布式锁</description>
@@ -22,6 +22,7 @@
         <dependency>
             <groupId>com.admin4j</groupId>
             <artifactId>lock-core</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.admin4j</groupId>

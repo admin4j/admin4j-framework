@@ -10,11 +10,11 @@ import com.admin4j.framework.lock.annotation.DistributedLock;
 import com.admin4j.framework.lock.exception.DistributedLockException;
 import com.admin4j.framework.lock.key.DLockKeyGenerator;
 import com.admin4j.framework.lock.key.SimpleKeyGenerator;
+import com.admin4j.framework.lock.util.DistributedLockUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
@@ -29,9 +29,6 @@ import java.lang.reflect.Method;
 @Slf4j
 public abstract class AbstractDLockHandler {
 
-    @Autowired
-    private LockExecutor lockExecutor;
-
     /**
      * 切面环绕通知
      *
@@ -40,6 +37,8 @@ public abstract class AbstractDLockHandler {
      * @return Object
      */
     public Object around(ProceedingJoinPoint joinPoint, LockInfo<Object> lockInfo) throws Throwable {
+
+        LockExecutor lockExecutor = DistributedLockUtil.getLockExecutor(lockInfo);
 
         //获取超时时间并获取锁
         Object lock = lockExecutor.getLock(lockInfo);

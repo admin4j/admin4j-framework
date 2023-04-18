@@ -9,7 +9,7 @@
 
     <artifactId>lock-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 
     <name>lock-spring-boot-starter</name>
     <description>基于Spring Boot 的分布式锁，支持redisson、zookeeper 分布式锁</description>
@@ -21,7 +21,16 @@
     <dependencies>
         <dependency>
             <groupId>com.admin4j</groupId>
+            <artifactId>lock-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.admin4j</groupId>
             <artifactId>lock-redisson-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

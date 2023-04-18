@@ -33,4 +33,9 @@ public class LockInfo<T> {
      * 锁实例
      */
     private T lockInstance;
+
+    /**
+     * 指定的执行器
+     */
+    private Class<? extends LockExecutor> executor;
 }

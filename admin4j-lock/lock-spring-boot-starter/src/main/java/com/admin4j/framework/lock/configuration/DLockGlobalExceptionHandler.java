@@ -1,4 +1,4 @@
-package com.admin4j.framework.lock.config;
+package com.admin4j.framework.lock.configuration;
 
 import com.admin4j.common.exception.handler.AbstractExceptionHandler;
 import com.admin4j.common.pojo.CommonResult;

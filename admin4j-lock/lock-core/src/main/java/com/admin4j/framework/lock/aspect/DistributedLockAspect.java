@@ -34,6 +34,7 @@ public class DistributedLockAspect extends AbstractDLockHandler {
         lockInfo.setWaitTimeOutSeconds(distributedLock.waitTimeOutSeconds());
         lockInfo.setTenant(distributedLock.tenant());
         lockInfo.setUser(distributedLock.user());
+        lockInfo.setExecutor(distributedLock.executor());
 
         return super.around(joinPoint, lockInfo);
     }
