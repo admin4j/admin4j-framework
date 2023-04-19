@@ -48,7 +48,7 @@ DistributedLock 注解参数详解
 
 - prefix：锁key的前缀
 - lockModel：指定锁模式 REENTRANT(可重入锁),FAIR(公平锁) ,REDLOCK(红锁),READ(读锁), WRITE(写锁)
-- key： 锁名称
+- key、value： 锁名称,支持el 表达式
 - keyGenerator： 所名称生成器。Spring注入基础DLockKeyGenerator实现类即可
 - tryLock：是否尝试获取锁。成功获取则进入锁；获取失败则抛出异常。 true 获取不到锁，会立即返回，不会阻塞。false(默认)
   获取不到锁，会阻塞当前线程
@@ -135,6 +135,20 @@ DistributedLock 注解参数详解
 ```
 
 使用示例代码 [https://github.com/admin4j/admin4j-example](https://github.com/admin4j/admin4j-example)
+
+# 一个注解搞定接口幂等性
+
+```
+	@GetMapping("Idempotent")
+    @Idempotent(tryLock = true, key = "'Idempotent'+#id")
+    public R Idempotent(String name, Integer id) throws InterruptedException {
+
+        Thread.sleep(30000);
+        return R.ok();
+    }
+```
+
+需要实现 ILoginUserInfoService 接口,返回当前登录用户唯一ID
 
 # 分布式锁原理
 
