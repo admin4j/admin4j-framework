@@ -33,8 +33,8 @@ public class OssAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(UploadFileService.class)
     @ConditionalOnClass(MultipartFile.class)
+    @ConditionalOnMissingBean(UploadFileService.class)
     @ConditionalOnBean(OssTemplate.class)
     public UploadFileService uploadFileService(OssTemplate ossTemplate, OssProperties ossProperties) {
 
