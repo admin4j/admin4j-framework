@@ -63,6 +63,7 @@
         <wx-java-mp.version>4.3.0</wx-java-mp.version>
 
         <admin4j-plugin.version>0.1.1</admin4j-plugin.version>
+        <admin4j.version>0.0.7</admin4j.version>
     </properties>
 
     <dependencyManagement>
@@ -80,7 +81,12 @@
             <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>admin4j-spring-web-common</artifactId>
-                <version>0.0.4</version>
+                <version>${admin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j</groupId>
+                <artifactId>admin4j-common</artifactId>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>

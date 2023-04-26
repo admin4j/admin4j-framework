@@ -1,7 +1,7 @@
 package com.admin4j.common.config;
 
- 
-import com.admin4j.common.util.SnowflakeIdWorker;
+
+import com.admin4j.commons.SnowflakeIdWorker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 
