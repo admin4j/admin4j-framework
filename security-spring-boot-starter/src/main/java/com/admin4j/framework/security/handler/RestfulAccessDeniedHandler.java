@@ -1,8 +1,8 @@
 package com.admin4j.framework.security.handler;
 
-import com.admin4j.common.pojo.CommonResult;
 import com.admin4j.common.pojo.IResponse;
 import com.admin4j.common.pojo.ResponseEnum;
+import com.admin4j.common.pojo.SimpleResponse;
 import com.admin4j.common.util.ServletUtils;
 import com.alibaba.fastjson2.JSON;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -22,7 +22,7 @@ import java.io.IOException;
 @ConditionalOnBean(AccessDeniedHandler.class)
 public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
 
-    private static final IResponse FAIL_AUTH_FORBIDDEN = new CommonResult(ResponseEnum.FAIL_AUTH_FORBIDDEN);
+    private static final IResponse FAIL_AUTH_FORBIDDEN = new SimpleResponse(ResponseEnum.FAIL_AUTH_FORBIDDEN);
 
     @Override
     public void handle(

@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 对 CommonResult 的封装工厂类
+ * 对 SimpleResponse 的封装工厂类
  *
  * @author andanyang
  * @since 2022/8/4 10:55
