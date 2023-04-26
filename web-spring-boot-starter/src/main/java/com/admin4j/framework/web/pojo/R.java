@@ -1,8 +1,8 @@
 package com.admin4j.framework.web.pojo;
 
-import com.admin4j.common.pojo.CommonResult;
 import com.admin4j.common.pojo.IResponse;
 import com.admin4j.common.pojo.ResponseEnum;
+import com.admin4j.common.pojo.SimpleResponse;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
@@ -17,7 +17,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "统一响应消息报文")
-public class R<T> extends CommonResult<T> {
+public class R<T> extends SimpleResponse<T> {
 
     /**
      * 成功
