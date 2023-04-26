@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommonResult<T> implements IResponse {
+public class SimpleResponse<T> implements IResponse {
     protected int code;
 
     protected String msg;
@@ -30,14 +30,14 @@ public class CommonResult<T> implements IResponse {
         msg = response.getMsg();
     }
 
-    public CommonResult(IResponse response) {
+    public SimpleResponse(IResponse response) {
         setResponse(response);
     }
 
-    public static <T> CommonResult<T> of(int code, String msg) {
-        CommonResult<T> commonResult = new CommonResult<>();
-        commonResult.setCode(code);
-        commonResult.setMsg(msg);
-        return commonResult;
+    public static <T> SimpleResponse<T> of(int code, String msg) {
+        SimpleResponse<T> simpleResponse = new SimpleResponse<>();
+        simpleResponse.setCode(code);
+        simpleResponse.setMsg(msg);
+        return simpleResponse;
     }
 }

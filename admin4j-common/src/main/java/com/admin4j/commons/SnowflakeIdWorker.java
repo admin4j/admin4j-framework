@@ -1,10 +1,9 @@
-package com.admin4j.common.util;
+package com.admin4j.commons;
 
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.Assert;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
@@ -100,10 +99,17 @@ public class SnowflakeIdWorker {
      * @param datacenterId 序列号
      */
     public SnowflakeIdWorker(long workerId, long datacenterId) {
-        Assert.isTrue(workerId <= maxWorkerId || workerId < 0,
-                String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
-        Assert.isTrue(datacenterId <= maxDatacenterId || datacenterId < 0,
-                String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
+        if (workerId > maxWorkerId) {
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+        }
+        if (datacenterId >= maxDatacenterId) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
+
+        }
+        //Assert.isTrue(workerId <= maxWorkerId || workerId < 0,
+        //        String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+        //Assert.isTrue(datacenterId <= maxDatacenterId || datacenterId < 0,
+        //        String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
         this.workerId = workerId;
         this.datacenterId = datacenterId;
     }

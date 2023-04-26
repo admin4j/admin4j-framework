@@ -22,9 +22,10 @@
         <module>security-spring-boot-starter</module>
         <module>oss-spring-boot-starter</module>
         <module>zookeeper-spring-boot-starter</module>
+        <module>admin4j-common</module>
     </modules>
     <properties>
-        <revision>0.0.6</revision>
+        <revision>0.0.7</revision>
         <admin4j-dependencies-version>0.1-SNAPSHOT</admin4j-dependencies-version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
