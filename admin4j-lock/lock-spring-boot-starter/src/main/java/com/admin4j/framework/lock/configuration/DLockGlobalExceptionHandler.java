@@ -1,9 +1,9 @@
 package com.admin4j.framework.lock.configuration;
 
 import com.admin4j.common.exception.handler.AbstractExceptionHandler;
-import com.admin4j.common.pojo.CommonResult;
 import com.admin4j.common.pojo.IResponse;
 import com.admin4j.common.pojo.ResponseEnum;
+import com.admin4j.common.pojo.SimpleResponse;
 import com.admin4j.framework.lock.exception.DistributedLockException;
 import com.admin4j.framework.lock.exception.IdempotentException;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 @Slf4j
-@ConditionalOnClass(CommonResult.class)
+@ConditionalOnClass(SimpleResponse.class)
 public class DLockGlobalExceptionHandler extends AbstractExceptionHandler {
 
 
@@ -33,13 +33,13 @@ public class DLockGlobalExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<IResponse> distributedLockException(DistributedLockException e) {
         log.error("distributedLockException：" + e.getMessage(), e);
 
-        return renderException(e, CommonResult.of(ResponseEnum.ERROR_D_LOCK.getCode(), e.getMessage()));
+        return renderException(e, SimpleResponse.of(ResponseEnum.ERROR_D_LOCK.getCode(), e.getMessage()));
 
     }
 
     @ExceptionHandler(IdempotentException.class)
     public ResponseEntity<IResponse> idempotentException(IdempotentException e) {
         log.error("idempotentException：" + e.getMessage(), e);
-        return renderException(e, CommonResult.of(ResponseEnum.ERROR_D_IDEMPOTENT.getCode(), e.getMessage()));
+        return renderException(e, SimpleResponse.of(ResponseEnum.ERROR_D_IDEMPOTENT.getCode(), e.getMessage()));
     }
 }
