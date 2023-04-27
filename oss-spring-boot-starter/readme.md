@@ -78,7 +78,7 @@ Amazon Simple Storage Service（Amazon S3，Amazon简便存储服务）是 AWS �
 <dependency>
     <groupId>com.admin4j</groupId>
     <artifactId>oss-spring-boot-starter</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
 </dependency>
 ```
 

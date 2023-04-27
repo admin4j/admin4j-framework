@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>oss-spring-boot-starter</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <packaging>jar</packaging>
     <description>封装基于Amazon S3的OSS对象存储服务。在SpringBoot 中通过封装，简单地方式将文件存储到
         MinIO、阿里云OSS、华为云OBS、七牛云Kodo、腾讯云COS等支持
@@ -35,6 +35,10 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
