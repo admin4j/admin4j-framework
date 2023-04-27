@@ -132,6 +132,11 @@
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
+                <artifactId>xss-spring-boot-starter</artifactId>
+                <version>0.0.7</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j</groupId>
                 <artifactId>plugin-example-api</artifactId>
                 <version>1.1</version>
             </dependency>
@@ -154,6 +159,11 @@
                 <groupId>com.admin4j</groupId>
                 <artifactId>lock-redisson-spring-boot-starter</artifactId>
                 <version>0.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j</groupId>
+                <artifactId>oss-spring-boot-starter</artifactId>
+                <version>0.1.1</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
@@ -180,11 +190,7 @@
                 <artifactId>curator-recipes</artifactId>
                 <version>5.4.0</version>
             </dependency>
-            <dependency>
-                <groupId>com.admin4j</groupId>
-                <artifactId>oss-spring-boot-starter</artifactId>
-                <version>0.1.1</version>
-            </dependency>
+
             <!-- 业务相关 end -->
 
             <dependency>
