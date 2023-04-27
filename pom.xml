@@ -24,6 +24,7 @@
         <module>zookeeper-spring-boot-starter</module>
         <module>admin4j-common</module>
         <module>xss-spring-boot-starter</module>
+        <module>excel-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.0.7</revision>
