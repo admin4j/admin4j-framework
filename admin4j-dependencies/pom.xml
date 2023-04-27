@@ -62,7 +62,7 @@
         <xercesImpl.version>2.12.2</xercesImpl.version>
         <wx-java-mp.version>4.3.0</wx-java-mp.version>
 
-        <admin4j-plugin.version>0.1.1</admin4j-plugin.version>
+        <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
         <admin4j.version>0.0.7</admin4j.version>
     </properties>
 
