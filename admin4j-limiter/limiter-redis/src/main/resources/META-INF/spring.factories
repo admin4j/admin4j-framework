@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.admin4j.limiter.redis.FixWindowRedisRateLimiter,\
+  com.admin4j.limiter.redis.LeakyBucketRedisRateLimiter,\
+  com.admin4j.limiter.redis.SlidingLogRedisRateLimiter,\
+  com.admin4j.limiter.redis.SlidingWindowRedisRateLimiter,\
+  com.admin4j.limiter.redis.TokenBucketRedisRateLimiter
