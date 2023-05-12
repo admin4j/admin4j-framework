@@ -6,11 +6,12 @@ package com.admin4j.limiter.core;
  */
 public interface RateLimiterService {
 
-
     /**
      * 判断请求是否允许通过
      *
-     * @return
+     * @param maxAttempts qps、最大的容量
+     * @param interval    统计时间间隔
+     * @return 是否限速
      */
-    boolean tryAcquire(String key, int qps, int time);
+    boolean tryAcquire(String key, int maxAttempts, long interval);
 }

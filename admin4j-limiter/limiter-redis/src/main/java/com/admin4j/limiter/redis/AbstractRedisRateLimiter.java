@@ -31,7 +31,7 @@ public abstract class AbstractRedisRateLimiter implements RateLimiterProvider {
     //public AbstractRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
     //    this.stringRedisTemplate = stringRedisTemplate;
     //}
-    
+
     @PostConstruct
     public void init() {
 
@@ -51,17 +51,16 @@ public abstract class AbstractRedisRateLimiter implements RateLimiterProvider {
     /**
      * 判断请求是否允许通过
      *
-     * @param key
-     * @param qps
-     * @param time
-     * @return
+     * @param maxAttempts qps、最大的容量
+     * @param interval    统计时间间隔
+     * @return 是否限速
      */
     @Override
-    public boolean tryAcquire(String key, int qps, int time) {
+    public boolean tryAcquire(String key, int maxAttempts, long interval) {
 
         Object result = stringRedisTemplate.execute(rateLimitScript, Collections.singletonList(getKeyPrefix() + key),
-                Integer.toString(qps),
-                Integer.toString(time));
+                Integer.toString(maxAttempts),
+                Long.toString(interval));
         return (Long) result == 1L;
     }
 }

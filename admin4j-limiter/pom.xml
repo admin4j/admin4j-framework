@@ -18,12 +18,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <limiter-version>0.1.0</limiter-version>
     </properties>
 
     <modules>
         <module>limiter-core</module>
-        <module>limiter-local</module>
         <module>limiter-redis</module>
         <module>limiter-spring-boot-starter</module>
     </modules>

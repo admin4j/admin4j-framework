@@ -20,7 +20,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.admin4j</groupId>
+            <groupId>com.admin4j.common</groupId>
             <artifactId>admin4j-common</artifactId>
         </dependency>
         <dependency>

@@ -1,6 +1,8 @@
 package com.admin4j.limiter.core.anno;
 
+import com.admin4j.limiter.core.RateLimiterKeyGenerate;
 import com.admin4j.limiter.core.constant.LimiterType;
+import com.admin4j.limiter.core.key.DefaultRateLimiterKeyGenerate;
 
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Inherited
 public @interface RateLimiter {
 
-    String key();
+    Class<? extends RateLimiterKeyGenerate> keyGenerate() default DefaultRateLimiterKeyGenerate.class;
 
     /**
      * 限速类型
@@ -23,14 +25,14 @@ public @interface RateLimiter {
     LimiterType limiterType() default LimiterType.SLIDING_WINDOW;
 
     /**
-     * qps
+     * qps，容量，最大的请求次数
      */
-    int qps() default 2;
+    int maxAttempts() default 2;
 
     /**
      * 统计时间范围
      */
-    int time() default 2;
+    int interval() default 2;
 
     /**
      * 统计时间范围,单位

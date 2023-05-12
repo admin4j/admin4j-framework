@@ -4,10 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * 解析SPEL 表达式
@@ -16,6 +18,9 @@ import java.lang.reflect.Method;
  * @since 2018/1/20 13:50
  */
 public class SpelUtil {
+
+    private SpelUtil() {
+    }
 
     private static final LocalVariableTableParameterNameDiscoverer U = new LocalVariableTableParameterNameDiscoverer();
     //使用SPEL进行key的解析
@@ -32,7 +37,11 @@ public class SpelUtil {
         for (int i = 0; i < paraNameArr.length; i++) {
             context.setVariable(paraNameArr[i], args[i]);
         }
-        return EL_PARSER.parseExpression(spel).getValue(context, String.class);
+        try {
+            return EL_PARSER.parseExpression(spel).getValue(context, String.class);
+        } catch (ParseException e) {
+            return spel;
+        }
     }
 
     /**
@@ -59,6 +68,33 @@ public class SpelUtil {
         for (int i = 0; i < paraNameArr.length; i++) {
             context.setVariable(paraNameArr[i], args[i]);
         }
-        return EL_PARSER.parseExpression(spel).getValue(context, String.class);
+        try {
+            return EL_PARSER.parseExpression(spel).getValue(context, String.class);
+        } catch (ParseException e) {
+            return spel;
+        }
+    }
+
+
+    /**
+     * 计算SpEL表达式的值
+     *
+     * @param expression 表达式字符串
+     * @param context    变量上下文
+     * @param clazz      返回值类型
+     * @return 表达式计算结果
+     */
+    public static <T> T getValue(String expression, Map<String, Object> context, Class<T> clazz) {
+        StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
+        if (context != null && !context.isEmpty()) {
+            for (Map.Entry<String, Object> entry : context.entrySet()) {
+                evaluationContext.setVariable(entry.getKey(), entry.getValue());
+            }
+        }
+        try {
+            return EL_PARSER.parseExpression(expression).getValue(evaluationContext, clazz);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }

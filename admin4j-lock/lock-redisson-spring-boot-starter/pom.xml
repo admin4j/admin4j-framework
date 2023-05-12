@@ -4,11 +4,11 @@
     <parent>
         <groupId>com.admin4j</groupId>
         <artifactId>admin4j-lock</artifactId>
-        <version>0.1.0</version>
+        <version>${admin4j-lock.version}</version>
     </parent>
     <artifactId>lock-redisson-spring-boot-starter</artifactId>
     <name>lock-redisson-spring-boot-starter</name>
-    <version>0.2.0</version>
+
 
     <dependencies>
         <dependency>

@@ -34,7 +34,6 @@ public class DLockGlobalExceptionHandler extends AbstractExceptionHandler {
         log.error("distributedLockException：" + e.getMessage(), e);
 
         return renderException(e, SimpleResponse.of(ResponseEnum.ERROR_D_LOCK.getCode(), e.getMessage()));
-
     }
 
     @ExceptionHandler(IdempotentException.class)

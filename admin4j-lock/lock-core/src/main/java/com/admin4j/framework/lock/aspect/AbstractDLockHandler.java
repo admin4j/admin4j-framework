@@ -1,6 +1,7 @@
 package com.admin4j.framework.lock.aspect;
 
 
+import com.admin4j.common.service.ILoginTenantInfoService;
 import com.admin4j.common.service.ILoginUserInfoService;
 import com.admin4j.common.util.SpelUtil;
 import com.admin4j.common.util.SpringUtils;
@@ -107,10 +108,10 @@ public abstract class AbstractDLockHandler {
 
         //开启租户
         if (distributedLock.tenant()) {
-            ILoginUserInfoService loginUserService = SpringUtils.getBean(ILoginUserInfoService.class);
-            Assert.notNull(loginUserService, "ILoginUserInfoService must implement");
-            Assert.notNull(loginUserService.getTenant(), "Tenant not null");
-            distributedLockKey.append(":T").append(loginUserService.getTenant());
+            ILoginTenantInfoService loginTenantInfoService = SpringUtils.getBean(ILoginTenantInfoService.class);
+            Assert.notNull(loginTenantInfoService, "ILoginTenantInfoService must implement");
+            Assert.notNull(loginTenantInfoService.getTenant(), "Tenant not null");
+            distributedLockKey.append(":T").append(loginTenantInfoService.getTenant());
         }
 
         return distributedLockKey.toString();
