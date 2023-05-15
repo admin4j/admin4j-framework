@@ -4,6 +4,7 @@ import com.admin4j.limiter.core.RateLimiterContext;
 import com.admin4j.limiter.core.RateLimiterProvider;
 import com.admin4j.limiter.core.RateLimiterService;
 import com.admin4j.limiter.core.constant.LimiterType;
+import com.admin4j.limiter.core.util.RateLimiterUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -29,6 +30,9 @@ public class DefaultRateLimiterContext implements ApplicationContextAware, Initi
 
             limiterServiceMap.put(i.support().name(), i);
         });
+
+
+        RateLimiterUtil.setRateLimiterContext(this);
     }
 
 

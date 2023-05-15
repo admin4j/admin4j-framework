@@ -1,6 +1,7 @@
 package com.admin4j.limiter.redis;
 
 import com.admin4j.limiter.core.constant.LimiterType;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * 固定窗口，限流
@@ -10,9 +11,9 @@ import com.admin4j.limiter.core.constant.LimiterType;
  */
 public class TokenBucketRedisRateLimiter extends AbstractRedisRateLimiter {
 
-    //public TokenBucketRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
-    //    super(stringRedisTemplate);
-    //}
+    public TokenBucketRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
+        super(stringRedisTemplate);
+    }
 
     @Override
     public LimiterType support() {

@@ -2,6 +2,7 @@ package com.admin4j.limiter.redis;
 
 import com.admin4j.limiter.core.constant.LimiterType;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * 固定窗口，限流
@@ -13,9 +14,9 @@ import org.springframework.context.annotation.Configuration;
 public class FixWindowRedisRateLimiter extends AbstractRedisRateLimiter {
 
 
-    //public FixWindowRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
-    //    super(stringRedisTemplate);
-    //}
+    public FixWindowRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
+        super(stringRedisTemplate);
+    }
 
     @Override
     public LimiterType support() {

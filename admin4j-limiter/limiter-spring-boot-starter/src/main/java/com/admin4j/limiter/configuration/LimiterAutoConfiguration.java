@@ -10,8 +10,11 @@ import com.admin4j.limiter.core.interceptor.RateLimitInterceptor;
 import com.admin4j.limiter.core.key.DefaultRateLimiterKeyGenerate;
 import com.admin4j.limiter.key.TenantRateLimiterKeyGenerate;
 import com.admin4j.limiter.key.UserRateLimiterKeyGenerate;
+import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -23,7 +26,7 @@ import org.springframework.core.annotation.Order;
  */
 @Configuration
 @ConditionalOnClass(name = {"org.springframework.web.servlet.HandlerInterceptor"})
-public class LimiterAutoConfiguration {
+public class LimiterAutoConfiguration implements ApplicationContextAware {
 
     @Bean
     public RateLimitInterceptor rateLimitInterceptor(RateLimiterContext rateLimiterContext) {
@@ -64,4 +67,17 @@ public class LimiterAutoConfiguration {
     public RateLimiterKeyGenerate userRateLimiterKeyGenerate(ILoginTenantInfoService tenantInfoService) {
         return new TenantRateLimiterKeyGenerate(tenantInfoService);
     }
+
+    private static ApplicationContext applicationContext;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    //@PostConstruct
+    //public void afterPropertiesSet() throws Exception {
+    //    RateLimiterContext bean = applicationContext.getBean(RateLimiterContext.class);
+    //    RateLimiterUtil.setRateLimiterContext(bean);
+    //}
 }

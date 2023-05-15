@@ -1,6 +1,7 @@
 package com.admin4j.limiter.redis;
 
 import com.admin4j.limiter.core.constant.LimiterType;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * 固定窗口，限流
@@ -11,9 +12,9 @@ import com.admin4j.limiter.core.constant.LimiterType;
 public class SlidingWindowRedisRateLimiter extends AbstractRedisRateLimiter {
 
 
-    //public SlidingWindowRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
-    //    super(stringRedisTemplate);
-    //}
+    public SlidingWindowRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
+        super(stringRedisTemplate);
+    }
 
     @Override
     public LimiterType support() {

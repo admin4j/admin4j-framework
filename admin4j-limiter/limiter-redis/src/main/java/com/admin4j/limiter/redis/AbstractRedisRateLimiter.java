@@ -1,7 +1,6 @@
 package com.admin4j.limiter.redis;
 
 import com.admin4j.limiter.core.RateLimiterProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -23,14 +22,14 @@ public abstract class AbstractRedisRateLimiter implements RateLimiterProvider {
 
     private StringRedisTemplate stringRedisTemplate;
 
-    @Autowired
-    public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
-
-    //public AbstractRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
+    //@Autowired
+    //public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
     //    this.stringRedisTemplate = stringRedisTemplate;
     //}
+
+    public AbstractRedisRateLimiter(StringRedisTemplate stringRedisTemplate) {
+        this.stringRedisTemplate = stringRedisTemplate;
+    }
 
     @PostConstruct
     public void init() {
