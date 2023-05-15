@@ -1,11 +1,33 @@
--- KEYS[1]：Redis 中的 key 值，用于存储请求时间戳和分值的映射
--- ARGV[1]：最大请求次数
--- ARGV[2]：窗口大小（秒）
-local current_time = redis.call("TIME")[1]
-redis.call("zremrangebyscore", KEYS[1], 0, current_time - tonumber(ARGV[2]))
-if tonumber(redis.call("zcard", KEYS[1])) + 1 > tonumber(ARGV[1]) then
-    return 0
+local limit = tonumber(ARGV[1])         -- 在时间窗口内允许的最大请求数
+local window_size = tonumber(ARGV[2])   -- 时间窗口大小，单位秒
+
+local current_time = tonumber(redis.call('TIME')[1])
+local window_start = current_time - window_size
+
+-- 从列表中删除过期的元素
+local count = redis.call('LLEN', KEYS[1])
+local start = 0;
+while count > 0 do
+    local index = redis.call('LINDEX', KEYS[1], start)
+    if not index then
+        break
+    end
+    if tonumber(index) <= window_start then
+        start = start + 1
+    else
+        break
+    end
 end
-redis.call("zadd", KEYS[1], current_time, current_time)
-redis.call('expire', KEYS[1], ARGV[2] * 2)
-return 1
+
+if start > 0 then
+    count = count - start
+    redis.call('LTRIM', KEYS[1], start, -1)
+end
+
+if count >= limit then
+    return 0
+else
+    redis.call('RPUSH', KEYS[1], current_time)
+    redis.call("expire", KEYS[1], tonumber(window_size) * 2)
+    return 1
+end

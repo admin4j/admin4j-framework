@@ -1,33 +1,38 @@
-local limit = tonumber(ARGV[1])         -- 在时间窗口内允许的最大请求数
-local window_size = tonumber(ARGV[2])   -- 时间窗口大小，单位秒
+local key = KEYS[1]          -- Redis键名
+local window_size = tonumber(ARGV[2])   -- 窗口大小
+local max_requests = tonumber(ARGV[1])  -- 最大请求数
+local sub_window_size = tonumber(ARGV[2]) / 2  -- 子时间窗口大小，单位秒
+local now = redis.call("TIME")[1]           -- 当前时间戳
+local request_num = 1       -- 新增值
+local bucket = math.floor(tonumber(window_size) * math.floor(now / tonumber(window_size)))
+local sub_bucket = math.floor(tonumber(sub_window_size) * math.floor(now / tonumber(sub_window_size)))
 
-local current_time = tonumber(redis.call('TIME')[1])
-local window_start = current_time - window_size
+redis.call("HSET", 'test-Rate', bucket, sub_bucket)
 
--- 从列表中删除过期的元素
-local count = redis.call('LLEN', KEYS[1])
-local start = 0;
-while count > 0 do
-    local index = redis.call('LINDEX', KEYS[1], start)
-    if not index then
-        break
-    end
-    if tonumber(index) < window_start then
-        start = start + 1
+local count = 0
+local hAll = redis.call("HGETALL", key)
+local hKey
+for k, v in pairs(hAll)
+do
+    if not hKey then
+        hKey = v
     else
-        break
+        redis.call("HSET", 'test-Rate-1', hKey, v)
+
+        if tonumber(hKey) < bucket then
+            redis.call("HDEL", key, hKey)
+        else
+            count = count + v
+            if count >= max_requests then
+                return 0
+            end
+        end
+        hKey = nil
     end
 end
 
-if start > 0 then
-    count = count - start
-    redis.call('LTRIM', KEYS[1], start, -1)
-end
+-- 更新数据，并将数据添加到对应的子窗口中
+redis.call("HINCRBY", key, sub_bucket, request_num)
+redis.call("EXPIRE", key, window_size * 10)   -- 设置过期时间
 
-if count >= limit then
-    return 0
-else
-    redis.call('RPUSH', KEYS[1], current_time)
-    redis.call("expire", KEYS[1], tonumber(window_size) * 2)
-    return 1
-end
+return 1
