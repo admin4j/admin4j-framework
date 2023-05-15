@@ -24,7 +24,7 @@
             <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>admin4j-dependencies</artifactId>
-                <version>${admin4j-dependencies-version}</version>
+                <version>${admin4j-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

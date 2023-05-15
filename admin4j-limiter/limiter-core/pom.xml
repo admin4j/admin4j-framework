@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.admin4j.limiter</groupId>
         <artifactId>limiter</artifactId>
-        <version>${limiter-version}</version>
+        <version>${admin4j-limiter.version}</version>
     </parent>
 
     <artifactId>limiter-core</artifactId>

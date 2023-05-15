@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.admin4j.spring.config.SpringConfig, \
+  com.admin4j.spring.config.IdWordConfiguration

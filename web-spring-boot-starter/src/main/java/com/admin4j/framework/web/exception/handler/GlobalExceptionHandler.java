@@ -1,6 +1,6 @@
 package com.admin4j.framework.web.exception.handler;
 
-import com.admin4j.common.exception.BaseException;
+import com.admin4j.common.exception.Admin4jException;
 import com.admin4j.common.exception.BizException;
 import com.admin4j.common.exception.handler.AbstractExceptionHandler;
 import com.admin4j.common.pojo.ResponseEnum;
@@ -30,8 +30,8 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     /**
      * 基础异常
      */
-    @ExceptionHandler(BaseException.class)
-    public ResponseEntity<R> baseException(BaseException e) {
+    @ExceptionHandler(Admin4jException.class)
+    public ResponseEntity<R> baseException(Admin4jException e) {
         log.error("基础异常:" + e.getMessage(), e);
         handlerException(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e));

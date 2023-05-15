@@ -6,12 +6,12 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
     <description>基础 bom 文件，管理整个项目的依赖版本</description>
-    <url>https://github.com/admin4j/admin4j-common</url>
+    <url>https://github.com/admin4j/admin4j-framework</url>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -65,8 +65,9 @@
         <wx-java-mp.version>4.3.0</wx-java-mp.version>
 
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
-        <admin4j.version>0.1.0</admin4j.version>
-        <admin4j-lock.version>0.2.0</admin4j-lock.version>
+        <admin4j.version>0.1.1</admin4j.version>
+        <admin4j-lock.version>0.2.1</admin4j-lock.version>
+        <admin4j-limiter.version>0.2.0</admin4j-limiter.version>
 
     </properties>
 
@@ -96,16 +97,41 @@
             </dependency>
 
 
-            <!-- 业务相关-->
+            <!-- admin4j相关-->
             <dependency>
-                <groupId>com.admin4j</groupId>
-                <artifactId>admin4j-spring-web-common</artifactId>
-                <version>${admin4j.version}</version>
+                <groupId>com.admin4j.limiter</groupId>
+                <artifactId>limiter</artifactId>
+                <version>${admin4j-limiter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.limiter</groupId>
+                <artifactId>limiter-spring-boot-starter</artifactId>
+                <version>${admin4j-limiter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.limiter</groupId>
+                <artifactId>limiter-redis</artifactId>
+                <version>${admin4j-limiter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.limiter</groupId>
+                <artifactId>limiter-core</artifactId>
+                <version>${admin4j-limiter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common</artifactId>
-                <version>0.1.0</version>
+                <version>${admin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.common</groupId>
+                <artifactId>admin4j-common-spring</artifactId>
+                <version>${admin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.common</groupId>
+                <artifactId>admin4j-common-spring-web</artifactId>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
@@ -601,10 +627,10 @@
     </licenses>
     <!-- 仓库信息 -->
     <scm>
-        <connection>scm:git@github.com:admin4j/admin4j-common.git</connection>
-        <developerConnection>scm:git@github.com:admin4j/admin4j-common.git
+        <connection>scm:git@github.com:admin4j/admin4j-framework.git</connection>
+        <developerConnection>scm:git@github.com:admin4j/admin4j-framework.git
         </developerConnection>
-        <url>https://github.com/admin4j/admin4j-common</url>
+        <url>https://github.com/admin4j/admin4j-framework</url>
     </scm>
     <!-- 开发人员信息 -->
     <developers>

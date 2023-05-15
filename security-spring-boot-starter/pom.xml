@@ -38,8 +38,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.admin4j</groupId>
-            <artifactId>admin4j-spring-web-common</artifactId>
+            <groupId>com.admin4j.common</groupId>
+            <artifactId>admin4j-common-spring-web</artifactId>
         </dependency>
     </dependencies>
 </project>

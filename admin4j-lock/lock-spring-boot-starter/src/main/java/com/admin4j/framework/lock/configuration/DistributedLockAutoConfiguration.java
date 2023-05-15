@@ -1,11 +1,11 @@
 package com.admin4j.framework.lock.configuration;
 
 
-import com.admin4j.common.util.SpringUtils;
 import com.admin4j.framework.lock.LockExecutor;
 import com.admin4j.framework.lock.aspect.DistributedLockAspect;
 import com.admin4j.framework.lock.aspect.IdempotentAspect;
 import com.admin4j.framework.lock.util.DistributedLockUtil;
+import com.admin4j.spring.util.SpringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 

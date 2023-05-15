@@ -3,8 +3,6 @@ package com.admin4j.framework.lock.aspect;
 
 import com.admin4j.common.service.ILoginTenantInfoService;
 import com.admin4j.common.service.ILoginUserInfoService;
-import com.admin4j.common.util.SpelUtil;
-import com.admin4j.common.util.SpringUtils;
 import com.admin4j.framework.lock.LockExecutor;
 import com.admin4j.framework.lock.LockInfo;
 import com.admin4j.framework.lock.annotation.DistributedLock;
@@ -12,6 +10,8 @@ import com.admin4j.framework.lock.exception.DistributedLockException;
 import com.admin4j.framework.lock.key.DLockKeyGenerator;
 import com.admin4j.framework.lock.key.SimpleKeyGenerator;
 import com.admin4j.framework.lock.util.DistributedLockUtil;
+import com.admin4j.spring.util.SpelUtil;
+import com.admin4j.spring.util.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

@@ -1,5 +1,6 @@
 package com.admin4j.commons.time;
 
+import com.admin4j.common.time.LocalDateUtil;
 import junit.framework.TestCase;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ public class LocalDateUtilTest extends TestCase {
         System.out.println("rawOffset = " + rawOffset);
         String id = ZoneOffset.systemDefault().getId();
         System.out.println("id = " + id);
-        ZoneOffset defaultZoomOffset = LocalDateUtil.DEFAULT_ZOOM_OFFSET;
+        ZoneOffset defaultZoomOffset = LocalDateUtil.DEFAULT_ZONE_OFFSET;
         System.out.println("defaultZoomOffset = " + defaultZoomOffset);
 
         //ZoneOffset of = ZoneOffset.of("UTC+8");

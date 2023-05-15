@@ -1,5 +1,6 @@
 package com.admin4j.commons;
 
+import com.admin4j.common.TargetType;
 import junit.framework.TestCase;
 import org.junit.Test;
 

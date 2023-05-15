@@ -9,7 +9,7 @@
 
     <groupId>com.admin4j.limiter</groupId>
     <artifactId>limiter</artifactId>
-    <version>${limiter-version}</version>
+    <version>${admin4j-limiter.version}</version>
     <packaging>pom</packaging>
 
     <name>admin4j-limiter</name>

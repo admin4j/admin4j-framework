@@ -1,9 +1,10 @@
 package com.admin4j.framework.lock.util;
 
-import com.admin4j.common.util.SpringUtils;
+
 import com.admin4j.framework.lock.LockExecutor;
 import com.admin4j.framework.lock.LockInfo;
 import com.admin4j.framework.lock.exception.DistributedLockException;
+import com.admin4j.spring.util.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Supplier;
