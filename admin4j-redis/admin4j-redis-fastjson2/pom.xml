@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.admin4j.redis</groupId>
+        <artifactId>admin4j-redis</artifactId>
+        <version>${admin4j-redis.version}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+
+    <artifactId>admin4j-redis-fastjson2</artifactId>
+    <packaging>jar</packaging>
+
+    <name>admin4j-redis-fastjson2</name>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.admin4j.redis</groupId>
+            <artifactId>redis</artifactId>
+            <version>${admin4j-redis.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>

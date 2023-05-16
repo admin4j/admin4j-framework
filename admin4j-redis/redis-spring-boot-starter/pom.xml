@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.admin4j.redis</groupId>
+        <artifactId>admin4j-redis</artifactId>
+        <version>${admin4j-redis.version}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+
+    <artifactId>redis-spring-boot-starter</artifactId>
+    <packaging>jar</packaging>
+    <version>${admin4j-redis.version}</version>
+
+    <name>redis-spring-boot-starter</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.admin4j.redis</groupId>
+            <artifactId>redis</artifactId>
+            <version>${admin4j-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.admin4j.redis</groupId>
+            <artifactId>admin4j-redis-fastjson</artifactId>
+            <version>${admin4j-redis.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.admin4j.redis</groupId>
+            <artifactId>admin4j-redis-fastjson2</artifactId>
+            <version>${admin4j-redis.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

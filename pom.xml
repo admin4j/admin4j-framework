@@ -27,11 +27,10 @@
         <module>xss-spring-boot-starter</module>
         <module>excel-spring-boot-starter</module>
         <module>admin4j-limiter</module>
+        <module>admin4j-redis</module>
     </modules>
     <properties>
         <revision>0.1.1</revision>
-        <admin4j-lock.version>0.2.1</admin4j-lock.version>
-        <admin4j-limiter.version>0.2.0</admin4j-limiter.version>
         <admin4j-dependencies.version>0.2-SNAPSHOT</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

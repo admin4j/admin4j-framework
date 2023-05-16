@@ -7,30 +7,29 @@
         <version>${revision}</version>
     </parent>
 
-    <groupId>com.admin4j.limiter</groupId>
-    <artifactId>limiter</artifactId>
-    <version>${admin4j-limiter.version}</version>
+    <groupId>com.admin4j.redis</groupId>
+    <artifactId>admin4j-redis</artifactId>
+    <version>${admin4j-redis.version}</version>
     <packaging>pom</packaging>
 
-    <name>admin4j-limiter</name>
-    <url>https://github.com/admin4j/admin4j-framework/admin4j-limiter</url>
-    <description>接口限流器，支持固定窗口，滑动窗口，滑动日志，漏桶算法，令牌桶算法</description>
-
-    <properties>
-        <admin4j-limiter.version>0.2.0</admin4j-limiter.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <name>admin4j-redis</name>
 
     <modules>
-        <module>limiter-core</module>
-        <module>limiter-redis</module>
-        <module>limiter-spring-boot-starter</module>
+        <module>redis-spring-boot-starter</module>
+        <module>redis</module>
+        <module>admin4j-redis-fastjson</module>
+        <module>admin4j-redis-fastjson2</module>
     </modules>
+    <properties>
+        <admin4j-redis.version>0.2.0</admin4j-redis.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+
             <scope>test</scope>
         </dependency>
     </dependencies>
