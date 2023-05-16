@@ -66,8 +66,9 @@
 
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
         <admin4j.version>0.1.1</admin4j.version>
-        <admin4j-lock.version>0.2.1</admin4j-lock.version>
+        <admin4j-lock.version>0.2.3</admin4j-lock.version>
         <admin4j-limiter.version>0.2.0</admin4j-limiter.version>
+        <admin4j-redis.version>0.2.0</admin4j-redis.version>
 
     </properties>
 
@@ -98,6 +99,21 @@
 
 
             <!-- admin4j相关-->
+            <dependency>
+                <groupId>com.admin4j.redis</groupId>
+                <artifactId>redis-spring-boot-starter</artifactId>
+                <version>${admin4j-redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.redis</groupId>
+                <artifactId>admin4j-json-fastjson</artifactId>
+                <version>${admin4j-redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.redis</groupId>
+                <artifactId>admin4j-json-fastjson2</artifactId>
+                <version>${admin4j-redis.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.admin4j.limiter</groupId>
                 <artifactId>limiter</artifactId>
@@ -185,6 +201,11 @@
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
+                <artifactId>lock-zookeeper-spring-boot-starter</artifactId>
+                <version>${admin4j-lock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j</groupId>
                 <artifactId>lock-redisson-spring-boot-starter</artifactId>
                 <version>${admin4j-lock.version}</version>
             </dependency>
@@ -192,11 +213,6 @@
                 <groupId>com.admin4j</groupId>
                 <artifactId>oss-spring-boot-starter</artifactId>
                 <version>0.1.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.admin4j</groupId>
-                <artifactId>lock-zookeeper-spring-boot-starter</artifactId>
-                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
