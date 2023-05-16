@@ -22,6 +22,7 @@
             <groupId>com.admin4j</groupId>
             <artifactId>lock-core</artifactId>
             <scope>provided</scope>
+            <version>${admin4j-lock.version}</version>
         </dependency>
         <dependency>
             <groupId>com.admin4j</groupId>
