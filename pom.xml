@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>admin4j - 基础脚手架</description>
-    <url>https://github.com/admin4j/admin4j-common</url>
+    <description>Admin4j Framework- 基础脚手架</description>
+    <url>https://github.com/admin4j/admin4j-framework</url>
     <modules>
         <module>admin4j-common</module>
         <module>admin4j-common-spring</module>
@@ -78,6 +78,15 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/admin4j/admin4j-framework/issues</url>
+    </issueManagement>
+    <organization>
+        <name>admin4j</name>
+        <url>https://github.com/admin4j</url>
+    </organization>
 
     <build>
         <plugins>
@@ -213,16 +222,15 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
     <!-- 仓库信息 -->
     <scm>
-        <connection>scm:git@github.com:admin4j/admin4j-common.git</connection>
-        <developerConnection>scm:git@github.com:admin4j/admin4j-common.git
-        </developerConnection>
-        <url>https://github.com/admin4j/admin4j-common</url>
+        <connection>scm:git@github.com:admin4j/admin4j-framework</connection>
+        <developerConnection>scm:git@github.com:admin4j/admin4j-framework</developerConnection>
+        <url>https://github.com/admin4j/admin4j-framework</url>
     </scm>
     <!-- 开发人员信息 -->
     <developers>

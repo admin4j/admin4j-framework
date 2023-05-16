@@ -17,14 +17,7 @@ public class FastJson2JsonRedisSerializer<T> implements RedisValueSerializer<T> 
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private Class<T> clazz;
-
-    /**
-     * 添加autotype白名单
-     * 解决redis反序列化对象时报错 ：com.alibaba.fastjson.JSONException: autoType is not support
-     */
-    //static {
-    //    ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
-    //}
+    
     public FastJson2JsonRedisSerializer(Class<T> clazz) {
         super();
         this.clazz = clazz;

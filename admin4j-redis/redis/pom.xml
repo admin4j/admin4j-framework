@@ -12,6 +12,7 @@
     <packaging>jar</packaging>
 
     <name>redis</name>
+    <description>redis序列化器核心基础类</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

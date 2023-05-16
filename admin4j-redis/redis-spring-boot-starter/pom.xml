@@ -14,6 +14,7 @@
     <version>${admin4j-redis.version}</version>
 
     <name>redis-spring-boot-starter</name>
+    <description>redis序列化器自动装配starter。默认使用jackson，支持fastjson,fastjson2</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,16 +43,9 @@
             <artifactId>jackson-databind</artifactId>
             <scope>provided</scope>
         </dependency>
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

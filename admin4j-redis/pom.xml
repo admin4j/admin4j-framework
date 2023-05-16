@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
 
     <name>admin4j-redis</name>
+    <description>redis序列化器</description>
 
     <modules>
         <module>redis-spring-boot-starter</module>
@@ -29,7 +30,6 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-
             <scope>test</scope>
         </dependency>
     </dependencies>

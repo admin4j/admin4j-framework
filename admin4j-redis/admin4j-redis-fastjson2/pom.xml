@@ -13,6 +13,7 @@
     <packaging>jar</packaging>
 
     <name>admin4j-redis-fastjson2</name>
+    <description>基于fastjson2的redis序列化器</description>
 
 
     <properties>
