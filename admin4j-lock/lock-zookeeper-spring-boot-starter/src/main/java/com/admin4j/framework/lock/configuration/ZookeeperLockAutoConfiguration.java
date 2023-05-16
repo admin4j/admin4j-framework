@@ -4,6 +4,7 @@ import com.admin4j.framework.lock.ZookeeperLockExecutor;
 import com.admin4j.framework.zookeeper.configuration.ZookeeperAutoConfiguration;
 import org.apache.curator.framework.CuratorFramework;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
  * @since 2023/4/18 11:29
  */
 @AutoConfigureAfter(ZookeeperAutoConfiguration.class)
+@AutoConfigureBefore(name = {"com.admin4j.framework.lock.configuration.DistributedLockAutoConfiguration"})
 public class ZookeeperLockAutoConfiguration {
 
     @Bean

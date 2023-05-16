@@ -27,7 +27,7 @@
 <dependency>
     <groupId>com.admin4j</groupId>
     <artifactId>lock-spring-boot-starter</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
 </dependency>
 ```
 
@@ -72,7 +72,7 @@ DistributedLock 注解参数详解
         <dependency>
             <groupId>com.admin4j</groupId>
             <artifactId>lock-spring-boot-starter</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>lock-redisson-spring-boot-starter</artifactId>
@@ -83,7 +83,7 @@ DistributedLock 注解参数详解
         <dependency>
             <groupId>com.admin4j</groupId>
             <artifactId>lock-zookeeper-spring-boot-starter</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
 ```
 
@@ -97,7 +97,7 @@ DistributedLock 注解参数详解
         <dependency>
             <groupId>com.admin4j</groupId>
             <artifactId>lock-spring-boot-starter</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>lock-redisson-spring-boot-starter</artifactId>
@@ -108,7 +108,7 @@ DistributedLock 注解参数详解
         <dependency>
             <groupId>com.admin4j</groupId>
             <artifactId>lock-zookeeper-spring-boot-starter</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
 ````
 

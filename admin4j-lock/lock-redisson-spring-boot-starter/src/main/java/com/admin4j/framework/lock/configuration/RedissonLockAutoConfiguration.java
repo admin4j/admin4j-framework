@@ -3,6 +3,7 @@ package com.admin4j.framework.lock.configuration;
 import com.admin4j.framework.lock.LockExecutor;
 import com.admin4j.framework.lock.RedissonLockExecutor;
 import org.redisson.api.RedissonClient;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
@@ -13,6 +14,7 @@ import org.springframework.core.annotation.Order;
  * @author andanyang
  * @since 2023/4/18 11:10
  */
+@AutoConfigureBefore(name = {"com.admin4j.framework.lock.configuration.DistributedLockAutoConfiguration"})
 public class RedissonLockAutoConfiguration {
 
     @Bean
