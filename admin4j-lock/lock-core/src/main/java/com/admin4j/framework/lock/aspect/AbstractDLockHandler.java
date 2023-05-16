@@ -95,7 +95,12 @@ public abstract class AbstractDLockHandler {
         } else {
             //按照 key 生成key
             String parseElKey = SpelUtil.parse(joinPoint.getTarget(), distributedLock.value(), method, args);
-            Assert.isTrue(StringUtils.isNotEmpty(parseElKey), "DistributedLockKey is null");
+            //Assert.isTrue(StringUtils.isNotEmpty(parseElKey), "DistributedLockKey is null");
+            if (StringUtils.isBlank(parseElKey)) {
+                log.error("DistributedLockKey is null Signature: {}", joinPoint.getSignature());
+                throw new DistributedLockException("DistributedLockKey is null");
+            }
+
             distributedLockKey.append(parseElKey);
         }
 
