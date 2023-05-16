@@ -1,6 +1,6 @@
 # Redis 序列化器 starter
 
-redis序列化器自动装配starter。默认使用默认使用jackson，支持fastjson,fastjson2
+admin4j-Redis 是在Springboot中使用的redis序列化器。默认使用默认使用jackson，支持fastjson,fastjson2。建议根据项目需求选择相应的序列化器。
 
 # 使用方式
 
