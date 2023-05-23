@@ -14,8 +14,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
+ * 手动注入
+ *
  * @author andanyang
- * @since 2023/5/23 14:10
+ * @since 2023/5/20 14:10
  */
 public class SpringRegisterUtil {
 
@@ -45,6 +47,20 @@ public class SpringRegisterUtil {
     }
 
     /**
+     * 卸载bean
+     *
+     * @param className
+     * @throws Exception
+     */
+    public void unregisterBean(String className) throws Exception {
+
+        ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) SpringUtils.getApplicationContext();
+        // 获取bean工厂并转换为DefaultListableBeanFactory
+        DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) configurableApplicationContext.getBeanFactory();
+        defaultListableBeanFactory.removeBeanDefinition(className);
+    }
+
+    /**
      * 注册Controller
      *
      * @param controllerBeanName
@@ -54,6 +70,8 @@ public class SpringRegisterUtil {
      */
     public static void registerController(String controllerBeanName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
+        //先注册bean
+        //registerBean(controllerBeanName);
 
         final RequestMappingHandlerMapping requestMappingHandlerMapping = SpringUtils.getBean(RequestMappingHandlerMapping.class);
         String handler = controllerBeanName;
