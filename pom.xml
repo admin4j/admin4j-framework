@@ -29,6 +29,7 @@
         <module>admin4j-limiter</module>
         <module>admin4j-redis</module>
         <module>admin4j-job</module>
+        <module>elasticsearch-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.1.1</revision>

@@ -100,6 +100,16 @@
 
             <!-- admin4j相关-->
             <dependency>
+                <groupId>jakarta.json</groupId>
+                <artifactId>jakarta.json-api</artifactId>
+                <version>2.1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>elasticsearch-spring-boot-starter</artifactId>
+                <version>0.2.0</version>
+            </dependency>
+            <dependency>
                 <groupId>com.admin4j.redis</groupId>
                 <artifactId>redis-spring-boot-starter</artifactId>
                 <version>${admin4j-redis.version}</version>
