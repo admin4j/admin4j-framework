@@ -64,15 +64,15 @@ public class Admin4jException extends RuntimeException implements IResponse {
     }
 
     public Admin4jException(IResponse response, Object[] args, String message) {
-        super(StringUtils.defaultString(message, response.getMsg()));
-        setResponse(response);
-        setMsg(message);
-        this.args = args;
+        this(response, args, message, null);
     }
 
     public Admin4jException(IResponse response, Object[] args, String message, Throwable cause) {
         super(StringUtils.defaultString(message, response.getMsg()), cause);
         setResponse(response);
+        if (StringUtils.isNotBlank(message)) {
+            setMsg(message);
+        }
         this.args = args;
     }
 

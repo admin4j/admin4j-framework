@@ -83,6 +83,7 @@ public enum ResponseEnum implements IResponse, Assert {
     VALIDATED_BIND_EXCEPTION(5004, "接口字段绑定失败"),
     MAX_UPLOAD_SIZE_EXCEPTION(5005, "MAX_UPLOAD_SIZE_EXCEPTION"),
     ERROR_E(5006, "服务器内部错误 5006"),
+    ERROR_ASSERT(5007, "服务器内部错误 5007"),
 
     SERVICE_API_ERROR(5100, "服务调用错误"),
     SERVICE_404(5101, "服务未找到"),
@@ -112,6 +113,28 @@ public enum ResponseEnum implements IResponse, Assert {
     ERROR_D_IDEMPOTENT(5301, "服务器内部错误 5301"),
 
     REQUEST_TOO_MANY_REQUESTS(5429, "TOO_MANY_REQUESTS"),
+    USERNAME_NOT_FOUND(5400, "USERNAME_NOT_FOUND"),
+    PASSWORD_ERROR(5401, "PASSWORD_ERROR"),
+    /**
+     * 账号或者密码不嫩为空
+     */
+    UN_PWD_NOT_NULL(5402, "UN_PWD_NOT_NULL"),
+    /**
+     * 账号过期
+     */
+    ACCOUNT_EXPIRED(5403, "ACCOUNT_EXPIRED"),
+    /**
+     * 账号不可用
+     */
+    ACCOUNT_DIS_ENABLED(5404, "ACCOUNT_DIS_ENABLED"),
+    /**
+     * 账号锁住
+     */
+    ACCOUNT_LOCKED(5405, "ACCOUNT_LOCKED"),
+    /**
+     * 密码过期
+     */
+    CREDENTIALS_EXPIRED(5406, "ACCOUNT_LOCKED"),
 
 
     /**

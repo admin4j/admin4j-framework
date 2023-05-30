@@ -1,9 +1,10 @@
 package com.admin4j.framework.security.configuration;
 
 import com.admin4j.framework.security.ISecurityIgnoringUrl;
-import com.admin4j.framework.security.IgnoringUrlProperties;
 import com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.admin4j.framework.security.ignoringUrl.AnonymousAccessUrl;
+import com.admin4j.framework.security.properties.IgnoringUrlProperties;
+import com.admin4j.framework.security.properties.JWTProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ import java.util.Map;
  * 开启方法级别的注解支持
  */
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties(IgnoringUrlProperties.class)
+@EnableConfigurationProperties({IgnoringUrlProperties.class, JWTProperties.class})
 public class SecurityConfiguration {
 
     @Autowired

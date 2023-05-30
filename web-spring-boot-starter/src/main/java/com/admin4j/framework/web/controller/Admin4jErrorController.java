@@ -44,7 +44,7 @@ public class Admin4jErrorController extends BasicErrorController {
         return super.error(request);
     }
 
-    private static ResponseEntity<Map<String, Object>> error404;
+    private ResponseEntity<Map<String, Object>> error404;
 
     public ResponseEntity<Map<String, Object>> error404(HttpServletRequest request) {
 

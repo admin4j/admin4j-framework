@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -34,22 +35,24 @@ public class RedisService {
     /**
      * Redis Get 命令用于获取指定 key 的值。如果 key 不存在，返回 nil
      */
-    public <T> void get(final String key) {
-        redisTemplate.opsForValue().get(key);
+    public <T> T get(final String key) {
+        ValueOperations<String, T> operation = redisTemplate.opsForValue();
+        return operation.get(key);
     }
 
     /**
      * Redis Getrange 命令用于获取存储在指定 key 中字符串的子字符串。字符串的截取范围由 start 和 end 两个偏移量决定(包括 start 和 end 在内)。
      */
-    public <T> void getRange(final String key, long start, long end) {
-        redisTemplate.opsForValue().get(key, start, end);
+    public String getRange(final String key, long start, long end) {
+        return redisTemplate.opsForValue().get(key, start, end);
     }
 
     /**
      * Redis Getset 命令用于设置指定 key 的值，并返回 key 的旧值。
      */
-    public <T> void getSet(final String key, T value) {
-        redisTemplate.opsForValue().getAndSet(key, value);
+    public <T> T getSet(final String key, T value) {
+        ValueOperations<String, T> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.getAndSet(key, value);
     }
 
     /**
@@ -67,8 +70,9 @@ public class RedisService {
     /**
      * 只有在 key 不存在时设置 key 的值。
      */
-    public <T> void setNx(final String key, final T value) {
-        redisTemplate.opsForValue().setIfAbsent(key, value);
+    public <V> Boolean setNx(final String key, final V value) {
+        ValueOperations<String, V> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.setIfAbsent(key, value);
     }
 
     /**
@@ -131,7 +135,7 @@ public class RedisService {
      * @param key 缓存的键值
      * @return 缓存键值对应的数据
      */
-    public <T> List<T> getList(final String key) {
+    public <V> List<V> getList(final String key) {
         return redisTemplate.opsForList().range(key, 0, -1);
     }
 

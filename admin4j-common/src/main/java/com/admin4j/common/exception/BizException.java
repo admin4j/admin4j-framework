@@ -19,6 +19,10 @@ public class BizException extends Admin4jException {
         super(e);
     }
 
+    public BizException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
     public BizException(String message) {
         super(ResponseEnum.BIZ_ERROR, message);
     }

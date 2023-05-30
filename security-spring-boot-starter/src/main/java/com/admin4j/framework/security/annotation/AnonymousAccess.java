@@ -20,7 +20,7 @@ public @interface AnonymousAccess {
     /**
      * 匿名访问方法。默认取注解方法的限制
      *
-     * @return
+     * @return 匿名访问方法，get、post、put
      */
     RequestMethod[] method() default {};
 }

@@ -15,9 +15,11 @@
 
 
     <dependencies>
+        <!-- Token生成与解析-->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
         <dependency>
             <groupId>io.swagger</groupId>

@@ -19,5 +19,6 @@ public class RestLogoutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         //TODO grend token
+
     }
 }

@@ -2,7 +2,7 @@ package com.admin4j.common.assertion;
 
 import com.admin4j.common.exception.BizException;
 import com.admin4j.common.pojo.IResponse;
- 
+
 /**
  * @author andanyang
  * @since 2022/3/21 13:54
