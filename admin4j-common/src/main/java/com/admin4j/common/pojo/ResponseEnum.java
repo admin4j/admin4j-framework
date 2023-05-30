@@ -1,6 +1,6 @@
 package com.admin4j.common.pojo;
 
- 
+
 import com.admin4j.common.assertion.Assert;
 import com.admin4j.common.assertion.AssertException;
 import lombok.AllArgsConstructor;
@@ -53,7 +53,7 @@ public enum ResponseEnum implements IResponse, Assert {
     /**
      * 服务未找到
      */
-    NOT_FOUND(404, "服务未找到"),
+    NOT_FOUND(404, "The uri is not found"),
 
     /**
      * Too Many Requests

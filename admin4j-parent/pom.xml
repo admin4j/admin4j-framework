@@ -3,17 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.admin4j</groupId>
-        <artifactId>framework</artifactId>
-        <version>${revision}</version>
-    </parent>
+    <!--    <parent>-->
+    <!--        <groupId>com.admin4j</groupId>-->
+    <!--        <artifactId>framework</artifactId>-->
+    <!--        <version>${revision}</version>-->
+    <!--    </parent>-->
 
+    <groupId>com.admin4j</groupId>
     <artifactId>admin4j-parent</artifactId>
+    <version>0.2.0</version>
     <description>用于业务框架的父工程</description>
     <packaging>pom</packaging>
 
     <properties>
+        <admin4j-dependencies.version>0.2-SNAPSHOT</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,4 +34,28 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

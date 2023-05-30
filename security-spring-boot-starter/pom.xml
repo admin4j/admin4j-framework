@@ -7,14 +7,18 @@
         <version>${revision}</version>
     </parent>
 
+    <groupId>com.admin4j.framework</groupId>
     <artifactId>security-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
 
     <name>security-spring-boot-starter</name>
-    <url>http://maven.apache.org</url>
 
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>

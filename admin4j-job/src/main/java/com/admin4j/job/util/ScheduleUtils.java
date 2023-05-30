@@ -1,10 +1,8 @@
 package com.admin4j.job.util;
 
 
-import com.admin4j.job.enetity.QuartzJobInfo;
-import com.admin4j.job.executor.QuartzDisallowConcurrentExecution;
-import com.admin4j.job.executor.QuartzJobExecution;
-import org.apache.commons.lang3.StringUtils;
+import com.admin4j.job.enetity.SysJob;
+import com.admin4j.job.exception.JobException;
 import org.quartz.*;
 
 /**
@@ -16,87 +14,72 @@ public class ScheduleUtils {
     /**
      * 得到quartz任务类
      *
-     * @param quartzJobInfo 执行计划
+     * @param sysJob 执行计划
      * @return 具体执行任务类
      */
-    private static Class<? extends Job> getQuartzJobClass(QuartzJobInfo quartzJobInfo) throws ClassNotFoundException {
-
-        String invokeTarget = quartzJobInfo.getInvokeTarget();
-        if (StringUtils.endsWith(invokeTarget, ".class")) {
-            return (Class<? extends Job>) QuartzJobInfo.class.getClassLoader().loadClass(StringUtils.substringBefore(invokeTarget, ".class"));
-        } else {
-            return quartzJobInfo.isConcurrent() ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
-        }
+    private static Class<? extends Job> getQuartzJobClass(SysJob sysJob) {
+        boolean isConcurrent = "0".equals(sysJob.getConcurrent());
+        return isConcurrent ? QuartzJobExecution.class : QuartzDisallowConcurrentExecution.class;
     }
 
-
-    public static void deleteJob(Scheduler scheduler, QuartzJobInfo quartzJobInfo) throws SchedulerException {
-
-        TriggerKey triggerKey = TriggerKey.triggerKey(quartzJobInfo.getJobName(), quartzJobInfo.getJobGroup());
-        JobKey jobKey = JobKey.jobKey(quartzJobInfo.getJobName(), quartzJobInfo.getJobGroup());
-        // 停止触发器
-        scheduler.pauseTrigger(triggerKey);
-        // 移除触发器
-        scheduler.unscheduleJob(triggerKey);
-        // 删除任务
-        scheduler.deleteJob(jobKey);
+    /**
+     * 构建任务触发对象
+     */
+    public static TriggerKey getTriggerKey(Long jobId, String jobGroup) {
+        return TriggerKey.triggerKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
     }
 
-    public static boolean checkExists(Scheduler scheduler, String jobName, String jobGroup) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
-        return scheduler.checkExists(jobKey);
+    /**
+     * 构建任务键对象
+     */
+    public static JobKey getJobKey(Long jobId, String jobGroup) {
+        return JobKey.jobKey(ScheduleConstants.TASK_CLASS_NAME + jobId, jobGroup);
     }
 
     /**
      * 创建定时任务
      */
-    public static void createJob(Scheduler scheduler, QuartzJobInfo quartzJobInfo, boolean replace) throws SchedulerException, ClassNotFoundException {
+    public static void createScheduleJob(Scheduler scheduler, SysJob job) throws SchedulerException, JobException {
+        Class<? extends Job> jobClass = getQuartzJobClass(job);
+        // 构建job信息
+        Long jobId = job.getJobId();
+        String jobGroup = job.getJobGroup();
+        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(getJobKey(jobId, jobGroup)).build();
 
-        String jobName = quartzJobInfo.getJobName();
-        String jobGroup = quartzJobInfo.getJobGroup();
+        // 表达式调度构建器
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());
+        cronScheduleBuilder = handleCronScheduleMisfirePolicy(job, cronScheduleBuilder);
 
-        JobDetail jobDetail = buildJobDetail(quartzJobInfo);
+        // 按新的cronExpression表达式构建一个新的trigger
+        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(jobId, jobGroup))
+                .withSchedule(cronScheduleBuilder).build();
 
-        CronTrigger cronTrigger = buildCronTrigger(quartzJobInfo);
+        // 放入参数，运行时的方法可以获取
+        jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, job);
 
         // 判断是否存在
-        JobKey jobKey = JobKey.jobKey(quartzJobInfo.getJobName(), quartzJobInfo.getJobGroup());
-        if (scheduler.checkExists(jobKey)) {
+        if (scheduler.checkExists(getJobKey(jobId, jobGroup))) {
             // 防止创建时存在数据问题 先移除，然后在执行创建操作
-            if (replace) {
-                deleteJob(scheduler, quartzJobInfo);
-            } else {
-                throw new RuntimeException("Unable to create JobRegister : '" + jobName + "." + jobGroup + "' , because one already exists with this identification.");
-            }
+            scheduler.deleteJob(getJobKey(jobId, jobGroup));
         }
 
         // 判断任务是否过期
-        if (CronUtils.getNextExecution(quartzJobInfo.getCronExpression()) != null) {
+        if (CronUtils.getNextExecution(job.getCronExpression()) != null) {
             // 执行调度任务
-            scheduler.scheduleJob(jobDetail, cronTrigger);
+            scheduler.scheduleJob(jobDetail, trigger);
         }
 
         // 暂停任务
-        if (quartzJobInfo.getStatus() == ScheduleConstants.Status.PAUSE.getValue()) {
-            scheduler.pauseJob(jobKey);
+        if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue())) {
+            scheduler.pauseJob(ScheduleUtils.getJobKey(jobId, jobGroup));
         }
-    }
-
-    public static void createJob(Scheduler scheduler, QuartzJobInfo quartzJobInfo) throws SchedulerException, ClassNotFoundException {
-        createJob(scheduler, quartzJobInfo, false);
-    }
-
-    /**
-     * 更新 JOB
-     */
-    public static void updateJob(Scheduler scheduler, QuartzJobInfo quartzJobInfo) throws SchedulerException, ClassNotFoundException {
-        createJob(scheduler, quartzJobInfo, true);
     }
 
     /**
      * 设置定时任务策略
      */
-    private static CronScheduleBuilder handleCronScheduleMisfirePolicy(QuartzJobInfo job, CronScheduleBuilder cb) {
+    public static CronScheduleBuilder handleCronScheduleMisfirePolicy(SysJob job, CronScheduleBuilder cb)
+            throws JobException {
         switch (job.getMisfirePolicy()) {
             case ScheduleConstants.MISFIRE_DEFAULT:
                 return cb;
@@ -107,32 +90,26 @@ public class ScheduleUtils {
             case ScheduleConstants.MISFIRE_DO_NOTHING:
                 return cb.withMisfireHandlingInstructionDoNothing();
             default:
-                throw new RuntimeException("The task misfire policy '" + job.getMisfirePolicy()
+                throw new JobException("The task misfire policy '" + job.getMisfirePolicy()
                         + "' cannot be used in cron schedule tasks");
         }
     }
 
-    private static JobDetail buildJobDetail(QuartzJobInfo quartzJobInfo) throws ClassNotFoundException {
-
-        Class<? extends Job> jobClass = getQuartzJobClass(quartzJobInfo);
-
-        JobKey jobKey = JobKey.jobKey(quartzJobInfo.getJobName(), quartzJobInfo.getJobGroup());
-        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobKey)
-                .withDescription(quartzJobInfo.getJobDescription()).build();
-        // 放入参数，运行时的方法可以获取
-        jobDetail.getJobDataMap().put(ScheduleConstants.TASK_PROPERTIES, quartzJobInfo);
-        return jobDetail;
-    }
-
-    private static CronTrigger buildCronTrigger(QuartzJobInfo quartzJobInfo) {
-
-        // 表达式调度构建器
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(quartzJobInfo.getCronExpression());
-        cronScheduleBuilder = handleCronScheduleMisfirePolicy(quartzJobInfo, cronScheduleBuilder);
-
-        TriggerKey triggerKey = TriggerKey.triggerKey(quartzJobInfo.getJobName(), quartzJobInfo.getJobGroup());
-        // 按新的cronExpression表达式构建一个新的trigger
-        return TriggerBuilder.newTrigger().withIdentity(triggerKey)
-                .withSchedule(cronScheduleBuilder).build();
-    }
+    /**
+     * 检查包名是否为白名单配置
+     *
+     * @param invokeTarget 目标字符串
+     * @return 结果
+     */
+//    public static boolean whiteList(String invokeTarget) {
+//        String packageName = StringUtils.substringBefore(invokeTarget, "(");
+//        int count = StringUtils.countMatches(packageName, ".");
+//        if (count > 1) {
+//            return StringUtils.containsAnyIgnoreCase(invokeTarget, Constants.JOB_WHITELIST_STR);
+//        }
+//        Object obj = SpringUtils.getBean(StringUtils.split(invokeTarget, ".")[0]);
+//        String beanPackageName = obj.getClass().getPackage().getName();
+//        return StringUtils.containsAnyIgnoreCase(beanPackageName, Constants.JOB_WHITELIST_STR)
+//                && !StringUtils.containsAnyIgnoreCase(beanPackageName, Constants.JOB_ERROR_STR);
+//    }
 }

@@ -9,13 +9,12 @@ import org.springframework.context.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author andanyang
@@ -50,38 +49,50 @@ public class AnonymousAccessUrl implements ApplicationContextAware {
             HandlerMethod handlerMethod = infoEntry.getValue();
             AnonymousAccess anonymousAccess = handlerMethod.getMethodAnnotation(AnonymousAccess.class);
             if (null != anonymousAccess) {
+                Set<String> patterns;
+                PathPatternsRequestCondition pathPatternsCondition = infoEntry.getKey().getPathPatternsCondition();
 
-                Set<String> patterns = infoEntry.getKey().getPatternsCondition().getPatterns();
-                if (anonymousAccess.method().length == 0) {
-                    get.addAll(patterns);
-                    post.addAll(patterns);
-                    put.addAll(patterns);
-                    patch.addAll(patterns);
-                    delete.addAll(patterns);
+                if (pathPatternsCondition != null) {
+                    patterns = pathPatternsCondition.getPatternValues();
                 } else {
-                    for (RequestMethod method : anonymousAccess.method()) {
-
-                        switch (method) {
-                            case GET:
-                                get.addAll(patterns);
-                                break;
-                            case POST:
-                                post.addAll(patterns);
-                                break;
-                            case PUT:
-                                put.addAll(patterns);
-                                break;
-                            case PATCH:
-                                patch.addAll(patterns);
-                                break;
-                            case DELETE:
-                                delete.addAll(patterns);
-                                break;
-                            default:
-                                break;
-                        }
+                    PatternsRequestCondition patternsCondition = infoEntry.getKey().getPatternsCondition();
+                    if (null != patternsCondition) {
+                        patterns = patternsCondition.getPatterns();
+                    } else {
+                        continue;
                     }
                 }
+
+                Iterable<RequestMethod> requestMethods;
+                if (anonymousAccess.method().length == 0) {
+
+                    requestMethods = infoEntry.getKey().getMethodsCondition().getMethods();
+                } else {
+                    requestMethods = Arrays.asList(anonymousAccess.method());
+                }
+                for (RequestMethod method : requestMethods) {
+
+                    switch (method) {
+                        case GET:
+                            get.addAll(patterns);
+                            break;
+                        case POST:
+                            post.addAll(patterns);
+                            break;
+                        case PUT:
+                            put.addAll(patterns);
+                            break;
+                        case PATCH:
+                            patch.addAll(patterns);
+                            break;
+                        case DELETE:
+                            delete.addAll(patterns);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
             }
         }
         anonymousUrls.put(HttpMethod.GET, get.toArray(new String[get.size()]));

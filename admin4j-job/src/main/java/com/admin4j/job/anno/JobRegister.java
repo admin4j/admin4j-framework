@@ -22,7 +22,7 @@ public @interface JobRegister {
 
     String cronExpression();
 
-    String misfirePolicy() default ScheduleConstants.MISFIRE_DEFAULT;
+    int misfirePolicy() default ScheduleConstants.MISFIRE_DEFAULT;
 
     boolean concurrent() default true;
 

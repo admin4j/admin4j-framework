@@ -1,16 +1,12 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
    com.admin4j.framework.security.ignoringUrl.SwaggerIgnoringUrl, \
-   com.admin4j.framework.security.ignoringUrl.ConfigAllIgnoringUrl, \
-   com.admin4j.framework.security.ignoringUrl.ConfigDeleteIgnoringUrl, \
-   com.admin4j.framework.security.ignoringUrl.ConfigGetIgnoringUrl, \
-   com.admin4j.framework.security.ignoringUrl.ConfigPatchIgnoringUrl, \
-   com.admin4j.framework.security.ignoringUrl.ConfigPostIgnoringUrl, \
-   com.admin4j.framework.security.ignoringUrl.ConfigPutIgnoringUrl, \
    com.admin4j.framework.security.ignoringUrl.AnonymousAccessUrl, \
+   com.admin4j.framework.security.ignoringUrl.DefaultIgnoringUrl, \
    com.admin4j.framework.security.handler.RestAuthenticationEntryPoint, \
    com.admin4j.framework.security.handler.RestfulAccessDeniedHandler, \
    com.admin4j.framework.security.handler.RestLogoutSuccessHandler, \
    com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter, \
-   com.admin4j.framework.security.config.SecurityConfiguration,  
+   com.admin4j.framework.security.configuration.SecurityConfiguration, \
+   com.admin4j.framework.security.configuration.PasswordEncoderConfiguration
 
   

@@ -1,7 +1,7 @@
 package com.admin4j.job.util;
 
 
-import com.admin4j.job.enetity.QuartzJobInfo;
+import com.admin4j.job.enetity.SysJob;
 import com.admin4j.spring.util.SpringUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,11 +19,10 @@ public class JobInvokeUtil {
     /**
      * 执行方法
      *
-     * @param quartzJobInfo 系统任务
+     * @param sysJob 系统任务
      */
-    public static void invokeMethod(QuartzJobInfo quartzJobInfo) throws Exception {
-
-        String invokeTarget = quartzJobInfo.getInvokeTarget();
+    public static void invokeMethod(SysJob sysJob) throws Exception {
+        String invokeTarget = sysJob.getInvokeTarget();
         String beanName = getBeanName(invokeTarget);
         String methodName = getMethodName(invokeTarget);
         List<Object[]> methodParams = getMethodParams(invokeTarget);
@@ -47,7 +46,7 @@ public class JobInvokeUtil {
     private static void invokeMethod(Object bean, String methodName, List<Object[]> methodParams)
             throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException {
-        if (methodParams != null && methodParams.size() > 0) {
+        if (methodParams != null && !methodParams.isEmpty()) {
             Method method = bean.getClass().getMethod(methodName, getMethodParamsType(methodParams));
             method.invoke(bean, getMethodParamsValue(methodParams));
         } else {

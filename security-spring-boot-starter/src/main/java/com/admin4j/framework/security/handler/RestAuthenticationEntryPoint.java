@@ -6,7 +6,7 @@ import com.admin4j.common.pojo.SimpleResponse;
 import com.admin4j.common.util.ServletUtils;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -21,7 +21,7 @@ import java.io.IOException;
  * 自定义返回结果：未登录或登录过期
  */
 @Slf4j
-@ConditionalOnBean(AuthenticationEntryPoint.class)
+@ConditionalOnMissingBean(AuthenticationEntryPoint.class)
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private static final IResponse FAIL_AUTH = new SimpleResponse(ResponseEnum.FAIL_AUTH_TOKEN);

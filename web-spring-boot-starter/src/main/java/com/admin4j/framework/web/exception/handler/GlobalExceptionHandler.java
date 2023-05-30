@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.sql.SQLException;
 
@@ -107,5 +108,12 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
         log.error("runtime错误：" + e.getMessage(), e);
         handlerException(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_RUNTIME));
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<R> noHandlerFoundException(NoHandlerFoundException e) {
+        log.error("NoHandlerFoundException：" + e.getMessage(), e);
+        handlerException(e);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(R.fail(ResponseEnum.NOT_FOUND));
     }
 }

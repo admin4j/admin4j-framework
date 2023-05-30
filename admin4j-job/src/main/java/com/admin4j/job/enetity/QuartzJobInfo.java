@@ -48,7 +48,7 @@ public class QuartzJobInfo implements Serializable {
      * cron计划策略
      */
     @ApiModelProperty(name = "计划策略 ", notes = "0=默认,1=立即触发执行,2=触发一次执行,3=不触发立即执行")
-    private String misfirePolicy = ScheduleConstants.MISFIRE_DEFAULT;
+    private Integer misfirePolicy = ScheduleConstants.MISFIRE_DEFAULT;
 
     /**
      * 是否并发执行（1允许 0禁止）

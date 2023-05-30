@@ -17,5 +17,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AnonymousAccess {
 
+    /**
+     * 匿名访问方法。默认取注解方法的限制
+     *
+     * @return
+     */
     RequestMethod[] method() default {};
 }

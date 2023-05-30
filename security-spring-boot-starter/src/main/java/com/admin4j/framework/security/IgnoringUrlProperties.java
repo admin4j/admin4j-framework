@@ -14,6 +14,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class IgnoringUrlProperties {
 
     /**
+     * 包含所有请求类型的路径
+     */
+    private String[] uris;
+    /**
      * get 请求
      */
     private String[] get;

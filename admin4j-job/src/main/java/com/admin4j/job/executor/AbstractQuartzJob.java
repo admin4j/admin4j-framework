@@ -1,5 +1,5 @@
 package com.admin4j.job.executor;
- 
+
 import com.admin4j.job.enetity.QuartzJobInfo;
 import com.admin4j.job.enetity.QuartzJobLog;
 import com.admin4j.job.service.QuartzJobLogService;

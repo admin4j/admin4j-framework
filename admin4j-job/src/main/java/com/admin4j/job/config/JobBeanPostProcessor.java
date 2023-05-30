@@ -2,12 +2,9 @@ package com.admin4j.job.config;
 
 
 import com.admin4j.job.anno.JobRegister;
-import com.admin4j.job.enetity.QuartzJobInfo;
 import com.admin4j.job.exception.JobException;
-import com.admin4j.job.util.ScheduleUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.BeansException;
@@ -48,21 +45,21 @@ public class JobBeanPostProcessor implements BeanPostProcessor {
 
     private void registerJob(Method method, String beanName, JobRegister jobRegisterInfo) throws SchedulerException, ClassNotFoundException {
 
-        QuartzJobInfo quartzJobInfo = new QuartzJobInfo();
-        quartzJobInfo.setJobName(jobRegisterInfo.jobName());
-        quartzJobInfo.setJobGroup(StringUtils.isBlank(jobRegisterInfo.jobGroup()) ? null : jobRegisterInfo.jobGroup());
-        quartzJobInfo.setJobDescription(jobRegisterInfo.jobDescription());
-        quartzJobInfo.setConcurrent(jobRegisterInfo.concurrent());
-        quartzJobInfo.setMisfirePolicy(jobRegisterInfo.misfirePolicy());
-        quartzJobInfo.setConcurrent(jobRegisterInfo.concurrent());
-        quartzJobInfo.setStatus(jobRegisterInfo.status());
-        quartzJobInfo.setCronExpression(jobRegisterInfo.cronExpression());
-        quartzJobInfo.setInvokeTarget(beanName + "." + method.getName() + "()");
-
-        if (jobRegisterInfo.replace()) {
-            ScheduleUtils.createJob(scheduler, quartzJobInfo, true);
-        } else if (!ScheduleUtils.checkExists(scheduler, quartzJobInfo.getJobName(), quartzJobInfo.getJobGroup())) {
-            ScheduleUtils.createJob(scheduler, quartzJobInfo);
-        }
+//        QuartzJobInfo quartzJobInfo = new QuartzJobInfo();
+//        quartzJobInfo.setJobName(jobRegisterInfo.jobName());
+//        quartzJobInfo.setJobGroup(StringUtils.isBlank(jobRegisterInfo.jobGroup()) ? null : jobRegisterInfo.jobGroup());
+//        quartzJobInfo.setJobDescription(jobRegisterInfo.jobDescription());
+//        quartzJobInfo.setConcurrent(jobRegisterInfo.concurrent());
+//        quartzJobInfo.setMisfirePolicy(jobRegisterInfo.misfirePolicy());
+//        quartzJobInfo.setConcurrent(jobRegisterInfo.concurrent());
+//        quartzJobInfo.setStatus(jobRegisterInfo.status());
+//        quartzJobInfo.setCronExpression(jobRegisterInfo.cronExpression());
+//        quartzJobInfo.setInvokeTarget(beanName + "." + method.getName() + "()");
+//
+//        if (jobRegisterInfo.replace()) {
+//            ScheduleUtils.createScheduleJob(scheduler, quartzJobInfo, true);
+//        } else if (!ScheduleUtils.checkExists(scheduler, quartzJobInfo.getJobName(), quartzJobInfo.getJobGroup())) {
+//            ScheduleUtils.createJob(scheduler, quartzJobInfo);
+//        }
     }
 }

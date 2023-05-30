@@ -17,7 +17,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- 统一依赖管理 -->
-        <spring.boot.version>2.7.9</spring.boot.version>
+        <spring.boot.version>2.7.12</spring.boot.version>
         <spring.cloud.ali.version>2021.0.4.0</spring.cloud.ali.version>
         <spring-cloud.version>2021.0.6</spring-cloud.version>
         <knife4j.version>4.0.0</knife4j.version>
@@ -27,7 +27,7 @@
         <knife4j.version>4.0.0</knife4j.version>
         <servlet.versoin>2.5</servlet.versoin>
         <!-- DB 相关 -->
-        <druid.version>1.2.16</druid.version>
+        <druid.version>1.2.18</druid.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <mybatis-plus-generator.version>3.5.3.1</mybatis-plus-generator.version>
         <dynamic-datasource.version>3.6.1</dynamic-datasource.version>
@@ -228,6 +228,16 @@
                 <groupId>com.admin4j</groupId>
                 <artifactId>zookeeper-spring-boot-starter</artifactId>
                 <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.33</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.2.18</version>
             </dependency>
             <dependency>
                 <groupId>org.owasp.antisamy</groupId>

@@ -1,7 +1,6 @@
-package com.admin4j.job.executor;
-
-
-import com.admin4j.job.enetity.QuartzJobInfo;
+package com.admin4j.job.util;
+ 
+import com.admin4j.job.enetity.SysJob;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 
@@ -13,7 +12,7 @@ import org.quartz.JobExecutionContext;
 @DisallowConcurrentExecution
 public class QuartzDisallowConcurrentExecution extends AbstractQuartzJob {
     @Override
-    protected void doExecute(JobExecutionContext context, QuartzJobInfo sysJob) throws Exception {
-//        JobInvokeUtil.invokeMethod(sysJob);
+    protected void doExecute(JobExecutionContext context, SysJob sysJob) throws Exception {
+        JobInvokeUtil.invokeMethod(sysJob);
     }
 }

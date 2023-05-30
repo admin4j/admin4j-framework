@@ -1,8 +1,7 @@
 package com.admin4j.job.executor;
 
- 
+
 import com.admin4j.job.enetity.QuartzJobInfo;
-import com.admin4j.job.util.JobInvokeUtil;
 import org.quartz.JobExecutionContext;
 
 /**
@@ -22,6 +21,6 @@ public class QuartzJobExecution extends AbstractQuartzJob {
      */
     @Override
     protected void doExecute(JobExecutionContext context, QuartzJobInfo quartzJobInfo) throws Exception {
-        JobInvokeUtil.invokeMethod(quartzJobInfo);
+//        JobInvokeUtil.invokeMethod(quartzJobInfo);
     }
 }

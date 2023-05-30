@@ -12,8 +12,6 @@ public interface ISecurityIgnoringUrl {
 
     /**
      * 支持的请求方式
-     *
-     * @return
      */
     default HttpMethod support() {
         return null;

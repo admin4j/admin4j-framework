@@ -1,11 +1,10 @@
-package com.admin4j.framework.security.config;
+package com.admin4j.framework.security.configuration;
 
 import com.admin4j.framework.security.ISecurityIgnoringUrl;
 import com.admin4j.framework.security.IgnoringUrlProperties;
 import com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.admin4j.framework.security.ignoringUrl.AnonymousAccessUrl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -15,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -42,8 +40,10 @@ public class SecurityConfiguration {
     UserDetailsService userDetailsService;
     @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
+    @Autowired(required = false)
     List<ISecurityIgnoringUrl> securityIgnoringUrls;
+    @Autowired(required = false)
+    IgnoringUrlProperties ignoringUrlProperties;
     @Autowired
     AuthenticationEntryPoint authenticationEntryPoint;
     @Autowired
@@ -54,12 +54,6 @@ public class SecurityConfiguration {
     LogoutSuccessHandler logoutSuccessHandler;
     @Autowired
     JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-
-    @Bean
-    @ConditionalOnBean(PasswordEncoder.class)
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -104,18 +98,43 @@ public class SecurityConfiguration {
             //设置匿名访问url
             WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
 
-            securityIgnoringUrls.forEach(url -> {
+            if (securityIgnoringUrls != null && !securityIgnoringUrls.isEmpty()) {
+                securityIgnoringUrls.forEach(url -> {
 
-                if (url.ignoringUrls() == null || url.ignoringUrls().length == 0) {
-                    return;
+                    if (url.ignoringUrls() == null || url.ignoringUrls().length == 0) {
+                        return;
+                    }
+
+                    if (url.support() == null) {
+                        ignoring.antMatchers(url.ignoringUrls());
+                    } else {
+                        ignoring.antMatchers(url.support(), url.ignoringUrls());
+                    }
+                });
+            }
+
+            if (ignoringUrlProperties != null) {
+
+                if (ignoringUrlProperties.getUris() != null && ignoringUrlProperties.getUris().length > 0) {
+                    ignoring.antMatchers(ignoringUrlProperties.getUris());
+                }
+                if (ignoringUrlProperties.getGet() != null && ignoringUrlProperties.getGet().length > 0) {
+                    ignoring.antMatchers(HttpMethod.GET, ignoringUrlProperties.getGet());
                 }
 
-                if (url.support() == null) {
-                    ignoring.antMatchers(url.ignoringUrls());
-                } else {
-                    ignoring.antMatchers(url.support(), url.ignoringUrls());
+                if (ignoringUrlProperties.getPost() != null && ignoringUrlProperties.getPost().length > 0) {
+                    ignoring.antMatchers(HttpMethod.POST, ignoringUrlProperties.getPost());
                 }
-            });
+                if (ignoringUrlProperties.getPut() != null && ignoringUrlProperties.getPut().length > 0) {
+                    ignoring.antMatchers(HttpMethod.PUT, ignoringUrlProperties.getPut());
+                }
+                if (ignoringUrlProperties.getPatch() != null && ignoringUrlProperties.getPatch().length > 0) {
+                    ignoring.antMatchers(HttpMethod.PATCH, ignoringUrlProperties.getPatch());
+                }
+                if (ignoringUrlProperties.getDelete() != null && ignoringUrlProperties.getDelete().length > 0) {
+                    ignoring.antMatchers(HttpMethod.DELETE, ignoringUrlProperties.getDelete());
+                }
+            }
 
             //AnonymousAccess 注解
             if (anonymousAccessUrl != null) {
