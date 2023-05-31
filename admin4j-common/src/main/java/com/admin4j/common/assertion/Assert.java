@@ -28,6 +28,10 @@ public interface Assert {
 
     Admin4jException newException(String errMsg);
 
+    default Admin4jException newException() {
+        return newException("");
+    }
+
     /**
      * 创建异常
      *
@@ -72,6 +76,12 @@ public interface Assert {
         }
     }
 
+    default void notNull(Object obj) {
+        if (obj == null) {
+            throw newException();
+        }
+    }
+
     /**
      * 断言对象<code>obj</code>非空。如果对象<code>obj</code>为空，则抛出异常
      *
@@ -113,6 +123,12 @@ public interface Assert {
     default void notEmpty(String str, String errMsg) {
         if (null == str || "".equals(str.trim())) {
             throw newException(errMsg);
+        }
+    }
+
+    default void notEmpty(String str) {
+        if (null == str || "".equals(str.trim())) {
+            throw newException();
         }
     }
 
@@ -223,6 +239,12 @@ public interface Assert {
         }
     }
 
+    default void isFalse(boolean expression) {
+        if (expression) {
+            throw newException();
+        }
+    }
+
     /**
      * 断言布尔值<code>expression</code>为false。如果布尔值<code>expression</code>为true，则抛出异常
      *
@@ -245,6 +267,12 @@ public interface Assert {
     default void isTrue(boolean expression, String errMsg) {
         if (!expression) {
             throw newException(errMsg);
+        }
+    }
+
+    default void isTrue(boolean expression) {
+        if (!expression) {
+            throw newException();
         }
     }
 
@@ -274,6 +302,12 @@ public interface Assert {
         }
     }
 
+    default void isNull(Object obj) {
+        if (obj != null) {
+            throw newException();
+        }
+    }
+
     /**
      * 断言对象<code>obj</code>为<code>null</code>。如果对象<code>obj</code>不为<code>null</code>，则抛出异常
      *
@@ -300,6 +334,15 @@ public interface Assert {
         }
         if (o1 == null || !o1.equals(o2)) {
             throw newException(errMsg);
+        }
+    }
+
+    default void equals(Object o1, Object o2) {
+        if (o1 == o2) {
+            return;
+        }
+        if (o1 == null || !o1.equals(o2)) {
+            throw newException();
         }
     }
 
