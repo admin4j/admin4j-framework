@@ -4,7 +4,6 @@ import com.admin4j.common.Prioritized;
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.SpringSecurityMessageSource;
@@ -41,8 +40,8 @@ public class UsernamePasswordUserDetailsService implements MultiUserDetailsServi
      * @return
      */
     @Override
-    public boolean support(String authType) {
-        return StringUtils.isBlank(authType);
+    public String support() {
+        return MultiAuthenticationFilter.DEFAULT_AUTH_TYPE;
     }
 
     /**

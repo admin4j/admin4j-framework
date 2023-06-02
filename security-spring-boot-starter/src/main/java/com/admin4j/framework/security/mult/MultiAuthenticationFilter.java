@@ -24,7 +24,8 @@ public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingF
 
     private MultiAuthenticationProperties multiAuthenticationProperties;
     private FormLoginProperties formLoginProperties;
-    
+    static final String DEFAULT_AUTH_TYPE = "";
+
 
     public MultiAuthenticationFilter(MultiAuthenticationProperties multiAuthenticationProperties, FormLoginProperties formLoginProperties) {
 
@@ -71,6 +72,7 @@ public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingF
             //            "Authentication authType not find: " + request.getRequestURI());
             //}
             //默认开启了formLogin 获取默认的 username字段
+            authType = DEFAULT_AUTH_TYPE;
             principal = request.getParameter(formLoginProperties.getUsernameParameter());
         } else {
             String field = multiAuthenticationProperties.getFieldMap() == null ? authType : multiAuthenticationProperties.getFieldMap().getOrDefault(authType, authType);
