@@ -22,6 +22,7 @@ public interface MultiUserDetailsService extends Prioritized {
 
     /**
      * 加载用户前的认证。比如认证短信验证码是否正确等
+     * 校验失败返回 false。或者抛出异常
      *
      * @return 返回是否认证成功
      */

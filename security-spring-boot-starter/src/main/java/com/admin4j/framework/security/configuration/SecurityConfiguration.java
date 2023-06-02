@@ -116,7 +116,7 @@ public class SecurityConfiguration {
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-
+//FilterSecurityInterceptor
         httpSecurity
                 //关闭cors
                 .cors().disable()
@@ -164,7 +164,7 @@ public class SecurityConfiguration {
 
             MultiSecurityConfigurerAdapter multiSecurityConfigurerAdapter = new MultiSecurityConfigurerAdapter(authenticationFilter, new MultiAuthenticationProvider(userDetailServices));
             httpSecurity.apply(multiSecurityConfigurerAdapter);
-            
+
         } else {
             //开启form表单认证
             httpSecurity.formLogin()

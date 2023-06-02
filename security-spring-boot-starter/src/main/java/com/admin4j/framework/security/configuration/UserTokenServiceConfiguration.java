@@ -5,6 +5,7 @@ import com.admin4j.framework.security.mult.UsernamePasswordUserDetailsService;
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.JWTProperties;
 import com.admin4j.framework.security.token.UserJWTTokenService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +41,7 @@ public class UserTokenServiceConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(UsernamePasswordUserDetailsService.class)
+    @ConditionalOnBean(UserDetailsService.class)
     @ConditionalOnProperty(prefix = "admin4j.security.multi", name = "enable", matchIfMissing = true)
     public UsernamePasswordUserDetailsService usernamePasswordUserDetailsService(
             UserDetailsService userDetailsService,
