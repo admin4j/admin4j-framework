@@ -17,7 +17,7 @@ public interface MultiUserDetailsService extends Prioritized {
      * @param authType 指定的authType登录方式
      * @return
      */
-    boolean support(String authType);
+    String support();
 
 
     /**

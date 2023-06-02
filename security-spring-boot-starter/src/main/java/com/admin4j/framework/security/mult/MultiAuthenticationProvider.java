@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author andanyang
@@ -45,7 +46,7 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
         MultiUserDetailsService userDetailService = null;
         if (userDetailServices != null) {
             for (MultiUserDetailsService item : userDetailServices) {
-                if (item.support(authenticationToken.getAuthType())) {
+                if (Objects.equals(authenticationToken.getAuthType(), item.support())) {
                     userDetailService = item;
                     break;
                 }
