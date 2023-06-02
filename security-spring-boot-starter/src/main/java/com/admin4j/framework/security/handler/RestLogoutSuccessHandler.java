@@ -1,6 +1,7 @@
 package com.admin4j.framework.security.handler;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import com.admin4j.framework.security.AuthenticationResult;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
@@ -13,12 +14,14 @@ import java.io.IOException;
  * @author andanyang
  * @since 2023/3/27 15:30
  */
-@ConditionalOnMissingBean(LogoutSuccessHandler.class)
+@RequiredArgsConstructor
 public class RestLogoutSuccessHandler implements LogoutSuccessHandler {
+
+    final AuthenticationResult authenticationResult;
+
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-        //TODO grend token
-
+        authenticationResult.onLogoutSuccess(request, response, authentication);
     }
 }

@@ -17,7 +17,7 @@ public enum ResponseEnum implements IResponse, Assert {
     /**
      * 操作成功
      */
-    SUCCESS(200, "操作成功"),
+    SUCCESS(200, "success"),
 
     /**
      * 业务异常
@@ -37,7 +37,7 @@ public enum ResponseEnum implements IResponse, Assert {
     /**
      * token 认证失败
      */
-    FAIL_AUTH_TOKEN(403, "登录状态已过期"),
+    FAIL_AUTH_TOKEN(403, "认证失败"),
 
     /**
      * token 认证失败
@@ -48,6 +48,7 @@ public enum ResponseEnum implements IResponse, Assert {
      * 未授权
      */
     FAIL_UNAUTHORIZED(406, "未授权"),
+    FAIL_AUTH_TOKEN_ERROR(407, "认证失败"),
 
 
     /**

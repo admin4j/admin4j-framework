@@ -3,22 +3,33 @@ package com.admin4j.framework.security.configuration;
 import com.admin4j.framework.security.ISecurityIgnoringUrl;
 import com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.admin4j.framework.security.ignoringUrl.AnonymousAccessUrl;
+import com.admin4j.framework.security.mult.MultiAuthenticationFilter;
+import com.admin4j.framework.security.mult.MultiAuthenticationProvider;
+import com.admin4j.framework.security.mult.MultiSecurityConfigurerAdapter;
+import com.admin4j.framework.security.mult.MultiUserDetailsService;
+import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.IgnoringUrlProperties;
 import com.admin4j.framework.security.properties.JWTProperties;
+import com.admin4j.framework.security.properties.MultiAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
@@ -34,52 +45,98 @@ import java.util.Map;
  * 开启方法级别的注解支持
  */
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties({IgnoringUrlProperties.class, JWTProperties.class})
+@EnableConfigurationProperties({IgnoringUrlProperties.class, JWTProperties.class, FormLoginProperties.class, MultiAuthenticationProperties.class})
 public class SecurityConfiguration {
 
-    @Autowired
-    UserDetailsService userDetailsService;
-    @Autowired
-    PasswordEncoder passwordEncoder;
+
     @Autowired(required = false)
     List<ISecurityIgnoringUrl> securityIgnoringUrls;
     @Autowired(required = false)
     IgnoringUrlProperties ignoringUrlProperties;
     @Autowired
+    FormLoginProperties formLoginProperties;
+    @Autowired
     AuthenticationEntryPoint authenticationEntryPoint;
     @Autowired
     AccessDeniedHandler accessDeniedHandler;
+    @Autowired
+    AuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    AuthenticationFailureHandler authenticationFailureHandler;
     @Autowired
     AnonymousAccessUrl anonymousAccessUrl;
     @Autowired
     LogoutSuccessHandler logoutSuccessHandler;
     @Autowired
     JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    @Autowired(required = false)
+    List<UsernamePasswordAuthenticationFilter> usernamePasswordAuthenticationFilters;
+    @Autowired
+    MultiAuthenticationProperties multiAuthenticationProperties;
+    @Autowired(required = false)
+    List<MultiUserDetailsService> userDetailServices;
+    @Autowired
+    @Lazy
+    AuthenticationManager authenticationManager;
 
+
+    /**
+     * 认证管理器，登录的时候参数会传给 authenticationManager
+     */
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+
+    /**
+     * 取消ROLE_前缀
+     */
+    //@Bean
+    //public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    //    // Remove the ROLE_ prefix
+    //    return new GrantedAuthorityDefaults("");
+    //}
+
+    /**
+     * 设置中文配置
+     */
     @Bean
+    public ReloadableResourceBundleMessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:org/springframework/security/messages_zh_CN");
+        return messageSource;
+    }
+
+    /**
+     * 安全配置
+     */
+    @Bean
+    @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
+
         httpSecurity
+                //关闭cors
+                .cors().disable()
                 // CSRF禁用，因为不使用session
                 .csrf().disable()
                 // 禁用HTTP响应标头
-                .headers().cacheControl().disable()
+                .headers()
+                .cacheControl().disable()
+                .frameOptions().disable()
                 .and()
                 // 基于token，所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                // 认证失败处理类
+                // 认证失败处理类 异常处理
                 .exceptionHandling()
                 // 未登录或登录过期
                 .authenticationEntryPoint(authenticationEntryPoint)
                 // 没有权限访问时
                 .accessDeniedHandler(accessDeniedHandler)
-                .and()
-                .authorizeRequests()
-                // 除上面外的所有请求全部需要鉴权认证
-                .anyRequest().authenticated()
-                .and()
-                .headers().frameOptions().disable();
+        ;
 
         // 添加Logout filter
         httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
@@ -89,65 +146,168 @@ public class SecurityConfiguration {
         //httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
         //httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
 
+        if (usernamePasswordAuthenticationFilters != null && usernamePasswordAuthenticationFilters.size() > 0) {
+            usernamePasswordAuthenticationFilters.forEach(usernameFilter -> httpSecurity.addFilterBefore(usernameFilter, UsernamePasswordAuthenticationFilter.class));
+        }
+
+
+        authorizeRequestsConfigurer(httpSecurity);
+
+        //多渠道登录
+        if (multiAuthenticationProperties.isEnable()) {
+
+            MultiAuthenticationFilter authenticationFilter = new MultiAuthenticationFilter(multiAuthenticationProperties, formLoginProperties);
+
+            authenticationFilter.setAuthenticationManager(authenticationManager);
+            authenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+            authenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+
+            MultiSecurityConfigurerAdapter multiSecurityConfigurerAdapter = new MultiSecurityConfigurerAdapter(authenticationFilter, new MultiAuthenticationProvider(userDetailServices));
+            httpSecurity.apply(multiSecurityConfigurerAdapter);
+            
+        } else {
+            //开启form表单认证
+            httpSecurity.formLogin()
+                    .loginProcessingUrl(formLoginProperties.getLoginProcessingUrl())
+                    .passwordParameter(formLoginProperties.getPasswordParameter())
+                    .usernameParameter(formLoginProperties.getUsernameParameter())
+                    .failureHandler(authenticationFailureHandler)
+                    .successHandler(authenticationSuccessHandler)
+                    .permitAll();
+
+        }
+
+        //GlobalAuthenticationConfigurerAdapter
+        //WebSecurityConfigurerAdapter
         return httpSecurity.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> {
-
-            //设置匿名访问url
-            WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
-
-            if (securityIgnoringUrls != null && !securityIgnoringUrls.isEmpty()) {
-                securityIgnoringUrls.forEach(url -> {
-
-                    if (url.ignoringUrls() == null || url.ignoringUrls().length == 0) {
-                        return;
-                    }
-
-                    if (url.support() == null) {
-                        ignoring.antMatchers(url.ignoringUrls());
-                    } else {
-                        ignoring.antMatchers(url.support(), url.ignoringUrls());
-                    }
-                });
-            }
-
-            if (ignoringUrlProperties != null) {
-
-                if (ignoringUrlProperties.getUris() != null && ignoringUrlProperties.getUris().length > 0) {
-                    ignoring.antMatchers(ignoringUrlProperties.getUris());
-                }
-                if (ignoringUrlProperties.getGet() != null && ignoringUrlProperties.getGet().length > 0) {
-                    ignoring.antMatchers(HttpMethod.GET, ignoringUrlProperties.getGet());
-                }
-
-                if (ignoringUrlProperties.getPost() != null && ignoringUrlProperties.getPost().length > 0) {
-                    ignoring.antMatchers(HttpMethod.POST, ignoringUrlProperties.getPost());
-                }
-                if (ignoringUrlProperties.getPut() != null && ignoringUrlProperties.getPut().length > 0) {
-                    ignoring.antMatchers(HttpMethod.PUT, ignoringUrlProperties.getPut());
-                }
-                if (ignoringUrlProperties.getPatch() != null && ignoringUrlProperties.getPatch().length > 0) {
-                    ignoring.antMatchers(HttpMethod.PATCH, ignoringUrlProperties.getPatch());
-                }
-                if (ignoringUrlProperties.getDelete() != null && ignoringUrlProperties.getDelete().length > 0) {
-                    ignoring.antMatchers(HttpMethod.DELETE, ignoringUrlProperties.getDelete());
-                }
-            }
-
-            //AnonymousAccess 注解
-            if (anonymousAccessUrl != null) {
-
-                Map<HttpMethod, String[]> anonymousUrl = anonymousAccessUrl.getAnonymousUrl();
-                anonymousUrl.keySet().forEach(i -> {
-
-                    ignoring.antMatchers(i, anonymousUrl.get(i));
-                });
-            }
-        };
+    /**
+     * 授权请求配置
+     */
+    private void authorizeRequestsConfigurer(HttpSecurity httpSecurity) throws Exception {
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry =
+                httpSecurity.authorizeRequests();
+        //忽略URl配置
+        ignoringRequestMatcherRegistry(expressionInterceptUrlRegistry);
+        // 除上面外的所有请求全部需要鉴权认证;其他路径必须验证
+        expressionInterceptUrlRegistry.anyRequest().authenticated();
     }
+
+    /**
+     * 忽略URl配置
+     */
+    private void ignoringRequestMatcherRegistry(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
+
+        if (securityIgnoringUrls != null && !securityIgnoringUrls.isEmpty()) {
+            securityIgnoringUrls.forEach(url -> {
+
+                if (url.ignoringUrls() == null || url.ignoringUrls().length == 0) {
+                    return;
+                }
+
+                if (url.support() == null) {
+                    expressionInterceptUrlRegistry.antMatchers(url.ignoringUrls()).permitAll();
+                } else {
+                    expressionInterceptUrlRegistry.antMatchers(url.support(), url.ignoringUrls()).permitAll();
+                }
+            });
+        }
+
+        if (ignoringUrlProperties != null) {
+
+            if (ignoringUrlProperties.getUris() != null && ignoringUrlProperties.getUris().length > 0) {
+                expressionInterceptUrlRegistry.antMatchers(ignoringUrlProperties.getUris()).permitAll();
+            }
+            if (ignoringUrlProperties.getGet() != null && ignoringUrlProperties.getGet().length > 0) {
+                expressionInterceptUrlRegistry.antMatchers(HttpMethod.GET, ignoringUrlProperties.getGet()).permitAll();
+            }
+
+            if (ignoringUrlProperties.getPost() != null && ignoringUrlProperties.getPost().length > 0) {
+                expressionInterceptUrlRegistry.antMatchers(HttpMethod.POST, ignoringUrlProperties.getPost()).permitAll();
+            }
+            if (ignoringUrlProperties.getPut() != null && ignoringUrlProperties.getPut().length > 0) {
+                expressionInterceptUrlRegistry.antMatchers(HttpMethod.PUT, ignoringUrlProperties.getPut()).permitAll();
+            }
+            if (ignoringUrlProperties.getPatch() != null && ignoringUrlProperties.getPatch().length > 0) {
+                expressionInterceptUrlRegistry.antMatchers(HttpMethod.PATCH, ignoringUrlProperties.getPatch()).permitAll();
+            }
+            if (ignoringUrlProperties.getDelete() != null && ignoringUrlProperties.getDelete().length > 0) {
+                expressionInterceptUrlRegistry.antMatchers(HttpMethod.DELETE, ignoringUrlProperties.getDelete()).permitAll();
+            }
+        }
+
+        //AnonymousAccess 注解
+        if (anonymousAccessUrl != null) {
+
+            Map<HttpMethod, String[]> anonymousUrl = anonymousAccessUrl.getAnonymousUrl();
+            anonymousUrl.keySet().forEach(i -> {
+
+                expressionInterceptUrlRegistry.antMatchers(i, anonymousUrl.get(i)).permitAll();
+            });
+        }
+
+    }
+    /**
+     * 网络安全配置，忽略部分路径（如静态文件路径）
+     */
+    //@Bean
+    //@ConditionalOnMissingBean(WebSecurityCustomizer.class)
+    //public WebSecurityCustomizer webSecurityCustomizer() {
+    //    return (web) -> {
+    //
+    //        //设置匿名访问url
+    //        WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
+    //
+    //        if (securityIgnoringUrls != null && !securityIgnoringUrls.isEmpty()) {
+    //            securityIgnoringUrls.forEach(url -> {
+    //
+    //                if (url.ignoringUrls() == null || url.ignoringUrls().length == 0) {
+    //                    return;
+    //                }
+    //
+    //                if (url.support() == null) {
+    //                    ignoring.antMatchers(url.ignoringUrls());
+    //                } else {
+    //                    ignoring.antMatchers(url.support(), url.ignoringUrls());
+    //                }
+    //            });
+    //        }
+    //
+    //        if (ignoringUrlProperties != null) {
+    //
+    //            if (ignoringUrlProperties.getUris() != null && ignoringUrlProperties.getUris().length > 0) {
+    //                ignoring.antMatchers(ignoringUrlProperties.getUris());
+    //            }
+    //            if (ignoringUrlProperties.getGet() != null && ignoringUrlProperties.getGet().length > 0) {
+    //                ignoring.antMatchers(HttpMethod.GET, ignoringUrlProperties.getGet());
+    //            }
+    //
+    //            if (ignoringUrlProperties.getPost() != null && ignoringUrlProperties.getPost().length > 0) {
+    //                ignoring.antMatchers(HttpMethod.POST, ignoringUrlProperties.getPost());
+    //            }
+    //            if (ignoringUrlProperties.getPut() != null && ignoringUrlProperties.getPut().length > 0) {
+    //                ignoring.antMatchers(HttpMethod.PUT, ignoringUrlProperties.getPut());
+    //            }
+    //            if (ignoringUrlProperties.getPatch() != null && ignoringUrlProperties.getPatch().length > 0) {
+    //                ignoring.antMatchers(HttpMethod.PATCH, ignoringUrlProperties.getPatch());
+    //            }
+    //            if (ignoringUrlProperties.getDelete() != null && ignoringUrlProperties.getDelete().length > 0) {
+    //                ignoring.antMatchers(HttpMethod.DELETE, ignoringUrlProperties.getDelete());
+    //            }
+    //        }
+    //
+    //        //AnonymousAccess 注解
+    //        if (anonymousAccessUrl != null) {
+    //
+    //            Map<HttpMethod, String[]> anonymousUrl = anonymousAccessUrl.getAnonymousUrl();
+    //            anonymousUrl.keySet().forEach(i -> {
+    //
+    //                ignoring.antMatchers(i, anonymousUrl.get(i));
+    //            });
+    //        }
+    //    };
+    //}
 
 
 }

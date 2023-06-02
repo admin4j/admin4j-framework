@@ -1,4 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.admin4j.framework.web.exception.handler.GlobalExceptionHandler,\
-  com.admin4j.framework.web.config.JacksonConfig, \
-  com.admin4j.framework.web.controller.Admin4jErrorController
+  com.admin4j.framework.web.config.JacksonConfig

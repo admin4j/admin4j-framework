@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @since 2023/5/30 13:28
  */
 @Data
-@ConfigurationProperties(prefix = "admin4j.token")
+@ConfigurationProperties(prefix = "admin4j.security.jwt")
 public class JWTProperties {
     /**
      * header行里的令牌自定义标识
@@ -23,7 +23,7 @@ public class JWTProperties {
      */
     private String secret = "Tkhotv8T";
     /**
-     * 令牌有效期（默认30分钟）
+     * 令牌有效期，单位秒（默认30分钟）
      */
     private int expires = 1800;
 }

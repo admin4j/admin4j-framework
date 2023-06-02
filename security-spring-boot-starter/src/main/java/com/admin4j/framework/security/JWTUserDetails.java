@@ -23,7 +23,13 @@ public class JWTUserDetails implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
 
+    /**
+     * jwt 盐
+     */
     private String jwtSalt;
-    private String userId;
+    /**
+     * 用户ID
+     */
+    private Long userId;
 
 }

@@ -2,11 +2,9 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
    com.admin4j.framework.security.ignoringUrl.SwaggerIgnoringUrl, \
    com.admin4j.framework.security.ignoringUrl.AnonymousAccessUrl, \
    com.admin4j.framework.security.ignoringUrl.DefaultIgnoringUrl, \
-   com.admin4j.framework.security.handler.RestAuthenticationEntryPoint, \
-   com.admin4j.framework.security.handler.RestfulAccessDeniedHandler, \
-   com.admin4j.framework.security.handler.RestLogoutSuccessHandler, \
    com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter, \
    com.admin4j.framework.security.configuration.SecurityConfiguration, \
+   com.admin4j.framework.security.configuration.SecurityHandlerConfiguration, \
    com.admin4j.framework.security.configuration.UserTokenServiceConfiguration
 
 
