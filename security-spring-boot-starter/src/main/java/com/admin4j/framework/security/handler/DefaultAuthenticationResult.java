@@ -5,6 +5,7 @@ import com.admin4j.common.pojo.ResponseEnum;
 import com.admin4j.common.pojo.SimpleResponse;
 import com.admin4j.common.util.ServletUtils;
 import com.admin4j.framework.security.AuthenticationResult;
+import com.admin4j.framework.security.JwtUserDetails;
 import com.admin4j.framework.security.UserTokenService;
 import com.alibaba.fastjson2.JSON;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +38,7 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
-        String token = userTokenService.createToken((UserDetails) authentication.getPrincipal());
+        String token = userTokenService.createToken((JwtUserDetails) authentication.getPrincipal());
 
         SimpleResponse<Object> simpleResponse = new SimpleResponse<>(ResponseEnum.SUCCESS);
         Map<String, Object> map = new HashMap<>();

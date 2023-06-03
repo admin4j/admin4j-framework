@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "admin4j.security.jwt")
-public class JWTProperties {
+public class JwtProperties {
     /**
      * header行里的令牌自定义标识
      */

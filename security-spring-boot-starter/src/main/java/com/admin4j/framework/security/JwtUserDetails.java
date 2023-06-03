@@ -11,7 +11,7 @@ import java.util.Set;
  * @since 2023/5/30 14:51
  */
 @Data
-public class JWTUserDetails implements UserDetails {
+public class JwtUserDetails implements UserDetails {
 
 
     private static final long serialVersionUID = -5943535608623539244L;

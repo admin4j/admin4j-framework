@@ -3,7 +3,6 @@ package com.admin4j.framework.security;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * 用户令牌服务
@@ -15,15 +14,15 @@ import java.util.Map;
 public interface UserTokenService {
 
 
-    /**
-     * 创建令牌
-     *
-     * @param claims 用户信息
-     * @return 令牌
-     */
-    String createToken(Map<String, Object> claims);
+    ///**
+    // * 创建令牌
+    // *
+    // * @param claims 用户信息
+    // * @return 令牌
+    // */
+    ////String createToken(Map<String, Object> claims);
 
-    String createToken(UserDetails userDetails);
+    String createToken(JwtUserDetails userDetails);
 
     /**
      * 获取请求token(令牌)
@@ -39,5 +38,5 @@ public interface UserTokenService {
      * @param token
      * @return 登录用户名
      */
-    String getUserName(String token);
+    UserDetails getUserDetails(String token);
 }

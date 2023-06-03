@@ -1,8 +1,9 @@
 package com.admin4j.framework.security.token;
 
-import com.admin4j.framework.security.JWTUserDetails;
+import com.admin4j.framework.security.JwtUserDetails;
+import com.admin4j.framework.security.JwtUserDetailsService;
 import com.admin4j.framework.security.UserTokenService;
-import com.admin4j.framework.security.properties.JWTProperties;
+import com.admin4j.framework.security.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,10 +22,11 @@ import java.util.Map;
  * @since 2023/5/30 13:27
  */
 @RequiredArgsConstructor
-public class UserJWTTokenService implements UserTokenService {
+public class JwtUserTokenService implements UserTokenService {
 
 
-    final JWTProperties jwtProperties;
+    final JwtProperties jwtProperties;
+    final JwtUserDetailsService jwtUserDetailsService;
     static final String FILED_USER_ID = "userID";
 
     /**
@@ -33,8 +35,8 @@ public class UserJWTTokenService implements UserTokenService {
      * @param claims 用户信息
      * @return 令牌
      */
-    @Override
-    public String createToken(Map<String, Object> claims) {
+    //@Override
+    protected String createToken(Map<String, Object> claims) {
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -43,14 +45,13 @@ public class UserJWTTokenService implements UserTokenService {
     }
 
     @Override
-    public String createToken(UserDetails userDetails) {
+    public String createToken(JwtUserDetails userDetails) {
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put(FILED_USER_ID, userDetails.getUsername());
+        claims.put(FILED_USER_ID, userDetails.getUserId());
         String secret = jwtProperties.getSecret();
-        if (userDetails instanceof JWTUserDetails) {
-            secret += "&" + ((JWTUserDetails) userDetails).getJwtSalt();
-        }
+        secret += "&" + (userDetails).getJwtSalt();
+
         return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
@@ -62,7 +63,7 @@ public class UserJWTTokenService implements UserTokenService {
      * @param token 令牌
      * @return 数据声明
      */
-    private Claims parseToken(String token) {
+    protected Claims parseToken(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtProperties.getSecret())
                 .parseClaimsJws(token)
@@ -85,8 +86,9 @@ public class UserJWTTokenService implements UserTokenService {
     }
 
     @Override
-    public String getUserName(String token) {
+    public UserDetails getUserDetails(String token) {
         Claims claims = parseToken(token);
-        return (String) claims.get(FILED_USER_ID);
+        Long userId = (Long) claims.get(FILED_USER_ID);
+        return jwtUserDetailsService.loadUserByUserId(userId);
     }
 }

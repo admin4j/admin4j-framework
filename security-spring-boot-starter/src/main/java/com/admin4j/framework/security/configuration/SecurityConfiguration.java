@@ -9,7 +9,7 @@ import com.admin4j.framework.security.mult.MultiSecurityConfigurerAdapter;
 import com.admin4j.framework.security.mult.MultiUserDetailsService;
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.IgnoringUrlProperties;
-import com.admin4j.framework.security.properties.JWTProperties;
+import com.admin4j.framework.security.properties.JwtProperties;
 import com.admin4j.framework.security.properties.MultiAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -45,7 +45,7 @@ import java.util.Map;
  * 开启方法级别的注解支持
  */
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties({IgnoringUrlProperties.class, JWTProperties.class, FormLoginProperties.class, MultiAuthenticationProperties.class})
+@EnableConfigurationProperties({IgnoringUrlProperties.class, JwtProperties.class, FormLoginProperties.class, MultiAuthenticationProperties.class})
 public class SecurityConfiguration {
 
 

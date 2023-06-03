@@ -1,10 +1,11 @@
 package com.admin4j.framework.security.configuration;
 
+import com.admin4j.framework.security.JwtUserDetailsService;
 import com.admin4j.framework.security.UserTokenService;
 import com.admin4j.framework.security.mult.UsernamePasswordUserDetailsService;
 import com.admin4j.framework.security.properties.FormLoginProperties;
-import com.admin4j.framework.security.properties.JWTProperties;
-import com.admin4j.framework.security.token.UserJWTTokenService;
+import com.admin4j.framework.security.properties.JwtProperties;
+import com.admin4j.framework.security.token.JwtUserTokenService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -21,8 +22,8 @@ public class UserTokenServiceConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(UserTokenService.class)
-    public UserTokenService userTokenService(JWTProperties jwtProperties) {
-        return new UserJWTTokenService(jwtProperties);
+    public UserTokenService userTokenService(JwtProperties jwtProperties, JwtUserDetailsService jwtUserDetailsService) {
+        return new JwtUserTokenService(jwtProperties, jwtUserDetailsService);
     }
 
     /**

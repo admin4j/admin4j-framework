@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,8 +28,8 @@ import java.io.IOException;
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     UserTokenService userTokenService;
-    @Autowired
-    UserDetailsService userDetailsService;
+    //@Autowired
+    //UserDetailsService userDetailsService;
     @Autowired
     AuthenticationResult authenticationResult;
 
@@ -44,9 +43,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         try {
-            String userName = userTokenService.getUserName(token);
-            //TODO authType
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+            UserDetails userDetails = userTokenService.getUserDetails(token);
+
+            //userDetailsService.loadUserByUsername(userName);
 
             if (userDetails != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
