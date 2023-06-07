@@ -1,13 +1,12 @@
 package com.admin4j.framework.security.jwt;
 
-import com.admin4j.common.pojo.LoginUserInfo;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author andanyang
  * @since 2023/5/30 14:51
  */
-public interface JwtUserDetails extends UserDetails, LoginUserInfo {
+public interface JwtUserDetails extends UserDetails {
 
 
     //private static final long serialVersionUID = -5943535608623539244L;

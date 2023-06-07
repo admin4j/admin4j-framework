@@ -1,6 +1,7 @@
 package com.admin4j.framework.security.configuration;
 
 import com.admin4j.framework.security.ISecurityIgnoringUrl;
+import com.admin4j.framework.security.filter.ActuatorFilter;
 import com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.admin4j.framework.security.ignoringUrl.AnonymousAccessUrl;
 import com.admin4j.framework.security.mult.MultiAuthenticationFilter;
@@ -78,6 +79,8 @@ public class SecurityConfiguration {
     @Autowired
     @Lazy
     AuthenticationManager authenticationManager;
+    @Autowired(required = false)
+    ActuatorFilter actuatorFilter;
 
 
     /**
@@ -175,6 +178,10 @@ public class SecurityConfiguration {
                     .successHandler(authenticationSuccessHandler)
                     .permitAll();
 
+        }
+
+        if (actuatorFilter != null) {
+            httpSecurity.addFilterBefore(actuatorFilter, UsernamePasswordAuthenticationFilter.class);
         }
 
         //GlobalAuthenticationConfigurerAdapter
