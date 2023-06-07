@@ -76,7 +76,7 @@ public class MybatisPlusPluginConfig {
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
 
         //动态表名
-        interceptor.addInnerInterceptor(new DynamicTableNameInnerInterceptor());
+        //interceptor.addInnerInterceptor(new DynamicTableNameInnerInterceptor());
 
         //sql 性能规范
         if (mpProperties.isIllegalSql()) {

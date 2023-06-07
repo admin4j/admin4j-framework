@@ -104,7 +104,8 @@ public class SecurityUserContextHolder implements IUserContextHolder {
      */
     @Override
     public Long getTenant() {
-        return getLoginUser().getTenantId();
+        AuthenticationUser loginUserNoCheck = getLoginUserNoCheck();
+        return loginUserNoCheck == null ? 0L : loginUserNoCheck.getTenantId();
     }
 
     /**
