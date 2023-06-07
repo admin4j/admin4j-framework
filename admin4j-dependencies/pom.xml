@@ -65,7 +65,7 @@
         <wx-java-mp.version>4.3.0</wx-java-mp.version>
 
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
-        <admin4j.version>0.1.1</admin4j.version>
+        <admin4j.version>0.5.0-SNAPSHOT</admin4j.version>
         <admin4j-lock.version>0.2.4</admin4j-lock.version>
         <admin4j-limiter.version>0.2.0</admin4j-limiter.version>
         <admin4j-redis.version>0.2.0</admin4j-redis.version>
@@ -96,13 +96,22 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-
-            <!-- admin4j相关-->
             <dependency>
                 <groupId>jakarta.json</groupId>
                 <artifactId>jakarta.json-api</artifactId>
                 <version>2.1.2</version>
+            </dependency>
+
+            <!-- admin4j相关-->
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>security-spring-boot-starter</artifactId>
+                <version>0.5.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>0.5.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -113,6 +122,11 @@
                 <groupId>com.admin4j.redis</groupId>
                 <artifactId>redis-spring-boot-starter</artifactId>
                 <version>${admin4j-redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>prometheus-spring-boot-starter</artifactId>
+                <version>0.1.1</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.redis</groupId>
@@ -550,17 +564,17 @@
     </dependencyManagement>
 
 
-    <repositories>
-        <!--        snapshots支持-->
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <!--    <repositories>-->
+    <!--        &lt;!&ndash;        snapshots支持&ndash;&gt;-->
+    <!--        <repository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
+    <!--            <snapshots>-->
+    <!--                <updatePolicy>always</updatePolicy>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 
     <build>
         <plugins>
@@ -586,19 +600,18 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                    <autoDropAfterRelease>true</autoDropAfterRelease>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.sonatype.plugins</groupId>-->
+            <!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
+            <!--                <version>1.6.7</version>-->
+            <!--                <extensions>true</extensions>-->
+            <!--                <configuration>-->
+            <!--                    <serverId>ossrh</serverId>-->
+            <!--                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>-->
+            <!--                    <autoDropAfterRelease>true</autoDropAfterRelease>-->
+            <!--                    <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <!-- 生成java source.jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -678,14 +691,26 @@
         </developer>
     </developers>
     <!-- 发布项目到 sonatype -->
+    <!--    <distributionManagement>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
+    <!--        </snapshotRepository>-->
+    <!--        <repository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>${repository.releases.id}</id>
+            <name>nexus-releases</name>
+            <url>${repository.releases.url}</url>
         </repository>
+        <snapshotRepository>
+            <id>${repository.releases.id}</id>
+            <name>nexus-snapshot</name>
+            <url>${repository.snapshots.url}</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>

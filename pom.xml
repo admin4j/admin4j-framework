@@ -30,9 +30,10 @@
         <module>admin4j-redis</module>
         <module>admin4j-job</module>
         <module>elasticsearch-spring-boot-starter</module>
+        <module>mybatis-plus-boot-starter</module>
     </modules>
     <properties>
-        <revision>0.1.1</revision>
+        <revision>0.5.0-SNAPSHOT</revision>
         <admin4j-dependencies.version>0.2-SNAPSHOT</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -69,17 +70,17 @@
         </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <!--        snapshots支持-->
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <!--    <repositories>-->
+    <!--        &lt;!&ndash;        snapshots支持&ndash;&gt;-->
+    <!--        <repository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
+    <!--            <snapshots>-->
+    <!--                <updatePolicy>always</updatePolicy>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 
     <issueManagement>
         <system>GitHub</system>
@@ -91,6 +92,15 @@
     </organization>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.13</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -151,19 +161,6 @@
                             <artifactId>spring-boot-configuration-processor</artifactId>
                         </exclude>
                     </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <!--                    <skipStagingRepositoryClose>true</skipStagingRepositoryClose>-->
-                    <autoDropAfterRelease>true</autoDropAfterRelease>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
             <!-- 生成java source.jar -->
@@ -244,14 +241,26 @@
         </developer>
     </developers>
     <!-- 发布项目到 sonatype -->
+    <!--    <distributionManagement>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
+    <!--        </snapshotRepository>-->
+    <!--        <repository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>${repository.releases.id}</id>
+            <name>nexus-releases</name>
+            <url>${repository.releases.url}</url>
         </repository>
+        <snapshotRepository>
+            <id>${repository.releases.id}</id>
+            <name>nexus-snapshot</name>
+            <url>${repository.snapshots.url}</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>

@@ -12,7 +12,7 @@ public interface ILoginTenantInfoService {
      * 租户Id标识，可以返回用户ID， 或者用户name
      * 返回null 当前表示没有租户
      *
-     * @return
+     * @return 当前登录的租户
      */
-    String getTenant();
+    Long getTenant();
 }

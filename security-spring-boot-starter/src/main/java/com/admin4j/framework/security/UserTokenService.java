@@ -1,5 +1,6 @@
 package com.admin4j.framework.security;
 
+import com.admin4j.framework.security.jwt.JwtUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;

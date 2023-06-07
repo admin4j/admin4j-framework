@@ -1,7 +1,5 @@
-package com.admin4j.framework.security.token;
+package com.admin4j.framework.security.jwt;
 
-import com.admin4j.framework.security.JwtUserDetails;
-import com.admin4j.framework.security.JwtUserDetailsService;
 import com.admin4j.framework.security.UserTokenService;
 import com.admin4j.framework.security.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
@@ -28,6 +26,7 @@ public class JwtUserTokenService implements UserTokenService {
     final JwtProperties jwtProperties;
     final JwtUserDetailsService jwtUserDetailsService;
     static final String FILED_USER_ID = "userID";
+    static final String FILED_AUTH_TYPE = "authType";
 
     /**
      * 创建令牌
@@ -49,6 +48,9 @@ public class JwtUserTokenService implements UserTokenService {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put(FILED_USER_ID, userDetails.getUserId());
+        if (StringUtils.isNotBlank(userDetails.getAuthType())) {
+            claims.put(FILED_AUTH_TYPE, userDetails.getAuthType());
+        }
         String secret = jwtProperties.getSecret();
         secret += "&" + (userDetails).getJwtSalt();
 

@@ -1,12 +1,15 @@
 package com.admin4j.framework.security.configuration;
 
-import com.admin4j.framework.security.JwtUserDetailsService;
+import com.admin4j.common.service.IUserContextHolder;
 import com.admin4j.framework.security.UserTokenService;
+import com.admin4j.framework.security.context.SecurityUserContextHolder;
+import com.admin4j.framework.security.jwt.JwtUserDetailsService;
+import com.admin4j.framework.security.jwt.JwtUserTokenService;
 import com.admin4j.framework.security.mult.UsernamePasswordUserDetailsService;
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.JwtProperties;
-import com.admin4j.framework.security.token.JwtUserTokenService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -55,14 +58,12 @@ public class UserTokenServiceConfiguration {
                 formLoginProperties
         );
     }
-    ///**
-    // * 自行实现登录逻辑
-    // *
-    // * @return
-    // */
-    //@Bean
-    //@ConditionalOnMissingBean(UserDetailsService.class)
-    //public UserDetailsService defaultUserDetailsService() {
-    //    return username -> null;
-    //}
+ 
+
+    @Bean
+    @ConditionalOnMissingBean(IUserContextHolder.class)
+    @ConditionalOnClass(name = "com.admin4j.common.service.IUserContextHolder")
+    public SecurityUserContextHolder securityUserContextHolder() {
+        return new SecurityUserContextHolder();
+    }
 }

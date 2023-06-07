@@ -1,4 +1,4 @@
-package com.admin4j.framework.security;
+package com.admin4j.framework.security.jwt;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

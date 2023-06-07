@@ -11,17 +11,9 @@ public interface ILoginUserInfoService {
     /**
      * 用户Id标识，可以返回用户ID， 或者用户name
      *
-     * @return
+     * @return 当前登录的用户ID
      */
-    String getUserId();
+    Long getUserId();
 
-    /**
-     * 租户Id标识，可以返回用户ID， 或者用户name
-     * 返回null 当前表示没有租户
-     *
-     * @return
-     */
-    //default String getTenant() {
-    //    return null;
-    //}
+
 }

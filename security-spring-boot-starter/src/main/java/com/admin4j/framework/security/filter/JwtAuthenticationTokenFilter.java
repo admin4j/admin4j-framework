@@ -1,5 +1,6 @@
 package com.admin4j.framework.security.filter;
 
+import com.admin4j.common.util.UserContextUtil;
 import com.admin4j.framework.security.AuthenticationResult;
 import com.admin4j.framework.security.UserTokenService;
 import lombok.extern.slf4j.Slf4j;
@@ -58,5 +59,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+
+        //清除登录信息
+        UserContextUtil.clear();
     }
 }

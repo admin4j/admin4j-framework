@@ -36,7 +36,7 @@
             <groupId>com.admin4j.redis</groupId>
             <artifactId>admin4j-redis-fastjson2</artifactId>
             <version>${admin4j-redis.version}</version>
-            <scope>provided</scope>
+            <!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

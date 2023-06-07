@@ -34,8 +34,11 @@ public class AnonymousAccessUrl implements ApplicationContextAware {
      */
     public Map<HttpMethod, String[]> getAnonymousUrl() {
 
-        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap =
-                applicationContext.getBean(RequestMappingHandlerMapping.class).getHandlerMethods();
+        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
+        if (requestMappingHandlerMapping == null) {
+            return null;
+        }
+        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = requestMappingHandlerMapping.getHandlerMethods();
 
         Map<HttpMethod, String[]> anonymousUrls = new HashMap<>(32);
         Set<String> get = new HashSet<>(32);

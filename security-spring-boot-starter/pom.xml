@@ -47,5 +47,9 @@
             <groupId>com.admin4j.common</groupId>
             <artifactId>admin4j-common-spring-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>transmittable-thread-local</artifactId>
+        </dependency>
     </dependencies>
 </project>
