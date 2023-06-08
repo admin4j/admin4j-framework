@@ -47,7 +47,7 @@ public class JwtUserTokenService implements UserTokenService {
     public String createToken(JwtUserDetails userDetails) {
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put(FILED_USER_ID, userDetails.getUserId());
+        claims.put(FILED_USER_ID, String.valueOf(userDetails.getUserId()));
         if (StringUtils.isNotBlank(userDetails.getAuthType())) {
             claims.put(FILED_AUTH_TYPE, userDetails.getAuthType());
         }
@@ -90,7 +90,7 @@ public class JwtUserTokenService implements UserTokenService {
     @Override
     public UserDetails getUserDetails(String token) {
         Claims claims = parseToken(token);
-        Long userId = (Long) claims.get(FILED_USER_ID);
+        Long userId = Long.valueOf((String) claims.get(FILED_USER_ID));
         return jwtUserDetailsService.loadUserByUserId(userId);
     }
 }

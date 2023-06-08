@@ -1,8 +1,10 @@
 package com.admin4j.framework.security.filter;
 
+import com.admin4j.common.pojo.AuthenticationUser;
 import com.admin4j.common.util.UserContextUtil;
 import com.admin4j.framework.security.AuthenticationResult;
 import com.admin4j.framework.security.UserTokenService;
+import com.admin4j.framework.security.jwt.JwtUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +54,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                //设置登录
+                JwtUserDetails jwtUserDetails = (JwtUserDetails) userDetails;
+                AuthenticationUser authenticationUser = new AuthenticationUser();
+                authenticationUser.setUserId(jwtUserDetails.getUserId());
+                authenticationUser.setTenantId(jwtUserDetails.getTenant());
+                authenticationUser.setUsername(jwtUserDetails.getUsername());
+                authenticationUser.setAdmin(jwtUserDetails.isAdmin());
+
+                UserContextUtil.setUser(authenticationUser);
             }
         } catch (Exception e) {
+            log.error("onAuthenticationFailure {}", e.getMessage(), e);
             authenticationResult.onAuthenticationFailure(request, response, e);
             return;
         }
