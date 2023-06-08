@@ -72,6 +72,10 @@ public class UserContextUtil {
         userContextHolder.setAuthenticationUser(authenticationUser);
     }
 
+    public static boolean isAdmin() {
+        return userContextHolder.getAuthenticationUser().isAdmin();
+    }
+
 
     public static void clear() {
         userContextHolder.clear();

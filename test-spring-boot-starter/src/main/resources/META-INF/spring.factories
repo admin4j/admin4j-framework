@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+   com.admin4j.framework.test.TestUserContextHolder
+
+
+  
