@@ -44,7 +44,7 @@ public class MybatisPlusPluginConfig {
             @Override
             public Expression getTenantId() {
 
-                Long tenantId = loginTenantInfoService.getTenant();
+                Long tenantId = loginTenantInfoService.getTenantId();
                 if (null == tenantId) {
                     tenantId = 0L;
                 }
@@ -55,7 +55,7 @@ public class MybatisPlusPluginConfig {
             @Override
             public boolean ignoreTable(String tableName) {
 
-                Long tenantId = loginTenantInfoService.getTenant();
+                Long tenantId = loginTenantInfoService.getTenantId();
                 //没有登录，可关闭 租户
                 if (ObjectUtils.isEmpty(tenantId) || Objects.equals(0L, tenantId)) {
                     return true;

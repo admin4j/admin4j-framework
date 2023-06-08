@@ -14,5 +14,5 @@ public interface ILoginTenantInfoService {
      *
      * @return 当前登录的租户
      */
-    Long getTenant();
+    Long getTenantId();
 }

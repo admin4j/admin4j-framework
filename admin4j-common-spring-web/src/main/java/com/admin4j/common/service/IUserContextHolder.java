@@ -29,7 +29,7 @@ public interface IUserContextHolder extends ILoginUserInfoService, ILoginTenantI
      * 设置租户
      */
 
-    void setTenant(Long tenant);
+    void setTenantId(Long tenantId);
 
     /**
      * 关闭租户

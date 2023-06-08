@@ -33,7 +33,7 @@ public class CommonPage<T> extends SimpleResponse<CommonPage.PageResultVO<T>> {
         pageResultVO.setSize(size);
         pageResultVO.setCurrent(current);
         pageResultVO.setTotal(total);
-        pageResultVO.setRows(records);
+        pageResultVO.setRecords(records);
         data = pageResultVO;
         setMsg(msg);
     }
@@ -51,7 +51,24 @@ public class CommonPage<T> extends SimpleResponse<CommonPage.PageResultVO<T>> {
         pageResultVO.setSize(page.getSize());
         pageResultVO.setCurrent(page.getCurrent());
         pageResultVO.setTotal(page.getTotal());
-        pageResultVO.setRows(page.getRecords());
+        pageResultVO.setRecords(page.getRecords());
+
+        return ok(pageResultVO);
+    }
+
+    /**
+     * @param pageInfo 分页信息
+     * @param records  记录
+     * @param <T>
+     * @return
+     */
+    public static <T> CommonPage<T> ok(IPage<?> pageInfo, List<T> records) {
+
+        PageResultVO<T> pageResultVO = new PageResultVO<>();
+        pageResultVO.setSize(pageInfo.getSize());
+        pageResultVO.setCurrent(pageInfo.getCurrent());
+        pageResultVO.setTotal(pageInfo.getTotal());
+        pageResultVO.setRecords(records);
 
         return ok(pageResultVO);
     }
@@ -78,7 +95,7 @@ public class CommonPage<T> extends SimpleResponse<CommonPage.PageResultVO<T>> {
         @ApiModelProperty("总数")
         private long total = 0;
         @ApiModelProperty("当天页数据")
-        private List<T> rows;
+        private List<T> records;
 
         private static PageResultVO<?> _EMPTY;
 

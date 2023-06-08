@@ -51,7 +51,7 @@ public class UserContextUtil {
      */
 
     public static void setTenant(Long tenant) {
-        userContextHolder.setTenant(tenant);
+        userContextHolder.setTenantId(tenant);
     }
 
     /**
@@ -61,7 +61,7 @@ public class UserContextUtil {
      * @return 当前登录的租户
      */
     public static Long getTenant() {
-        return userContextHolder.getTenant();
+        return userContextHolder.getTenantId();
     }
 
     public static AuthenticationUser getUser() {

@@ -59,7 +59,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 JwtUserDetails jwtUserDetails = (JwtUserDetails) userDetails;
                 AuthenticationUser authenticationUser = new AuthenticationUser();
                 authenticationUser.setUserId(jwtUserDetails.getUserId());
-                authenticationUser.setTenantId(jwtUserDetails.getTenant());
+                authenticationUser.setTenantId(jwtUserDetails.getTenantId());
                 authenticationUser.setUsername(jwtUserDetails.getUsername());
                 authenticationUser.setAdmin(jwtUserDetails.isAdmin());
 

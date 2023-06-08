@@ -115,8 +115,8 @@ public abstract class AbstractDLockHandler {
         if (distributedLock.tenant()) {
             ILoginTenantInfoService loginTenantInfoService = SpringUtils.getBean(ILoginTenantInfoService.class);
             Assert.notNull(loginTenantInfoService, "ILoginTenantInfoService must implement");
-            Assert.notNull(loginTenantInfoService.getTenant(), "Tenant not null");
-            distributedLockKey.append(":T").append(loginTenantInfoService.getTenant());
+            Assert.notNull(loginTenantInfoService.getTenantId(), "Tenant not null");
+            distributedLockKey.append(":T").append(loginTenantInfoService.getTenantId());
         }
 
         return distributedLockKey.toString();

@@ -35,7 +35,7 @@ public interface JwtUserDetails extends UserDetails {
      *
      * @return
      */
-    default Long getTenant() {
+    default Long getTenantId() {
         return 0L;
     }
 

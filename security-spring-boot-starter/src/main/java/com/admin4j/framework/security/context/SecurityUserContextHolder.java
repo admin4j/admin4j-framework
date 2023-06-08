@@ -86,7 +86,7 @@ public class SecurityUserContextHolder implements IUserContextHolder {
 
     @Override
     public void offTenant() {
-        setTenant(0L);
+        setTenantId(0L);
     }
 
     /**
@@ -95,7 +95,7 @@ public class SecurityUserContextHolder implements IUserContextHolder {
      * @param tenant
      */
     @Override
-    public void setTenant(Long tenant) {
+    public void setTenantId(Long tenant) {
         getLoginUser().setTenantId(tenant);
     }
 
@@ -103,7 +103,7 @@ public class SecurityUserContextHolder implements IUserContextHolder {
      * get租户
      */
     @Override
-    public Long getTenant() {
+    public Long getTenantId() {
         AuthenticationUser loginUserNoCheck = getLoginUserNoCheck();
         return loginUserNoCheck == null ? 0L : loginUserNoCheck.getTenantId();
     }

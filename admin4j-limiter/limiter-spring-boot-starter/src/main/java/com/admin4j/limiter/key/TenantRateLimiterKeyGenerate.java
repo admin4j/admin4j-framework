@@ -18,6 +18,6 @@ public class TenantRateLimiterKeyGenerate implements RateLimiterKeyGenerate {
     public String generateKey(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, HandlerMethod handlerMethod) {
 
 
-        return request.getRequestURI() + ":T" + loginTenantInfoService.getTenant();
+        return request.getRequestURI() + ":T" + loginTenantInfoService.getTenantId();
     }
 }
