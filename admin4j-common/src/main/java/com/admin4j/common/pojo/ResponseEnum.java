@@ -91,16 +91,17 @@ public enum ResponseEnum implements IResponse, Assert {
     SERVICE_FALLBACK(5102, "服务降级"),
 
 
-    BIZ_ERROR(5200, "服务器内部错误 5200"),
+    BIZ_ERROR(5200, "INTERNAL_SERVER_ERROR 5200"),
 
     /**
      * 发生SQL异常 SQLException
      */
-    ERROR_SQL(5210, "服务器内部错误: 5210"),
+    ERROR_SQL(5210, "INTERNAL_SERVER_ERROR: 5210"),
     /**
      * 发生运行时异常 RuntimeException
      */
-    ERROR_RUNTIME(5220, "服务器内部错误: 5220"),
+    ERROR_RUNTIME(5220, "INTERNAL_SERVER_ERROR: 5220"),
+    ERROR_ILLEGAL_ARGUMENT(5221, "INTERNAL_SERVER_ERROR: 5221"),
 
     /**
      * 空指针错误

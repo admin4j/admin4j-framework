@@ -116,4 +116,11 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
         handlerException(e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(R.fail(ResponseEnum.NOT_FOUND));
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<R> noHandlerFoundException(IllegalArgumentException e) {
+        log.error("IllegalArgumentException：" + e.getMessage(), e);
+        handlerException(e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_ILLEGAL_ARGUMENT, e.getMessage()));
+    }
 }

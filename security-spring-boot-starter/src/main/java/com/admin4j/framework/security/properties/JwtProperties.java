@@ -23,7 +23,7 @@ public class JwtProperties {
      */
     private String secret = "Tkhotv8T";
     /**
-     * 令牌有效期，单位秒（默认30分钟）
+     * 令牌有效期，单位毫秒（默认60分钟）
      */
-    private int expires = 1800;
+    private long expires = 3600000;
 }

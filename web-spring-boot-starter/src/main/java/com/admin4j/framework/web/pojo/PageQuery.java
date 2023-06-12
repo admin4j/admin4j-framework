@@ -39,7 +39,7 @@ public class PageQuery implements Serializable {
     @ApiModelProperty("排序方式,默认倒叙")
     private boolean isAsc = false;
 
-    @ApiModelProperty("是否需要分页")
+    @ApiModelProperty(value = "是否需要分页", hidden = true)
     private boolean needPage = true;
     @ApiModelProperty("是否显示分页")
     private boolean needCount = true;

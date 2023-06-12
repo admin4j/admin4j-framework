@@ -2,10 +2,10 @@ package com.admin4j.framework.web.pojo;
 
 import com.admin4j.common.pojo.ResponseEnum;
 import com.admin4j.common.pojo.SimpleResponse;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -45,48 +45,11 @@ public class CommonPage<T> extends SimpleResponse<CommonPage.PageResultVO<T>> {
         return commonPage;
     }
 
-    public static <T> CommonPage<T> ok(IPage<T> page) {
-
-        PageResultVO<T> pageResultVO = new PageResultVO<>();
-        pageResultVO.setSize(page.getSize());
-        pageResultVO.setCurrent(page.getCurrent());
-        pageResultVO.setTotal(page.getTotal());
-        pageResultVO.setRecords(page.getRecords());
-
-        return ok(pageResultVO);
-    }
-
-    /**
-     * @param pageInfo 分页信息
-     * @param records  记录
-     * @param <T>
-     * @return
-     */
-    public static <T> CommonPage<T> ok(IPage<?> pageInfo, List<T> records) {
-
-        PageResultVO<T> pageResultVO = new PageResultVO<>();
-        pageResultVO.setSize(pageInfo.getSize());
-        pageResultVO.setCurrent(pageInfo.getCurrent());
-        pageResultVO.setTotal(pageInfo.getTotal());
-        pageResultVO.setRecords(records);
-
-        return ok(pageResultVO);
-    }
-
-    //public static <T> CommonPage<T> page(Page<T> page) {
-    //
-    //    PageResultVO<T> pageResultVO = new PageResultVO<>();
-    //    pageResultVO.setSize(page.getPageSize());
-    //    pageResultVO.setCurrent(page.getPageNum());
-    //    pageResultVO.setTotal(page.getTotal());
-    //    pageResultVO.setRows(page.getResult());
-    //    return ok(pageResultVO);
-    //}
-
     @ApiModel("分页返回结果")
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
+    @Builder
     public static class PageResultVO<T> {
         @ApiModelProperty("当前行数")
         private long size = 0;

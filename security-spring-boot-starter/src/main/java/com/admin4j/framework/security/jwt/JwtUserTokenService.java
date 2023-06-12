@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,11 +36,13 @@ public class JwtUserTokenService implements UserTokenService {
      * @return 令牌
      */
     //@Override
-    protected String createToken(Map<String, Object> claims) {
+    protected String createToken(Map<String, Object> claims, String secret) {
 
+        long expiration = System.currentTimeMillis() + jwtProperties.getExpires();
         return Jwts.builder()
                 .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecret()).compact();
+                .setExpiration(new Date(expiration))
+                .signWith(SignatureAlgorithm.HS512, secret).compact();
 
     }
 
@@ -54,9 +57,7 @@ public class JwtUserTokenService implements UserTokenService {
         String secret = jwtProperties.getSecret();
         secret += "&" + (userDetails).getJwtSalt();
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+        return createToken(claims, secret);
     }
 
     /**

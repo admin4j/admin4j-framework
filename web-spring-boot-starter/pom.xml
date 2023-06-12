@@ -36,16 +36,15 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <exclusions>
-                <exclusion>
-                    <artifactId>mybatis-spring-boot-starter</artifactId>
-                    <groupId>org.mybatis.spring.boot</groupId>
-                </exclusion>
+                <!--                <exclusion>-->
+                <!--                    <artifactId>mybatis-spring-boot-starter</artifactId>-->
+                <!--                    <groupId>org.mybatis.spring.boot</groupId>-->
+                <!--                </exclusion>-->
                 <exclusion>
                     <groupId>org.mybatis</groupId>
                     <artifactId>mybatis</artifactId>
                 </exclusion>
             </exclusions>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
