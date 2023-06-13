@@ -8,9 +8,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @since 2023/6/13 16:27
  */
 @Data
-@ConfigurationProperties(prefix = "admin4j.kaptcha")
+@ConfigurationProperties(prefix = "admin4j.security.cors")
 public class CorsProperties {
 
+    private boolean enabled = true;
     /**
      * 它的值是逗号分隔的一个字符串，表明服务器支持的所有跨域请求的方法。
      */
