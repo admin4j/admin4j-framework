@@ -33,6 +33,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,8 @@ public class SecurityConfiguration {
     AuthenticationManager authenticationManager;
     @Autowired(required = false)
     ActuatorFilter actuatorFilter;
+    @Autowired(required = false)
+    CorsFilter corsFilter;
 
 
     /**
@@ -146,8 +149,10 @@ public class SecurityConfiguration {
         // 添加JWT filter
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         // 添加CORS filter
-        //httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
-        //httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
+        if (corsFilter != null) {
+            httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
+        }
+
 
         if (usernamePasswordAuthenticationFilters != null && usernamePasswordAuthenticationFilters.size() > 0) {
             usernamePasswordAuthenticationFilters.forEach(usernameFilter -> httpSecurity.addFilterBefore(usernameFilter, UsernamePasswordAuthenticationFilter.class));

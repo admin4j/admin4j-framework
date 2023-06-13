@@ -22,7 +22,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.penggle</groupId>
