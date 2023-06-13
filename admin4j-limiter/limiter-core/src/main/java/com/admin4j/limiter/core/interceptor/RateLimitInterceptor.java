@@ -5,6 +5,7 @@ import com.admin4j.limiter.core.RateLimiterKeyGenerate;
 import com.admin4j.limiter.core.RateLimiterService;
 import com.admin4j.limiter.core.anno.RateLimiter;
 import com.admin4j.limiter.core.exception.RateLimiterException;
+import com.admin4j.spring.util.IpUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -51,18 +52,21 @@ public class RateLimitInterceptor implements HandlerInterceptor, ApplicationCont
             rateLimiter = annotation;
         }
 
-        String key = null;
+
         RateLimiterKeyGenerate rateLimiterKeyGenerate = applicationContext.getBean(rateLimiter.keyGenerate());
         Assert.notNull(rateLimiterKeyGenerate, "keyGenerate not null");
-        key = rateLimiterKeyGenerate.generateKey(request, response, handlerMethod);
-
+        StringBuilder keyBuilder = new StringBuilder();
+        rateLimiterKeyGenerate.generateKey(request, response, handlerMethod, keyBuilder);
+        if (rateLimiter.ip()) {
+            keyBuilder.append(":IP").append(IpUtils.getIpAddr(request));
+        }
 
         RateLimiterService rateLimiterService = rateLimiterService(rateLimiter);
         long interval = rateLimiter.interval();
         if (!rateLimiter.timeUnit().equals(TimeUnit.SECONDS)) {
             interval = rateLimiter.timeUnit().toSeconds(interval);
         }
-        if (!rateLimiterService.tryAcquire(key, rateLimiter.maxAttempts(), interval)) {
+        if (!rateLimiterService.tryAcquire(keyBuilder.toString(), rateLimiter.maxAttempts(), interval)) {
 
             throw new RateLimiterException();
         }

@@ -11,5 +11,5 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface RateLimiterKeyGenerate {
 
-    String generateKey(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod);
+    void generateKey(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod, StringBuilder keyBuilder);
 }

@@ -44,6 +44,11 @@
             <version>${admin4j-limiter.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.admin4j.limiter</groupId>
+            <artifactId>limiter-redis</artifactId>
+            <version>${admin4j-limiter.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

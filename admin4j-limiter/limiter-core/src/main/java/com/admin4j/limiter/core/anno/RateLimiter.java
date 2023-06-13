@@ -39,5 +39,10 @@ public @interface RateLimiter {
      */
     TimeUnit timeUnit() default TimeUnit.SECONDS;
 
-
+    /**
+     * 是否拼上ip
+     *
+     * @return
+     */
+    boolean ip() default false;
 }

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DefaultRateLimiterKeyGenerate implements RateLimiterKeyGenerate {
 
     @Override
-    public String generateKey(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) {
-        return request.getRequestURI();
+    public void generateKey(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod, StringBuilder keyBuilder) {
+        keyBuilder.append(request.getRequestURI());
     }
 }

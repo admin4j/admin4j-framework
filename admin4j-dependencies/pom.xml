@@ -67,7 +67,7 @@
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
         <admin4j.version>0.5.0-SNAPSHOT</admin4j.version>
         <admin4j-lock.version>0.2.4</admin4j-lock.version>
-        <admin4j-limiter.version>0.2.0</admin4j-limiter.version>
+        <admin4j-limiter.version>0.5.0-SNAPSHOT</admin4j-limiter.version>
         <admin4j-redis.version>0.6.0-SNAPSHOT</admin4j-redis.version>
 
     </properties>
@@ -187,6 +187,11 @@
                 <groupId>com.admin4j</groupId>
                 <artifactId>web-spring-boot-starter</artifactId>
                 <version>${admin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>kaptcha-spring-boot-starter</artifactId>
+                <version>0.5.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>

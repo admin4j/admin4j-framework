@@ -5,6 +5,9 @@ import com.admin4j.limiter.core.RateLimiterKeyGenerate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.method.HandlerMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author andanyang
  * @since 2023/5/12 10:04
@@ -15,8 +18,10 @@ public class UserRateLimiterKeyGenerate implements RateLimiterKeyGenerate {
     private final ILoginUserInfoService loginUserInfoService;
 
     @Override
-    public String generateKey(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, HandlerMethod handlerMethod) {
+    public void generateKey(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod, StringBuilder keyBuilder) {
 
-        return request.getRequestURI() + ":U" + loginUserInfoService.getUserId();
+        keyBuilder.append(request.getRequestURI())
+                .append(":U")
+                .append(loginUserInfoService.getUserId());
     }
 }

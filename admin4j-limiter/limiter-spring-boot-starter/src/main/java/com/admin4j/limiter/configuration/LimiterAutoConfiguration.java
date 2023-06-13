@@ -64,7 +64,7 @@ public class LimiterAutoConfiguration implements ApplicationContextAware {
 
     @Bean
     @ConditionalOnBean(ILoginTenantInfoService.class)
-    public RateLimiterKeyGenerate userRateLimiterKeyGenerate(ILoginTenantInfoService tenantInfoService) {
+    public RateLimiterKeyGenerate tenantRateLimiterKeyGenerate(ILoginTenantInfoService tenantInfoService) {
         return new TenantRateLimiterKeyGenerate(tenantInfoService);
     }
 
