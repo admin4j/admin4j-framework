@@ -7,26 +7,28 @@
         <version>${revision}</version>
     </parent>
 
-    <groupId>com.admin4j.redis</groupId>
-    <artifactId>admin4j-redis</artifactId>
-    <version>${admin4j-redis.version}</version>
-    <packaging>pom</packaging>
+    <groupId>com.admin4j.framework</groupId>
+    <artifactId>kaptcha-spring-boot-starter</artifactId>
+    <packaging>jar</packaging>
 
-    <name>admin4j-redis</name>
-    <description>redis序列化器</description>
+    <name>kaptcha-spring-boot-starter</name>
+    <description>google kaptcha Spring boot starter</description>
 
-    <modules>
-        <module>redis-spring-boot-starter</module>
-        <module>redis</module>
-        <module>admin4j-redis-fastjson</module>
-        <module>admin4j-redis-fastjson2</module>
-    </modules>
     <properties>
-        <admin4j-redis.version>0.6.0-SNAPSHOT</admin4j-redis.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>2.3.2</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

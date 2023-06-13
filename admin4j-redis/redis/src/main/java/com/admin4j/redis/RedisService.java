@@ -75,6 +75,11 @@ public class RedisService {
         return valueOperations.setIfAbsent(key, value);
     }
 
+    public <V> Boolean setNx(final String key, final V value, long timeout, TimeUnit unit) {
+        ValueOperations<String, V> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.setIfAbsent(key, value, timeout, unit);
+    }
+
     /**
      * 设置有效时间
      *

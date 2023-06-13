@@ -33,6 +33,7 @@
         <module>mybatis-plus-boot-starter</module>
         <module>desensitize-spring-boot-starter</module>
         <module>test-spring-boot-starter</module>
+        <module>kaptcha-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.5.0-SNAPSHOT</revision>

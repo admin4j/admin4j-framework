@@ -68,7 +68,7 @@
         <admin4j.version>0.5.0-SNAPSHOT</admin4j.version>
         <admin4j-lock.version>0.2.4</admin4j-lock.version>
         <admin4j-limiter.version>0.2.0</admin4j-limiter.version>
-        <admin4j-redis.version>0.5.0</admin4j-redis.version>
+        <admin4j-redis.version>0.6.0-SNAPSHOT</admin4j-redis.version>
 
     </properties>
 
