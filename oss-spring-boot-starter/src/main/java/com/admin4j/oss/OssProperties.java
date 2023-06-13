@@ -43,12 +43,16 @@ public class OssProperties {
     /**
      * 默认的bucketName
      */
-    private String defaultBucketName;
+    private String bucket;
     /**
      * 预览 url（cdn url）.
      * 默认null 使用oss 预览方式
      */
     private String previewUrl;
+    /*
+     * 内网访问Url
+     */
+    private String intranetUrl;
 
     /**
      * 最大线程数，默认： 100

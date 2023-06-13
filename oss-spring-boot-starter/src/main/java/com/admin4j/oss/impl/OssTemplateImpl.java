@@ -172,7 +172,7 @@ public class OssTemplateImpl implements OssTemplate {
 
     private String defaultBucketName(String bucketName) {
         if (bucketName == null || bucketName.equals("")) {
-            return ossProperties.getDefaultBucketName();
+            return ossProperties.getBucket();
         }
         return bucketName;
     }

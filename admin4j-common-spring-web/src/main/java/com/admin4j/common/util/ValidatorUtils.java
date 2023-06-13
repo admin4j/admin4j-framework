@@ -28,8 +28,8 @@ public class ValidatorUtils {
      * @return
      * @Time 2020年6月22日 上午11:36:13
      */
-    public static <T> Set<ConstraintViolation<T>> validateFast(T domain) {
-        return validatorFast.validate(domain);
+    public static <T> Set<ConstraintViolation<T>> validateFast(T domain, Class<?>... groups) {
+        return validatorFast.validate(domain, groups);
     }
 
     /**
@@ -41,7 +41,7 @@ public class ValidatorUtils {
      * @throws Exception
      * @Time 2020年6月22日 上午11:36:55
      */
-    public static <T> Set<ConstraintViolation<T>> validateAll(T domain) {
-        return validatorAll.validate(domain);
+    public static <T> Set<ConstraintViolation<T>> validateAll(T domain, Class<?>... groups) {
+        return validatorAll.validate(domain, groups);
     }
 }

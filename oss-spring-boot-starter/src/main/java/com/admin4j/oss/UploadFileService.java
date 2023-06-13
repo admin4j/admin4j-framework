@@ -22,12 +22,30 @@ public interface UploadFileService {
     UploadFileVO upload(String path, MultipartFile file) throws IOException;
 
     /**
+     * 通过OSS直接查看文件预览路径
+     *
+     * @param key oss key
+     * @return 文件阅览路径
+     */
+    String getOssPreviewUrl(String key);
+
+    /**
      * 文件阅览路径
      *
      * @param key oss key
      * @return 文件阅览路径
      */
     String getPreviewUrl(String key);
+
+    /**
+     * 文件内网阅览路径
+     *
+     * @param key oss key
+     * @return 文件阅览路径
+     */
+    default String getPreviewIntranetUrl(String key) {
+        return getPreviewUrl(key);
+    }
 
     /**
      * 删除文件

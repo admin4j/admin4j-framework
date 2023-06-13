@@ -41,7 +41,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         uploadFileVO.setSize(file.getSize());
         uploadFileVO.setContentType(file.getContentType());
         uploadFileVO.setCreateTime(LocalDateTime.now());
-
+        uploadFileVO.setBucket(defaultBucketName());
         //计算文件md5
         String md5 = Md5Utils.md5AsBase64(file.getBytes());
         uploadFileVO.setMd5(md5);
@@ -52,6 +52,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         }
         path = generateFilePath(uploadFileVO);
         uploadFileVO.setKey(path);
+        uploadFileVO.setPreviewUrl(getPreviewUrl(path));
 
         if (!beforeUpload(uploadFileVO)) {
             return uploadFileVO;
@@ -59,7 +60,6 @@ public class SimpleOSSUploadFileService implements UploadFileService {
 
         ossTemplate.putObject(defaultBucketName(), path, file.getInputStream());
 
-        uploadFileVO.setPreviewUrl(getPreviewUrl(path));
 
         afterUpload(uploadFileVO);
 
@@ -81,7 +81,15 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         return getOssPreviewUrl(key);
     }
 
-    protected String getOssPreviewUrl(String key) {
+
+    /**
+     * 通过OSS直接查看文件预览路径
+     *
+     * @param key oss key
+     * @return 文件阅览路径
+     */
+    @Override
+    public String getOssPreviewUrl(String key) {
         return ossTemplate.getObjectURL(defaultBucketName(), key, 3, TimeUnit.HOURS);
     }
 
@@ -130,7 +138,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      * @return 默认的桶名称
      */
     protected String defaultBucketName() {
-        return ossProperties.getDefaultBucketName();
+        return ossProperties.getBucket();
     }
 
     /**

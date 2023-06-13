@@ -3,7 +3,9 @@ package com.admin4j.framework.web.pojo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -21,27 +23,38 @@ public class PageQuery implements Serializable {
      * 当前页
      */
     @ApiModelProperty("当前页,从1开始")
+    @Getter
+    @Setter
     private Integer pageNum = 1;
     /**
      * 一页显示几条
      */
     @ApiModelProperty("一页显示几条")
+    @Getter
+    @Setter
     private Integer pageSize = 10;
 
     /**
      * 排序字段
      */
     @ApiModelProperty("排序字段")
+    @Getter
+    @Setter
     private String orderByColumn;
     /**
      * 排序方式
      */
     @ApiModelProperty("排序方式,默认倒叙")
+    @Getter
+    @Setter
     private boolean isAsc = false;
 
     @ApiModelProperty(value = "是否需要分页", hidden = true)
     private boolean needPage = true;
+
     @ApiModelProperty("是否显示分页")
+    @Getter
+    @Setter
     private boolean needCount = true;
 
     /**
@@ -63,6 +76,13 @@ public class PageQuery implements Serializable {
         this.pageSize = pageSize;
     }
 
+    /**
+     * 关闭分页
+     */
+    public void closePage() {
+        needPage = false;
+        needCount = false;
+    }
 
     /**
      * 开始分页

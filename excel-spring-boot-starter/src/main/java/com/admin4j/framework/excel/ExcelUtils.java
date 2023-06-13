@@ -64,7 +64,7 @@ public class ExcelUtils {
         //autoCloseStream 不要自动关闭，交给 Servlet 自己处理
         write(response.getOutputStream(), null, data, aClass, false);
 
-        if (StringUtils.contains(filename, ".")) {
+        if (!StringUtils.contains(filename, ".")) {
             filename = filename + ".xlsx";
         }
         // 设置 header 和 contentType。写在最后的原因是，避免报错时，响应 contentType 已经被修改了

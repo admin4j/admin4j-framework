@@ -17,6 +17,7 @@ public class UploadFileVO {
 
     @ApiModelProperty("文件原始名称")
     private String originalFilename;
+    private String bucket;
     @ApiModelProperty("文件大小 Bit")
     private long size;
     private LocalDateTime createTime;
@@ -29,4 +30,11 @@ public class UploadFileVO {
     private String prefix = "";
     @ApiModelProperty("文件key")
     private String key;
+    /**
+     * 文件保存成功之后的fileId
+     */
+    @ApiModelProperty("文件保存成功之后的fileId")
+    private Long fileId;
+    @ApiModelProperty("oss配置的名称")
+    private String configName;
 }

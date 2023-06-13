@@ -2,6 +2,7 @@ package com.admin4j.oss;
 
 
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.lang.Nullable;
@@ -36,6 +37,7 @@ public class MockMultipartFile implements MultipartFile {
      * 内容类型
      */
     @Nullable
+    @Setter
     private final String contentType;
 
     /**
@@ -50,6 +52,10 @@ public class MockMultipartFile implements MultipartFile {
 
     public MockMultipartFile(String name, @Nullable byte[] bytes) {
         this(name, "", null, bytes);
+    }
+
+    public MockMultipartFile(String name, @Nullable byte[] bytes, String contentType) {
+        this(name, "", contentType, bytes);
     }
 
     public MockMultipartFile(String name, @Nullable String originalFilename, @Nullable String contentType, InputStream in) throws IOException {
