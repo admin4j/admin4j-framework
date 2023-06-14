@@ -1,18 +1,24 @@
 package com.admin4j.spring.util;
 
+import com.sun.xml.internal.ws.util.UtilException;
 import lombok.Getter;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * spring工具类 方便在非spring管理环境中获取bean
  *
  * @author andanyang
  */
-public final class SpringUtils implements ApplicationContextAware {
+public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {
 
     /**
      * Spring应用上下文环境
@@ -20,6 +26,16 @@ public final class SpringUtils implements ApplicationContextAware {
     @Getter
     private static ApplicationContext applicationContext;
 
+    /**
+     * "@PostConstruct"注解标记的类中，由于ApplicationContext还未加载，导致空指针<br>
+     * 因此实现BeanFactoryPostProcessor注入ConfigurableListableBeanFactory实现bean的操作
+     */
+    private static ConfigurableListableBeanFactory beanFactory;
+
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
+        SpringUtils.beanFactory = configurableListableBeanFactory;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -110,5 +126,99 @@ public final class SpringUtils implements ApplicationContextAware {
         return (T) AopContext.currentProxy();
     }
 
+    /**
+     * 获取{@link ConfigurableListableBeanFactory}
+     *
+     * @return {@link ConfigurableListableBeanFactory}
+     * @throws UtilException 当上下文非ConfigurableListableBeanFactory抛出异常
+     * @since 5.7.7
+     */
+    public static ConfigurableListableBeanFactory getConfigurableBeanFactory() throws UtilException {
+        final ConfigurableListableBeanFactory factory;
+        if (null != beanFactory) {
+            factory = beanFactory;
+        } else if (applicationContext instanceof ConfigurableApplicationContext) {
+            factory = ((ConfigurableApplicationContext) applicationContext).getBeanFactory();
+        } else {
+            throw new UtilException("No ConfigurableListableBeanFactory from context!");
+        }
+        return factory;
+    }
 
+    /**
+     * 获取配置文件配置项的值
+     *
+     * @param key 配置项key
+     * @return 属性值
+     */
+    public static String getProperty(String key) {
+        if (null == applicationContext) {
+            return null;
+        }
+        return applicationContext.getEnvironment().getProperty(key);
+    }
+
+    /**
+     * 获取应用程序名称
+     *
+     * @return 应用程序名称
+     */
+    public static String getApplicationName() {
+        return getProperty("spring.application.name");
+    }
+
+    /**
+     * 获取当前的环境配置，无配置返回null
+     *
+     * @return 当前的环境配置
+     */
+    public static String[] getActiveProfiles() {
+        if (null == applicationContext) {
+            return null;
+        }
+        return applicationContext.getEnvironment().getActiveProfiles();
+    }
+
+    /**
+     * 获取当前的环境配置，当有多个环境配置时，只获取第一个
+     *
+     * @return 当前的环境配置
+     */
+    public static String getActiveProfile() {
+        final String[] activeProfiles = getActiveProfiles();
+        return ObjectUtils.isNotEmpty(activeProfiles) ? activeProfiles[0] : null;
+    }
+
+    /**
+     * 动态向Spring注册Bean
+     * <p>
+     * 由{@link org.springframework.beans.factory.BeanFactory} 实现，通过工具开放API
+     * <p>
+     *
+     * @param <T>      Bean类型
+     * @param beanName 名称
+     * @param bean     bean
+     */
+    public static <T> void registerBean(String beanName, T bean) {
+        final ConfigurableListableBeanFactory factory = getConfigurableBeanFactory();
+        factory.autowireBean(bean);
+        factory.registerSingleton(beanName, bean);
+    }
+
+    /**
+     * 注销bean
+     * <p>
+     * 将Spring中的bean注销，请谨慎使用
+     *
+     * @param beanName bean名称
+     */
+    public static void unregisterBean(String beanName) {
+        final ConfigurableListableBeanFactory factory = getConfigurableBeanFactory();
+        if (factory instanceof DefaultSingletonBeanRegistry) {
+            DefaultSingletonBeanRegistry registry = (DefaultSingletonBeanRegistry) factory;
+            registry.destroySingleton(beanName);
+        } else {
+            throw new UtilException("Can not unregister bean, the factory is not a DefaultSingletonBeanRegistry!");
+        }
+    }
 }
