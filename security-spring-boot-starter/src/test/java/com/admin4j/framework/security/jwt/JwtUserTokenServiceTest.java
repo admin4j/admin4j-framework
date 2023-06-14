@@ -21,7 +21,7 @@ public class JwtUserTokenServiceTest {
         JwtUserDetails jwtUserDetails = new TestJwtUserDetails();
 
         JwtProperties jwtProperties = new JwtProperties();
-//        jwtProperties.setExpires(-3600000L);
+        jwtProperties.setExpires(36999900000L);
         JwtUserTokenService jwtUserTokenService = new JwtUserTokenService(jwtProperties, null);
 
 
