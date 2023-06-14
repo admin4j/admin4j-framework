@@ -18,6 +18,8 @@
 
 package com.admin4j.framework.log.annotation;
 
+import org.springframework.core.annotation.AliasFor;
+
 import java.lang.annotation.*;
 
 /**
@@ -30,7 +32,9 @@ import java.lang.annotation.*;
 @Documented
 public @interface SysLog {
 
-    
+    @AliasFor("content")
+    String value() default "";
+
     /**
      * 日志类型
      *
@@ -43,9 +47,12 @@ public @interface SysLog {
      *
      * @return 日志描述
      */
+    @AliasFor("value")
     String content() default "";
 
     /**
+     * 支持spel 表达式
+     *
      * @return 日志参数
      */
     String[] args() default {};

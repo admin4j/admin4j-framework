@@ -1,8 +1,8 @@
 package com.admin4j.framework.log.aspect;
 
+import com.admin4j.framework.log.ISysLogService;
 import com.admin4j.framework.log.annotation.SysLog;
 import com.admin4j.framework.log.event.SysLogEvent;
-import com.admin4j.framework.log.impl.SysLogService;
 import com.admin4j.spring.util.SpelUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 public class SysLogAspect {
 
     @Autowired
-    SysLogService sysLogService;
+    ISysLogService sysLogService;
 
     @Around("@annotation(sysLog)")
     @SneakyThrows
@@ -41,7 +41,11 @@ public class SysLogAspect {
         log.debug("SysLog[类名]:{},[方法]:{}", strClassName, strMethodName);
 
 
-        SysLogEvent sysLogEvent = generateEvent(point, sysLog.type(), sysLog.content(), sysLog.args());
+        String content = sysLog.content();
+        if (StringUtils.isBlank(content)) {
+            content = sysLog.value();
+        }
+        SysLogEvent sysLogEvent = generateEvent(point, sysLog.type(), content, sysLog.args());
 
         Long startTime = System.currentTimeMillis();
         Object obj;

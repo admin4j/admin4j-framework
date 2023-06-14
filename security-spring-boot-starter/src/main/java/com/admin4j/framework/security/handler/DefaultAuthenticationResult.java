@@ -1,12 +1,16 @@
 package com.admin4j.framework.security.handler;
 
+import com.admin4j.common.pojo.AuthenticationUser;
 import com.admin4j.common.pojo.IResponse;
 import com.admin4j.common.pojo.ResponseEnum;
 import com.admin4j.common.pojo.SimpleResponse;
 import com.admin4j.common.util.ServletUtils;
+import com.admin4j.common.util.UserContextUtil;
 import com.admin4j.framework.security.AuthenticationResult;
 import com.admin4j.framework.security.UserTokenService;
+import com.admin4j.framework.security.event.AuthenticationSuccessEvent;
 import com.admin4j.framework.security.jwt.JwtUserDetails;
+import com.admin4j.spring.util.SpringUtils;
 import com.alibaba.fastjson2.JSON;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +42,20 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
+        Object o = authentication.getPrincipal();
+        if (o instanceof JwtUserDetails) {
+            JwtUserDetails jwtUserDetails = (JwtUserDetails) o;
+            AuthenticationUser authenticationUser = new AuthenticationUser();
+            authenticationUser.setUserId(jwtUserDetails.getUserId());
+            authenticationUser.setTenantId(jwtUserDetails.getTenantId());
+            authenticationUser.setUsername(jwtUserDetails.getUsername());
+            authenticationUser.setAdmin(jwtUserDetails.isAdmin());
+
+            UserContextUtil.setUser(authenticationUser);
+        }
+
+        SpringUtils.getApplicationContext().publishEvent(new AuthenticationSuccessEvent(request, response, authentication));
+
         String token = userTokenService.createToken((JwtUserDetails) authentication.getPrincipal());
 
         SimpleResponse<Object> simpleResponse = new SimpleResponse<>(ResponseEnum.SUCCESS);
@@ -59,6 +77,7 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+
         SimpleResponse<Object> simpleResponse = new SimpleResponse<>(ResponseEnum.SUCCESS);
         simpleResponse.setMsg(ResponseEnum.SUCCESS.getMsg());
         ServletUtils.renderString(response, JSON.toJSONString(simpleResponse));

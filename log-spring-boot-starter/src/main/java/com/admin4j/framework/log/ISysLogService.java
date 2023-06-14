@@ -25,5 +25,16 @@ public interface ISysLogService {
      * @return
      */
     SysLogEvent generateEvent(String type, String content, String[] args);
- 
+
+    default SysLogEvent generateEvent(ISysLogDO sysLogBO, String[] args) {
+        return generateEvent(sysLogBO.getType(), sysLogBO.getContent(), args);
+    }
+
+    default void saveLog(String type, String content, String[] args) {
+        saveLog(generateEvent(type, content, args));
+    }
+
+    default void saveLog(ISysLogDO sysLogBO, String[] args) {
+        saveLog(generateEvent(sysLogBO, args));
+    }
 }

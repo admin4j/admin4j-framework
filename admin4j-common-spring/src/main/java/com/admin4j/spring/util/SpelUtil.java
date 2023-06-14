@@ -5,6 +5,7 @@ import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.ParseException;
+import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
@@ -34,12 +35,15 @@ public class SpelUtil {
         //SPEL上下文
         StandardEvaluationContext context = new StandardEvaluationContext();
         //把方法参数放入SPEL上下文中
-        for (int i = 0; i < paraNameArr.length; i++) {
-            context.setVariable(paraNameArr[i], args[i]);
+        if (paraNameArr != null) {
+            for (int i = 0; i < paraNameArr.length; i++) {
+                context.setVariable(paraNameArr[i], args[i]);
+            }
         }
+
         try {
             return EL_PARSER.parseExpression(spel).getValue(context, String.class);
-        } catch (ParseException e) {
+        } catch (ParseException | SpelEvaluationException e) {
             return spel;
         }
     }
@@ -65,12 +69,16 @@ public class SpelUtil {
         //SPEL上下文
         StandardEvaluationContext context = new MethodBasedEvaluationContext(rootObject, method, args, U);
         //把方法参数放入SPEL上下文中
-        for (int i = 0; i < paraNameArr.length; i++) {
-            context.setVariable(paraNameArr[i], args[i]);
+        if (paraNameArr != null) {
+            for (int i = 0; i < paraNameArr.length; i++) {
+                context.setVariable(paraNameArr[i], args[i]);
+            }
         }
+
         try {
             return EL_PARSER.parseExpression(spel).getValue(context, String.class);
-        } catch (ParseException e) {
+        } catch (ParseException | SpelEvaluationException e) {
+
             return spel;
         }
     }

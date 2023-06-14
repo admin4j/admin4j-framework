@@ -1,7 +1,6 @@
 package com.admin4j.framework.security.handler;
 
 import com.admin4j.framework.security.AuthenticationResult;
-import com.admin4j.framework.security.event.AuthenticationSuccessEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -34,8 +33,6 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-
-        applicationContext.publishEvent(new AuthenticationSuccessEvent(request, response, authentication));
 
         authenticationResult.onAuthenticationSuccess(request, response, authentication);
     }

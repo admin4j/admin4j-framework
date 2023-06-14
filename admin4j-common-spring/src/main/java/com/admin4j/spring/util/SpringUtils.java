@@ -1,6 +1,7 @@
 package com.admin4j.spring.util;
 
-import com.sun.xml.internal.ws.util.UtilException;
+
+import com.admin4j.common.exception.Admin4jException;
 import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.aop.framework.AopContext;
@@ -130,17 +131,17 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
      * 获取{@link ConfigurableListableBeanFactory}
      *
      * @return {@link ConfigurableListableBeanFactory}
-     * @throws UtilException 当上下文非ConfigurableListableBeanFactory抛出异常
+     * @throws Admin4jException 当上下文非ConfigurableListableBeanFactory抛出异常
      * @since 5.7.7
      */
-    public static ConfigurableListableBeanFactory getConfigurableBeanFactory() throws UtilException {
+    public static ConfigurableListableBeanFactory getConfigurableBeanFactory() {
         final ConfigurableListableBeanFactory factory;
         if (null != beanFactory) {
             factory = beanFactory;
         } else if (applicationContext instanceof ConfigurableApplicationContext) {
             factory = ((ConfigurableApplicationContext) applicationContext).getBeanFactory();
         } else {
-            throw new UtilException("No ConfigurableListableBeanFactory from context!");
+            throw new Admin4jException("No ConfigurableListableBeanFactory from context!");
         }
         return factory;
     }
@@ -218,7 +219,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
             DefaultSingletonBeanRegistry registry = (DefaultSingletonBeanRegistry) factory;
             registry.destroySingleton(beanName);
         } else {
-            throw new UtilException("Can not unregister bean, the factory is not a DefaultSingletonBeanRegistry!");
+            throw new Admin4jException("Can not unregister bean, the factory is not a DefaultSingletonBeanRegistry!");
         }
     }
 }

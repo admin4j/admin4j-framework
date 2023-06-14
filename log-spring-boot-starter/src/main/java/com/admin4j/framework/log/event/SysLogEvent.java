@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @Data
 public class SysLogEvent {
     private String type;
-    private String content;
+    private String content = "";
     private String[] args;
-    private String page;
+    private String page = "";
     private String uri = "";
     private String ip = "";
     private String userAgent = "";
