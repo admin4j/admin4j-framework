@@ -1,12 +1,8 @@
 package com.admin4j.framework.security.jwt;
 
 import com.admin4j.framework.security.properties.JwtProperties;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author andanyang
@@ -21,21 +17,15 @@ public class JwtUserTokenServiceTest {
     @Test
     public void testCreateToken() {
 
+
+        JwtUserDetails jwtUserDetails = new TestJwtUserDetails();
+
         JwtProperties jwtProperties = new JwtProperties();
-        jwtProperties.setExpires(-3600000L);
+//        jwtProperties.setExpires(-3600000L);
         JwtUserTokenService jwtUserTokenService = new JwtUserTokenService(jwtProperties, null);
 
-        String salt = "12";
-        Map<String, String> claims = new HashMap<>();
-        claims.put(FILED_USER_ID, String.valueOf(1));
-        if (StringUtils.isNotBlank("")) {
-            claims.put(FILED_AUTH_TYPE, "");
-        }
-        claims.put(FILED_SALT, salt);
-//        String secret = jwtProperties.getSecret();
-//        secret += "" + salt;
 
-        String token = jwtUserTokenService.createToken(claims, salt);
+        String token = jwtUserTokenService.createToken(jwtUserDetails);
         System.out.println("token = " + token);
 
 //        token += 1;

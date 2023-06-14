@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 用户令牌服务
@@ -35,37 +33,25 @@ public class JwtUserTokenService implements UserTokenService {
     /**
      * 创建令牌
      *
-     * @param claims 用户信息
-     * @param salt   jwt salt
+     * @param userDetails 用户信息
      * @return 令牌
      */
-    //@Override
-    protected String createToken(Map<String, String> claims, String salt) {
-
-        long expiration = System.currentTimeMillis() + jwtProperties.getExpires();
-        Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret() + salt);
-
-        JWTCreator.Builder builder = JWT.create();
-        for (Map.Entry<String, String> entry : claims.entrySet()) {
-            builder.withClaim(entry.getKey(), entry.getValue());
-        }
-        return builder.withExpiresAt(new Date(expiration))
-                .sign(algorithm);
-    }
-
     @Override
     public String createToken(JwtUserDetails userDetails) {
 
-        Map<String, String> claims = new HashMap<>();
-        claims.put(FILED_USER_ID, String.valueOf(userDetails.getUserId()));
-        claims.put(FILED_SALT, userDetails.getJwtSalt());
-        if (StringUtils.isNotBlank(userDetails.getAuthType())) {
-            claims.put(FILED_AUTH_TYPE, userDetails.getAuthType());
-        }
-        String secret = jwtProperties.getSecret();
-        secret += "&" + (userDetails).getJwtSalt();
+        long expiration = System.currentTimeMillis() + jwtProperties.getExpires();
+        Algorithm algorithm = Algorithm.HMAC256(generateSecret((userDetails).getJwtSalt()));
+        JWTCreator.Builder builder = JWT.create();
 
-        return createToken(claims, secret);
+        builder.withClaim(FILED_USER_ID, userDetails.getUserId());
+        builder.withClaim(FILED_SALT, userDetails.getJwtSalt());
+
+        if (StringUtils.isNotBlank(userDetails.getAuthType())) {
+            builder.withClaim(FILED_AUTH_TYPE, userDetails.getAuthType());
+        }
+
+        return builder.withExpiresAt(new Date(expiration))
+                .sign(algorithm);
     }
 
     /**
@@ -106,15 +92,19 @@ public class JwtUserTokenService implements UserTokenService {
     public UserDetails getUserDetails(String token) {
 
         DecodedJWT jwt = JWT.decode(token);
-        String userId = jwt.getClaim(FILED_USER_ID).asString();
+        Long userId = jwt.getClaim(FILED_USER_ID).asLong();
         String secret = jwt.getClaim(FILED_SALT).asString();
-        secret = jwtProperties.getSecret() + secret;
+        secret = generateSecret(secret);
 
         Algorithm algorithm = Algorithm.HMAC256(secret);
         JWTVerifier verifier = JWT.require(algorithm)
                 .build();
         verifier.verify(token);
 
-        return jwtUserDetailsService.loadUserByUserId(Long.valueOf(userId));
+        return jwtUserDetailsService.loadUserByUserId(userId);
+    }
+
+    private String generateSecret(String salt) {
+        return jwtProperties.getSecret() + "#" + salt;
     }
 }
