@@ -46,6 +46,7 @@
                     <artifactId>mybatis</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

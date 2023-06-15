@@ -36,9 +36,9 @@ public class JacksonConfig {
                     new LocalDateTimeDeserializer(DateTimePattern.NORM_DATETIME_FORMATTER));
 
             builder.serializerByType(LocalDate.class,
-                    new LocalDateSerializer(DateTimePattern.NORM_TIME_FORMATTER));
-            builder.deserializerByType(LocalTime.class,
-                    new LocalDateDeserializer(DateTimePattern.NORM_TIME_FORMATTER));
+                    new LocalDateSerializer(DateTimePattern.NORM_DATE_FORMATTER));
+            builder.deserializerByType(LocalDate.class,
+                    new LocalDateDeserializer(DateTimePattern.NORM_DATE_FORMATTER));
 
 
             builder.serializerByType(LocalTime.class,
