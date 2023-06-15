@@ -81,6 +81,44 @@ public class RedisService {
     }
 
     /**
+     * 自增
+     */
+    public <V> Long increment(final String key) {
+        ValueOperations<String, V> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.increment(key);
+    }
+
+    /**
+     * 自增
+     */
+    public <V> Long increment(final String key, long delta) {
+        ValueOperations<String, V> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.increment(key, delta);
+    }
+
+    public <V> Double increment(final String key, double delta) {
+        ValueOperations<String, V> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.increment(key, delta);
+    }
+
+    /**
+     * 自增
+     */
+    public <V> Long decrement(final String key) {
+        ValueOperations<String, V> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.decrement(key);
+    }
+
+    /**
+     * 自增
+     */
+    public <V> Long decrement(final String key, long delta) {
+        ValueOperations<String, V> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.decrement(key, delta);
+    }
+
+
+    /**
      * 设置有效时间
      *
      * @param key     Redis键
@@ -211,6 +249,29 @@ public class RedisService {
     public <T> T getMapValue(final String key, final String hKey) {
         HashOperations<String, String, T> opsForHash = redisTemplate.opsForHash();
         return opsForHash.get(key, hKey);
+    }
+
+    /**
+     * hash 自增
+     *
+     * @param key
+     * @param hKey
+     * @param <T>
+     * @return
+     */
+    public <T> Long increment(final String key, final String hKey) {
+        HashOperations<String, String, T> opsForHash = redisTemplate.opsForHash();
+        return opsForHash.increment(key, hKey, 1);
+    }
+
+    public <T> Long increment(final String key, final String hKey, final Long delta) {
+        HashOperations<String, String, T> opsForHash = redisTemplate.opsForHash();
+        return opsForHash.increment(key, hKey, delta);
+    }
+
+    public <T> Double increment(final String key, final String hKey, final double delta) {
+        HashOperations<String, String, T> opsForHash = redisTemplate.opsForHash();
+        return opsForHash.increment(key, hKey, delta);
     }
 
     /**
