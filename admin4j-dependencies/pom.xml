@@ -189,7 +189,7 @@
                 <version>${admin4j.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.admin4j</groupId>
+                <groupId>com.admin4j.framework</groupId>
                 <artifactId>web-spring-boot-starter</artifactId>
                 <version>${admin4j.version}</version>
             </dependency>

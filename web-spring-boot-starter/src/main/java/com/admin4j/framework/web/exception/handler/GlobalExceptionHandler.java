@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,7 +36,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(Admin4jException.class)
     public ResponseEntity<R> baseException(Admin4jException e) {
         log.error("基础异常:" + e.getMessage(), e);
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e));
     }
 
@@ -42,7 +44,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(BizException.class)
     public ResponseEntity<R> baseException(BizException e) {
         log.error("业务异常:" + e.getMessage(), e);
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e));
     }
 
@@ -51,7 +53,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
         log.error("MaxUploadSizeExceededException: getMaxUploadSize:{} getMessage: {}", e.getMaxUploadSize(), e.getMessage());
         long maxUploadSize = e.getMaxUploadSize() / 1024L / 1024L;
         Object[] objects = {maxUploadSize};
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.MAX_UPLOAD_SIZE_EXCEPTION, objects));
     }
 
@@ -59,7 +61,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<R> handleException(Exception e) {
         log.error(e.getMessage(), e);
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e.getMessage()));
     }
 
@@ -69,8 +71,11 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(BindException.class)
     public ResponseEntity<R> validatedBindException(BindException e) {
         log.error(e.getMessage(), e);
-        String message = e.getAllErrors().get(0).getDefaultMessage();
-        handlerException(e);
+        ObjectError objectError = e.getAllErrors().get(0);
+
+        FieldError fieldError = e.getBindingResult().getFieldError();
+        String message = fieldError == null ? objectError.getDefaultMessage() : (fieldError.getField() + objectError.getDefaultMessage());
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.VALIDATED_BIND_EXCEPTION, message));
     }
 
@@ -81,7 +86,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<R> validExceptionHandler(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.METHOD_ARGUMENT_NOTVALID_EXCEPTION,
                 e.getBindingResult().getFieldError().getField() + message));
     }
@@ -92,35 +97,35 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<R> preAuthorizeException(SQLException e) {
         log.error("SQL异常：" + e.getMessage(), e);
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_SQL));
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<R> nullPointerException(NullPointerException e) {
         log.error("空指针错误：" + e.getMessage(), e);
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_NULL));
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<R> runtimeException(RuntimeException e) {
         log.error("runtime错误：" + e.getMessage(), e);
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_RUNTIME));
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<R> noHandlerFoundException(NoHandlerFoundException e) {
         log.error("NoHandlerFoundException：" + e.getMessage(), e);
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(R.fail(ResponseEnum.NOT_FOUND));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<R> noHandlerFoundException(IllegalArgumentException e) {
         log.error("IllegalArgumentException：" + e.getMessage(), e);
-        handlerException(e);
+        publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_ILLEGAL_ARGUMENT, e.getMessage()));
     }
 }

@@ -11,12 +11,7 @@ import org.springframework.http.ResponseEntity;
  * @since 2023/3/13 14:51
  */
 public abstract class AbstractExceptionHandler {
-
-    @Deprecated
-    public void handlerException(Exception e) {
-
-        SpringUtils.getApplicationContext().publishEvent(new GlobalExceptionEvent("GlobalException", e));
-    }
+    
 
     public void publishGlobalExceptionEvent(Exception e) {
         SpringUtils.getApplicationContext().publishEvent(new GlobalExceptionEvent("GlobalException", e));
