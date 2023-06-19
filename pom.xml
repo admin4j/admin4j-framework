@@ -37,8 +37,8 @@
         <module>log-spring-boot-starter</module>
     </modules>
     <properties>
-        <revision>0.5.0-SNAPSHOT</revision>
-        <admin4j-dependencies.version>0.2-SNAPSHOT</admin4j-dependencies.version>
+        <revision>0.5.0</revision>
+        <admin4j-dependencies.version>0.5.0</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
