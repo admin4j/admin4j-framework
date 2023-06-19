@@ -54,8 +54,9 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         uploadFileVO.setKey(path);
         uploadFileVO.setPreviewUrl(getPreviewUrl(path));
 
-        if (!beforeUpload(uploadFileVO)) {
-            return uploadFileVO;
+        UploadFileVO beforeUploadFileVO = beforeUpload(uploadFileVO);
+        if (beforeUploadFileVO != null) {
+            return beforeUploadFileVO;
         }
 
         ossTemplate.putObject(defaultBucketName(), path, file.getInputStream());
@@ -147,9 +148,9 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      * @param uploadFileVO 上传文件信息
      * @return true 可以上传 false 不用上传（比如根据md5/path 检查文件已存在）
      */
-    protected boolean beforeUpload(UploadFileVO uploadFileVO) {
+    protected UploadFileVO beforeUpload(UploadFileVO uploadFileVO) {
 
-        return true;
+        return null;
     }
 
     /**
