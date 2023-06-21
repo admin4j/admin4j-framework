@@ -3,6 +3,7 @@ package com.admin4j.framework.web.config;
 
 import com.admin4j.framework.web.utils.DateTimePattern;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
@@ -49,6 +50,9 @@ public class JacksonConfig {
             builder.failOnUnknownProperties(false);
             builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             builder.timeZone(TimeZone.getDefault());
+
+            //防止前端Long型丢失精度
+            builder.serializerByType(Long.class, ToStringSerializer.instance);
         };
     }
 }
