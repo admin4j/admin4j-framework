@@ -35,6 +35,7 @@
         <module>test-spring-boot-starter</module>
         <module>kaptcha-spring-boot-starter</module>
         <module>log-spring-boot-starter</module>
+        <module>xxl-job-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.5.0-SNAPSHOT</revision>
