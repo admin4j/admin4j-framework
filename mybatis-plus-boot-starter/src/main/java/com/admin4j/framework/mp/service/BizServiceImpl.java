@@ -24,6 +24,14 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
     }
 
     /**
+     * 插入后执行
+     * Params: entity – 数据实体
+     */
+    protected void afterSave(T entity) {
+
+    }
+
+    /**
      * 更新前执行
      *
      * @param entity 数据实体
@@ -31,6 +39,15 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
     protected void beforeUpdateById(T entity) {
 
     }
+
+    /**
+     * 更新后触发
+     *
+     * @param entity
+     */
+    protected void afterUpdateById(T entity) {
+    }
+
 
     /**
      * 删除前执行
@@ -43,17 +60,32 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
         return true;
     }
 
+    /**
+     * 删除后执行
+     *
+     * @param id 主键id
+     */
+    protected void afterRemoveById(Serializable id) {
+
+
+    }
+
     @Override
     public boolean save(T entity) {
         beforeSave(entity);
-        return super.save(entity);
+        boolean save = super.save(entity);
+        afterSave(entity);
+        return save;
     }
 
     @Override
     public boolean updateById(T entity) {
         beforeUpdateById(entity);
-        return super.updateById(entity);
+        boolean b = super.updateById(entity);
+        afterUpdateById(entity);
+        return b;
     }
+
 
     @Override
     public boolean removeById(T entity) {
@@ -64,7 +96,9 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
         Object idVal = tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
 
         if (beforeRemoveById((Serializable) idVal)) {
-            return super.removeById(entity);
+            boolean b = super.removeById(entity);
+            afterRemoveById((Serializable) idVal);
+            return b;
         }
         return true;
     }
@@ -72,7 +106,9 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
     @Override
     public boolean removeById(Serializable id) {
         if (beforeRemoveById(id)) {
-            return super.removeById(id);
+            boolean b = super.removeById(id);
+            afterRemoveById(id);
+            return b;
         }
         return true;
     }

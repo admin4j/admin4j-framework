@@ -24,17 +24,30 @@ public interface ISysLogService {
      * @param args
      * @return
      */
-    SysLogEvent generateEvent(String type, String content, String[] args);
+    SysLogEvent generateEvent(String type, String content, String... args);
 
-    default SysLogEvent generateEvent(ISysLogDO sysLogBO, String[] args) {
+    default SysLogEvent generateEvent(ISysLogDO sysLogBO, String... args) {
         return generateEvent(sysLogBO.getType(), sysLogBO.getContent(), args);
     }
 
-    default void saveLog(String type, String content, String[] args) {
+    /**
+     * 保存日志
+     *
+     * @param type    日志类型
+     * @param content 日志内容
+     * @param args    日志参数
+     */
+    default void saveLog(String type, String content, String... args) {
         saveLog(generateEvent(type, content, args));
     }
 
-    default void saveLog(ISysLogDO sysLogBO, String[] args) {
+    /**
+     * 保存日志
+     *
+     * @param sysLogBO 日志内容
+     * @param args     日志参数
+     */
+    default void saveLog(ISysLogDO sysLogBO, String... args) {
         saveLog(generateEvent(sysLogBO, args));
     }
 }
