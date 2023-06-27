@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author andanyang
@@ -26,6 +27,13 @@ public class AuthenticationUser implements Serializable {
 
     @ApiModelProperty("是否是超级管理员")
     private boolean admin;
+
+
+    /**
+     * 权限列表
+     */
+    @ApiModelProperty("权限列表")
+    private Set<String> permissions;
 
     //private String fromService;
 

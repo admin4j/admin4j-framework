@@ -32,7 +32,7 @@ public class IdempotentAspect extends AbstractDLockHandler {
      * @param idempotent idempotent
      * @return Object
      */
-    @Around("@annotation(idempotent)")
+    @Around("@within(idempotent) ||@annotation(idempotent)")
     public Object around(ProceedingJoinPoint joinPoint, Idempotent idempotent) throws Throwable {
 
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();

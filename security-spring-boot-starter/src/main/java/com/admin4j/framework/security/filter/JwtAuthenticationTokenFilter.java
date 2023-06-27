@@ -62,7 +62,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 authenticationUser.setTenantId(jwtUserDetails.getTenantId());
                 authenticationUser.setUsername(jwtUserDetails.getUsername());
                 authenticationUser.setAdmin(jwtUserDetails.isAdmin());
-
+                authenticationUser.setPermissions(jwtUserDetails.getPermissions());
+                
                 UserContextUtil.setUser(authenticationUser);
             }
         } catch (Exception e) {

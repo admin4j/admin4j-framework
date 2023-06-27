@@ -24,31 +24,24 @@ public enum ResponseEnum implements IResponse, Assert {
      */
     FAILURE(400, "业务异常"),
 
-
     /**
-     *
+     * token 认证失败
      */
-    FAIL_AUTH_FORBIDDEN(402, "没有权限访问"),
-
+    FAIL_AUTH_TOKEN(401, "FAIL_AUTH_TOKEN"),
     /**
-     *
+     * 登录失败，账号或者密码错误
      */
     FAIL_AUTH(402, "登录失败，账号或者密码错误"),
     /**
-     * token 认证失败
+     *
      */
-    FAIL_AUTH_TOKEN(403, "认证失败"),
+    FAIL_AUTH_FORBIDDEN(403, "FAIL_AUTH_FORBIDDEN"),
+
 
     /**
      * token 认证失败
      */
-    FAIL_NO_TOKEN(405, "没有访问令牌"),
-
-    /**
-     * 未授权
-     */
-    FAIL_UNAUTHORIZED(406, "未授权"),
-    FAIL_AUTH_TOKEN_ERROR(407, "认证失败"),
+    FAIL_NO_TOKEN(405, "FAIL_NO_TOKEN"),
 
 
     /**

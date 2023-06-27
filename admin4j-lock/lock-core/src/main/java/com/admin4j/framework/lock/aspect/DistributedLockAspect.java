@@ -20,7 +20,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 @Aspect
 public class DistributedLockAspect extends AbstractDLockHandler {
 
-    @Around("@annotation(distributedLock)")
+    @Around("@within(distributedLock) || @annotation(distributedLock)")
     public Object around(ProceedingJoinPoint joinPoint, DistributedLock distributedLock) throws Throwable {
 
         distributedLock = AnnotationUtils.getAnnotation(distributedLock, DistributedLock.class);

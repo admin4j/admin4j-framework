@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author andanyang
@@ -21,6 +22,14 @@ public class TestJwtUserDetails implements JwtUserDetails {
     @Override
     public boolean isAdmin() {
         return false;
+    }
+
+    /**
+     * 权限列表
+     */
+    @Override
+    public Set<String> getPermissions() {
+        return null;
     }
 
 

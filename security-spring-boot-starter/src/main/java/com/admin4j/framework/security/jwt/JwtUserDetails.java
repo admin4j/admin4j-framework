@@ -2,6 +2,8 @@ package com.admin4j.framework.security.jwt;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Set;
+
 /**
  * @author andanyang
  * @since 2023/5/30 14:51
@@ -43,5 +45,10 @@ public interface JwtUserDetails extends UserDetails {
      * 登录方式
      */
     String getAuthType();
+
+    /**
+     * 权限列表
+     */
+    Set<String> getPermissions();
 
 }

@@ -51,7 +51,7 @@ public class SecurityUserContextHolder implements IUserContextHolder {
     public AuthenticationUser getLoginUser() {
         AuthenticationUser authenticationUser = THREAD_LOCAL_USER.get();
 
-        ResponseEnum.FAIL_UNAUTHORIZED.notNull(authenticationUser);
+        ResponseEnum.FAIL_AUTH_FORBIDDEN.notNull(authenticationUser);
 
         return authenticationUser;
     }
