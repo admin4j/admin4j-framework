@@ -9,6 +9,7 @@ import com.admin4j.common.util.UserContextUtil;
 import com.admin4j.framework.security.AuthenticationResult;
 import com.admin4j.framework.security.UserTokenService;
 import com.admin4j.framework.security.event.AuthenticationSuccessEvent;
+import com.admin4j.framework.security.factory.AuthenticationUserFactory;
 import com.admin4j.framework.security.jwt.JwtUserDetails;
 import com.admin4j.spring.util.SpringUtils;
 import com.alibaba.fastjson2.JSON;
@@ -45,13 +46,10 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
         Object o = authentication.getPrincipal();
         if (o instanceof JwtUserDetails) {
             JwtUserDetails jwtUserDetails = (JwtUserDetails) o;
-            AuthenticationUser authenticationUser = new AuthenticationUser();
-            authenticationUser.setUserId(jwtUserDetails.getUserId());
-            authenticationUser.setTenantId(jwtUserDetails.getTenantId());
-            authenticationUser.setUsername(jwtUserDetails.getUsername());
-            authenticationUser.setAdmin(jwtUserDetails.isAdmin());
 
-            UserContextUtil.setUser(authenticationUser);
+            AuthenticationUser jwtUser = AuthenticationUserFactory.getByJwtUser(jwtUserDetails);
+
+            UserContextUtil.setUser(jwtUser);
         }
 
         SpringUtils.getApplicationContext().publishEvent(new AuthenticationSuccessEvent(request, response, authentication));

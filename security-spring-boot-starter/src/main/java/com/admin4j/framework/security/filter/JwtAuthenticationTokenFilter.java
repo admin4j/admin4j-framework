@@ -4,6 +4,7 @@ import com.admin4j.common.pojo.AuthenticationUser;
 import com.admin4j.common.util.UserContextUtil;
 import com.admin4j.framework.security.AuthenticationResult;
 import com.admin4j.framework.security.UserTokenService;
+import com.admin4j.framework.security.factory.AuthenticationUserFactory;
 import com.admin4j.framework.security.jwt.JwtUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -57,13 +58,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
                 //设置登录
                 JwtUserDetails jwtUserDetails = (JwtUserDetails) userDetails;
-                AuthenticationUser authenticationUser = new AuthenticationUser();
-                authenticationUser.setUserId(jwtUserDetails.getUserId());
-                authenticationUser.setTenantId(jwtUserDetails.getTenantId());
-                authenticationUser.setUsername(jwtUserDetails.getUsername());
-                authenticationUser.setAdmin(jwtUserDetails.isAdmin());
-                authenticationUser.setPermissions(jwtUserDetails.getPermissions());
-                
+
+                AuthenticationUser authenticationUser = AuthenticationUserFactory.getByJwtUser(jwtUserDetails);
                 UserContextUtil.setUser(authenticationUser);
             }
         } catch (Exception e) {

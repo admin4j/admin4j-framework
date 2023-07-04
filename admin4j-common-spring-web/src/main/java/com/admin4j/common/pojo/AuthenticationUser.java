@@ -32,10 +32,18 @@ public class AuthenticationUser implements Serializable {
     /**
      * 权限列表
      */
-    @ApiModelProperty("权限列表")
+    @ApiModelProperty("权限code列表")
     private Set<String> permissions;
 
     //private String fromService;
 
     private String referer;
+
+
+    /**
+     * 获取原始认证对消
+     *
+     * @return
+     */
+    private Object originAuthentication;
 }
