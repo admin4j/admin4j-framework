@@ -193,7 +193,7 @@
         <profile>
             <id>ossrh</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <repository.releases.id>ossrh</repository.releases.id>
