@@ -1,6 +1,7 @@
 package com.admin4j.framework.lock;
 
 import com.admin4j.framework.lock.constant.LockModel;
+import com.admin4j.framework.lock.util.DistributedLockUtil;
 import lombok.Data;
 
 /**
@@ -38,4 +39,8 @@ public class LockInfo<T> {
      * 指定的执行器
      */
     private Class<? extends LockExecutor> executor;
+
+    public void setLockKey(String lockKey) {
+        this.lockKey = DistributedLockUtil.DISTRIBUTED_LOCK_PRE + lockKey;
+    }
 }
