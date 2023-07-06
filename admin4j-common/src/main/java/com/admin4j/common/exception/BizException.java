@@ -23,15 +23,15 @@ public class BizException extends Admin4jException {
         super(message, throwable);
     }
 
-    public BizException(String message) {
+    public BizException(String message, Object... args) {
         super(ResponseEnum.BIZ_ERROR, message);
     }
 
-    public BizException(IResponse response, Object[] args, String message) {
-        super(response, args, message);
+    public BizException(IResponse response, String message, Object... args) {
+        super(response, message, args);
     }
 
-    public BizException(IResponse response, Object[] args, String message, Throwable cause) {
-        super(response, args, message, cause);
+    public BizException(IResponse response, String message, Throwable cause, Object... args) {
+        super(response, message, cause, args);
     }
 }

@@ -26,11 +26,11 @@ public class SystemException extends Admin4jException {
         super(ResponseEnum.BIZ_ERROR, message);
     }
 
-    public SystemException(IResponse response, Object[] args, String message) {
-        super(response, args, message);
+    public SystemException(IResponse response, String message, Object... args) {
+        super(response, message, args);
     }
 
-    public SystemException(IResponse response, Object[] args, String message, Throwable cause) {
-        super(response, args, message, cause);
+    public SystemException(IResponse response, String message, Throwable cause, Object... args) {
+        super(response, message, cause, args);
     }
 }

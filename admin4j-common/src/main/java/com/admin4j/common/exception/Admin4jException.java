@@ -44,6 +44,13 @@ public class Admin4jException extends RuntimeException implements IResponse {
         setCode(ResponseEnum.ERROR_E.getCode());
     }
 
+    public Admin4jException(String message, Throwable throwable, Object... args) {
+        super(throwable);
+        setMsg(message);
+        setCode(ResponseEnum.ERROR_E.getCode());
+        this.args = args;
+    }
+
     public Admin4jException(IResponse response) {
         super(response.getMsg());
         setResponse(response);
@@ -54,20 +61,18 @@ public class Admin4jException extends RuntimeException implements IResponse {
         this.code = code;
         this.msg = msg;
     }
-
-    public Admin4jException(String message) {
+    
+    public Admin4jException(String message, Object... args) {
         this(ResponseEnum.ERROR, message);
+        this.args = args;
     }
 
-    public Admin4jException(IResponse response, String message) {
-        this(response, null, message);
+
+    public Admin4jException(IResponse response, String message, Object... args) {
+        this(response, message, null, args);
     }
 
-    public Admin4jException(IResponse response, Object[] args, String message) {
-        this(response, args, message, null);
-    }
-
-    public Admin4jException(IResponse response, Object[] args, String message, Throwable cause) {
+    public Admin4jException(IResponse response, String message, Throwable cause, Object... args) {
         super(StringUtils.defaultString(message, response.getMsg()), cause);
         setResponse(response);
         if (StringUtils.isNotBlank(message)) {
