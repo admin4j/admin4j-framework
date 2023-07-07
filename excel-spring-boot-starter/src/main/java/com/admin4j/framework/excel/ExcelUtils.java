@@ -61,8 +61,6 @@ public class ExcelUtils {
         HttpServletResponse response = requestAttributes.getResponse();
 
         assert response != null;
-        //autoCloseStream 不要自动关闭，交给 Servlet 自己处理
-        write(response.getOutputStream(), null, data, aClass, false);
 
         if (!StringUtils.contains(filename, ".")) {
             filename = filename + ".xlsx";
@@ -70,6 +68,9 @@ public class ExcelUtils {
         // 设置 header 和 contentType。写在最后的原因是，避免报错时，响应 contentType 已经被修改了
         response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8").replace("\\+", "%20"));
         response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+
+        //autoCloseStream 不要自动关闭，交给 Servlet 自己处理
+        write(response.getOutputStream(), null, data, aClass, false);
     }
 
     public static <T> List<T> read(MultipartFile file, Class<T> clazz) throws IOException {

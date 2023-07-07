@@ -9,7 +9,7 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>excel-spring-boot-starter</artifactId>
-    <version>0.0.7</version>
+    <!--    <version>0.0.7</version>-->
     <packaging>jar</packaging>
 
     <name>excel-spring-boot-starter</name>
