@@ -4,7 +4,7 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>spring-boot-parent</artifactId>
-    <version>${revision}</version>
+    <version>0.6.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>spring-boot-parent</name>
