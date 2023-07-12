@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SimpleResponse<T> implements IResponse {
+public class SimpleResponse implements IResponse {
     protected int code;
 
     protected String msg;
 
-    protected T data;
+    //protected T data;
 
     /**
      * 多语言参数

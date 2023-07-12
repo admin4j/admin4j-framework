@@ -2,7 +2,6 @@ package com.admin4j.framework.web.pojo;
 
 import com.admin4j.common.pojo.IResponse;
 import com.admin4j.common.pojo.ResponseEnum;
-import com.admin4j.common.pojo.SimpleResponse;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
@@ -17,7 +16,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "统一响应消息报文")
-public class R<T> extends SimpleResponse<T> {
+public class R<T> extends CommonResult<T> {
 
     /**
      * 成功
@@ -27,12 +26,15 @@ public class R<T> extends SimpleResponse<T> {
     /**
      * 失败
      */
-    protected static final int FAIL = ResponseEnum.ERROR.getCode();
+    protected static final int FAIL_RESPONSE = ResponseEnum.ERROR.getCode();
 
     /**
      * 认证失败 401
      */
     public static final int FAIL_UNAUTHORIZED = ResponseEnum.ERROR.getCode();
+
+    private static final R OK = restResult(null, SUCCESS, ResponseEnum.SUCCESS.getMsg());
+    private static final R FAIL = restResult(null, FAIL_RESPONSE, ResponseEnum.ERROR.getMsg());
 
     static <T> R<T> restResult(T data, int code, String msg) {
         return restResult(data, code, msg, null);
@@ -66,7 +68,7 @@ public class R<T> extends SimpleResponse<T> {
      * @return
      */
     public static <T> R<T> ok() {
-        return restResult(null, SUCCESS, ResponseEnum.SUCCESS.getMsg());
+        return (R<T>) OK;
     }
 
     /**
@@ -95,20 +97,20 @@ public class R<T> extends SimpleResponse<T> {
      * @return
      */
     public static <T> R<T> fail() {
-        return restResult(null, FAIL, ResponseEnum.ERROR.getMsg());
+        return (R<T>) FAIL;
     }
 
     public static <T> R<T> fail(String msg) {
-        return restResult(null, FAIL, msg);
+        return restResult(null, FAIL_RESPONSE, msg);
     }
 
 
     public static <T> R<T> fail(T data) {
-        return restResult(data, FAIL, ResponseEnum.ERROR.getMsg());
+        return restResult(data, FAIL_RESPONSE, ResponseEnum.ERROR.getMsg());
     }
 
     public static <T> R<T> fail(T data, String msg) {
-        return restResult(data, FAIL, msg);
+        return restResult(data, FAIL_RESPONSE, msg);
     }
 
     public static <T> R<T> fail(int code, String msg) {

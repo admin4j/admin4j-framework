@@ -1,7 +1,6 @@
 package com.admin4j.framework.web.pojo;
 
 import com.admin4j.common.pojo.ResponseEnum;
-import com.admin4j.common.pojo.SimpleResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ import java.util.List;
  */
 @ApiModel("分页请求返回类")
 @Data
-public class CommonPage<T> extends SimpleResponse<CommonPage.PageResultVO<T>> {
+public class CommonPage<T> extends CommonResult<CommonPage.PageResultVO<T>> {
 
     public CommonPage() {
         super();
