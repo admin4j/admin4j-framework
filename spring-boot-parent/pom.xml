@@ -54,6 +54,34 @@
         </plugins>
     </build>
 
+    <!-- 开源签名证书 -->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <!-- 仓库信息 -->
+    <scm>
+        <connection>scm:git@github.com:admin4j/admin4j-framework</connection>
+        <developerConnection>scm:git@github.com:admin4j/admin4j-framework</developerConnection>
+        <url>https://github.com/admin4j/admin4j-framework/spring-boot-parent</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>${repository.releases.id}</id>
+            <name>nexus-releases</name>
+            <url>${repository.releases.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${repository.releases.id}</id>
+            <name>nexus-snapshot</name>
+            <url>${repository.snapshots.url}</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <profiles>
         <profile>
             <id>ossrh</id>
