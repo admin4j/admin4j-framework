@@ -32,7 +32,7 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Build with Maven
-        run: mvn -B -Dmaven.test.skip=true clean install --file admin4j-dependencies/pom.xml
+        run: mvn -B -Dmaven.test.skip=true -Possrh clean install --file admin4j-dependencies/pom.xml
 
       - name: Set up Apache Maven Central
         run: mvn deploy --file admin4j-dependencies/pom.xml
