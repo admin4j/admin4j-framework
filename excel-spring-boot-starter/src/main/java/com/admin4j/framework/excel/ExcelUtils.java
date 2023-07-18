@@ -1,6 +1,7 @@
 package com.admin4j.framework.excel;
 
-import com.alibaba.excel.EasyExcel;
+import com.admin4j.framework.excel.listener.ExcelListener;
+import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import org.apache.commons.lang3.StringUtils;
@@ -34,11 +35,11 @@ public class ExcelUtils {
      * @throws IOException 写入失败的情况
      */
     public static <T> void write(OutputStream outputStream, String sheetName,
-                                 List<T> data, Class<T> aClass, boolean autoCloseStream) throws IOException {
+                                 List<T> data, Class<T> aClass, boolean autoCloseStream) {
 
 
         // 输出 Excel
-        EasyExcel.write(outputStream, aClass)
+        EasyExcelFactory.write(outputStream, aClass)
                 .autoCloseStream(autoCloseStream)
                 .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()) // 基于 column 长度，自动适配。最大 255 宽度
                 .sheet(sheetName).doWrite(data);
@@ -75,7 +76,7 @@ public class ExcelUtils {
 
     public static <T> List<T> read(MultipartFile file, Class<T> clazz) throws IOException {
         ExcelListener<T> readListener = new ExcelListener<>();
-        EasyExcel.read(file.getInputStream(), clazz, readListener)
+        EasyExcelFactory.read(file.getInputStream(), clazz, readListener)
                 .autoCloseStream(false)  // 不要自动关闭，交给 Servlet 自己处理
                 .doReadAll();
 
@@ -93,7 +94,7 @@ public class ExcelUtils {
      * @throws IOException 读取失败的情况
      */
     public static <T> void read(MultipartFile file, Class<T> clazz, ReadListener<T> readListener) throws IOException {
-        EasyExcel.read(file.getInputStream(), clazz, readListener)
+        EasyExcelFactory.read(file.getInputStream(), clazz, readListener)
                 .autoCloseStream(false)  // 不要自动关闭，交给 Servlet 自己处理
                 .doReadAll();
     }

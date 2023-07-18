@@ -1,4 +1,4 @@
-package com.admin4j.framework.excel;
+package com.admin4j.framework.excel.listener;
 
 
 import com.alibaba.excel.context.AnalysisContext;
@@ -42,7 +42,7 @@ public class ExcelBatchListener<T> extends AnalysisEventListener<T> {
     //每一条数据解析都会来调用
     @Override
     public void invoke(T object, AnalysisContext context) {
-         
+
         list.add(object);
         if (list.size() >= batchSize) {
             consumer.accept(list);
