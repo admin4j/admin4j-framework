@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.sql.SQLException;
+import java.time.format.DateTimeParseException;
 
 /**
  * 全局异常处理器
@@ -127,5 +128,12 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
         log.error("IllegalArgumentException：" + e.getMessage(), e);
         publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_ILLEGAL_ARGUMENT, e.getMessage()));
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<R> noHandlerFoundException(DateTimeParseException e) {
+        log.error("DateTimeParseException：" + e.getMessage(), e);
+        publishGlobalExceptionEvent(e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_DATETIME_PARSE, e.getMessage()));
     }
 }

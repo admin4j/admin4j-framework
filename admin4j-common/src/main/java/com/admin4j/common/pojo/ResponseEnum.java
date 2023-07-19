@@ -95,6 +95,10 @@ public enum ResponseEnum implements IResponse, Assert {
      */
     ERROR_RUNTIME(5220, "INTERNAL_SERVER_ERROR: 5220"),
     ERROR_ILLEGAL_ARGUMENT(5221, "INTERNAL_SERVER_ERROR: 5221"),
+    /**
+     * 时间解析异常
+     */
+    ERROR_DATETIME_PARSE(5221, "INTERNAL_SERVER_ERROR: 5222"),
 
     /**
      * 空指针错误
