@@ -3,7 +3,9 @@ package com.admin4j.framework.excel;
 import com.admin4j.framework.excel.listener.ExcelListener;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.read.listener.ReadListener;
+import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,6 +26,10 @@ import java.util.Objects;
  */
 public class ExcelUtils {
 
+    //static ObjectProvider<ExcelReadLifecycle> excelReadLifecycles;
+    @Setter
+    static ExcelWriteLifecycle excelWriteLifecycle;
+
     /**
      * 将列表以 Excel 响应给前端
      *
@@ -37,12 +43,26 @@ public class ExcelUtils {
     public static <T> void write(OutputStream outputStream, String sheetName,
                                  List<T> data, Class<T> aClass, boolean autoCloseStream) {
 
+        if (excelWriteLifecycle != null) {
+
+            excelWriteLifecycle.before(data, aClass);
+        }
 
         // 输出 Excel
-        EasyExcelFactory.write(outputStream, aClass)
+        ExcelWriterSheetBuilder sheet = EasyExcelFactory.write(outputStream, aClass)
                 .autoCloseStream(autoCloseStream)
                 .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy()) // 基于 column 长度，自动适配。最大 255 宽度
-                .sheet(sheetName).doWrite(data);
+                .sheet(sheetName);
+
+
+        try {
+            sheet.doWrite(data);
+        } finally {
+            if (excelWriteLifecycle != null) {
+
+                excelWriteLifecycle.after(data, aClass);
+            }
+        }
     }
 
     /**
