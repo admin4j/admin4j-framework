@@ -1,6 +1,7 @@
 package com.admin4j.framework.web.pojo;
 
 import com.admin4j.common.pojo.IResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 /**
@@ -19,4 +20,19 @@ public class CommonResult<T> implements IResponse {
     @Getter
     @Setter
     protected T data;
+
+    /**
+     * 多语言参数
+     */
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    protected Object[] i18nArgs;
+
+    protected void setResponse(IResponse response) {
+        code = response.getCode();
+        msg = response.getMsg();
+    }
+
+    public CommonResult(IResponse response) {
+        setResponse(response);
+    }
 }
