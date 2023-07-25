@@ -1,14 +1,20 @@
 package com.admin4j.framework.web.pojo;
 
-import com.admin4j.common.pojo.SimpleResponse;
-import lombok.Getter;
-import lombok.Setter;
+import com.admin4j.common.pojo.IResponse;
+import lombok.*;
 
 /**
  * @author andanyang
  * @since 2023/7/12 15:23
  */
-public class CommonResult<T> extends SimpleResponse {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CommonResult<T> implements IResponse {
+
+    protected int code;
+
+    protected String msg;
 
     @Getter
     @Setter

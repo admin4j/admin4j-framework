@@ -34,8 +34,8 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
 
 
     protected final UserTokenService userTokenService;
-    protected static final IResponse FAIL_AUTH_FORBIDDEN = new SimpleResponse<>(ResponseEnum.FAIL_AUTH_FORBIDDEN);
-    protected static final IResponse FAIL_AUTH = new SimpleResponse<>(ResponseEnum.FAIL_AUTH_TOKEN);
+    protected static final IResponse FAIL_AUTH_FORBIDDEN = new SimpleResponse(ResponseEnum.FAIL_AUTH_FORBIDDEN);
+    protected static final IResponse FAIL_AUTH = new SimpleResponse(ResponseEnum.FAIL_AUTH_TOKEN);
 
     /**
      * 认证成功回调
@@ -56,7 +56,7 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
 
         String token = userTokenService.createToken((JwtUserDetails) authentication.getPrincipal());
 
-        SimpleResponse<Object> simpleResponse = new SimpleResponse<>(ResponseEnum.SUCCESS);
+        SimpleResponse simpleResponse = new SimpleResponse(ResponseEnum.SUCCESS);
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
         simpleResponse.setData(map);
@@ -68,7 +68,7 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
      */
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, Exception exception) {
-        SimpleResponse<Object> simpleResponse = new SimpleResponse<>(ResponseEnum.FAIL_AUTH);
+        SimpleResponse simpleResponse = new SimpleResponse(ResponseEnum.FAIL_AUTH);
         simpleResponse.setMsg(exception.getMessage());
         ServletUtils.renderString(response, JSON.toJSONString(simpleResponse));
     }
@@ -76,7 +76,7 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
-        SimpleResponse<Object> simpleResponse = new SimpleResponse<>(ResponseEnum.SUCCESS);
+        SimpleResponse simpleResponse = new SimpleResponse(ResponseEnum.SUCCESS);
         simpleResponse.setMsg(ResponseEnum.SUCCESS.getMsg());
         ServletUtils.renderString(response, JSON.toJSONString(simpleResponse));
     }

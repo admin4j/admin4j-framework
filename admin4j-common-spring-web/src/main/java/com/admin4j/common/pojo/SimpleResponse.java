@@ -16,6 +16,7 @@ public class SimpleResponse implements IResponse {
     protected int code;
 
     protected String msg;
+    protected Object data;
 
     /**
      * 多语言参数
