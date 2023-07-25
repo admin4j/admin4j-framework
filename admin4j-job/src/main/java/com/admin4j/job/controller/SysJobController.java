@@ -23,11 +23,11 @@ public class SysJobController {
     ISysJobService sysJobService;
 
     @GetMapping
-    public SimpleResponse<List<SysJob>> info() {
+    public SimpleResponse info() {
 
         QuartzJobQuery quartzJobQuery = new QuartzJobQuery();
         List<SysJob> sysJobs = sysJobService.selectJobList(quartzJobQuery);
-        SimpleResponse<List<SysJob>> quartzJobInfoSimpleResponse = new SimpleResponse<>();
+        SimpleResponse quartzJobInfoSimpleResponse = new SimpleResponse();
         quartzJobInfoSimpleResponse.setData(sysJobs);
         return quartzJobInfoSimpleResponse;
     }
