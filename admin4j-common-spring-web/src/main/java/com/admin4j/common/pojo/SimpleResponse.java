@@ -17,8 +17,6 @@ public class SimpleResponse implements IResponse {
 
     protected String msg;
 
-    //protected T data;
-
     /**
      * 多语言参数
      */
@@ -34,8 +32,8 @@ public class SimpleResponse implements IResponse {
         setResponse(response);
     }
 
-    public static <T> SimpleResponse<T> of(int code, String msg) {
-        SimpleResponse<T> simpleResponse = new SimpleResponse<>();
+    public static SimpleResponse of(int code, String msg) {
+        SimpleResponse simpleResponse = new SimpleResponse();
         simpleResponse.setCode(code);
         simpleResponse.setMsg(msg);
         return simpleResponse;
