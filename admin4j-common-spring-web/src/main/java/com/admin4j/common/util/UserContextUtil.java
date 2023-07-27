@@ -60,7 +60,7 @@ public class UserContextUtil {
      * @param tenant
      */
     public static void offTenant(Long tenant) {
-        setTenant(0L);
+        userContextHolder.offTenant();
     }
 
     /**
