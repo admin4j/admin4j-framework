@@ -56,10 +56,8 @@ public class UserContextUtil {
 
     /**
      * 关闭租户
-     *
-     * @param tenant
      */
-    public static void offTenant(Long tenant) {
+    public static void offTenant() {
         userContextHolder.offTenant();
     }
 
