@@ -46,7 +46,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<R> baseException(BizException e) {
         log.error("业务异常:" + e.getMessage(), e);
         publishGlobalExceptionEvent(e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(e.getMessage()));
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
@@ -109,6 +109,13 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_NULL));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<R> noHandlerFoundException(IllegalArgumentException e) {
+        log.error("IllegalArgumentException：" + e.getMessage(), e);
+        publishGlobalExceptionEvent(e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_ILLEGAL_ARGUMENT, e.getMessage()));
+    }
+    
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<R> runtimeException(RuntimeException e) {
         log.error("runtime错误：" + e.getMessage(), e);
@@ -123,12 +130,6 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(R.fail(ResponseEnum.NOT_FOUND));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<R> noHandlerFoundException(IllegalArgumentException e) {
-        log.error("IllegalArgumentException：" + e.getMessage(), e);
-        publishGlobalExceptionEvent(e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_ILLEGAL_ARGUMENT, e.getMessage()));
-    }
 
     @ExceptionHandler(DateTimeParseException.class)
     public ResponseEntity<R> noHandlerFoundException(DateTimeParseException e) {
