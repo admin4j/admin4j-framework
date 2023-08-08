@@ -6,6 +6,7 @@
     <artifactId>spring-boot-parent</artifactId>
     <version>0.8.0</version>
     <packaging>pom</packaging>
+    <url>https://github.com/admin4j/admin4j-framework</url>
 
     <name>spring-boot-parent</name>
     <description>Spring Boot Parent for admin4j framework</description>
@@ -68,6 +69,16 @@
         <developerConnection>scm:git@github.com:admin4j/admin4j-framework</developerConnection>
         <url>https://github.com/admin4j/admin4j-framework/spring-boot-parent</url>
     </scm>
+
+    <!-- 开发人员信息 -->
+    <developers>
+        <developer>
+            <name>admin4j</name>
+            <email>1218853253@qq.com</email>
+            <organization>https://github.com/admin4j</organization>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
 
     <distributionManagement>
         <repository>
