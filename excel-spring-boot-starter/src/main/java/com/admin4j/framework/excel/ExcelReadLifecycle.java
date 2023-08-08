@@ -8,7 +8,7 @@ import java.util.List;
  * @author andanyang
  * @since 2023/7/24 15:28
  */
-@Deprecated
+ 
 public interface ExcelReadLifecycle {
 
     /**

@@ -6,13 +6,13 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-parent</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.8.0</version>
     <description>用于业务框架的父工程</description>
     <packaging>pom</packaging>
     <name>admin4j-parent</name>
     <url>https://github.com/admin4j/admin4j-framework</url>
     <properties>
-        <admin4j-dependencies.version>0.6.0-SNAPSHOT</admin4j-dependencies.version>
+        <admin4j-dependencies.version>0.8.0</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

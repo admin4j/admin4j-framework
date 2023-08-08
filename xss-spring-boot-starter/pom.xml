@@ -6,8 +6,8 @@
         <artifactId>framework</artifactId>
         <version>${revision}</version>
     </parent>
-    
-    <version>0.0.7</version>
+
+    <version>1.0.0</version>
     <artifactId>xss-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
 

@@ -28,7 +28,7 @@
         <module>excel-spring-boot-starter</module>
         <module>admin4j-limiter</module>
         <module>admin4j-redis</module>
-        <module>admin4j-job</module>
+        <!--        <module>admin4j-job</module>-->
         <module>elasticsearch-spring-boot-starter</module>
         <module>mybatis-plus-boot-starter</module>
         <module>desensitize-spring-boot-starter</module>
@@ -39,8 +39,8 @@
         <module>spring-boot-parent</module>
     </modules>
     <properties>
-        <revision>0.6.0-SNAPSHOT</revision>
-        <admin4j-dependencies.version>0.6.0-SNAPSHOT</admin4j-dependencies.version>
+        <revision>0.8.0</revision>
+        <admin4j-dependencies.version>0.8.0</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

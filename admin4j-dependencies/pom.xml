@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.8.0</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -17,9 +17,9 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- 统一依赖管理 -->
-        <spring.boot.version>2.7.13</spring.boot.version>
-        <spring.cloud.ali.version>2021.0.4.0</spring.cloud.ali.version>
-        <spring-cloud.version>2021.0.6</spring-cloud.version>
+        <spring.boot.version>2.7.14</spring.boot.version>
+        <spring.cloud.ali.version>2021.0.5.0</spring.cloud.ali.version>
+        <spring-cloud.version>2021.0.8</spring-cloud.version>
 
 
         <!-- Web 相关 -->
@@ -65,10 +65,10 @@
 
         <flowable.version>6.7.2</flowable.version>
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
-        <admin4j.version>0.6.0-SNAPSHOT</admin4j.version>
-        <admin4j-lock.version>0.6.0-SNAPSHOT</admin4j-lock.version>
-        <admin4j-limiter.version>0.6.0-SNAPSHOT</admin4j-limiter.version>
-        <admin4j-redis.version>0.6.0-SNAPSHOT</admin4j-redis.version>
+        <admin4j.version>0.8.0</admin4j.version>
+        <admin4j-lock.version>0.8.0</admin4j-lock.version>
+        <admin4j-limiter.version>0.8.0</admin4j-limiter.version>
+        <admin4j-redis.version>0.8.0</admin4j-redis.version>
 
     </properties>
 
@@ -105,28 +105,33 @@
             <!-- admin4j相关-->
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
-                <artifactId>log-spring-boot-starter</artifactId>
+                <artifactId>excel-spring-boot-starter</artifactId>
                 <version>0.6.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>log-spring-boot-starter</artifactId>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>test-spring-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>desensitize-spring-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>security-spring-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -137,11 +142,6 @@
                 <groupId>com.admin4j.redis</groupId>
                 <artifactId>redis-spring-boot-starter</artifactId>
                 <version>${admin4j-redis.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.admin4j.framework</groupId>
-                <artifactId>prometheus-spring-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.redis</groupId>
@@ -196,7 +196,17 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>kaptcha-spring-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
+                <version>${admin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>prometheus-spring-boot-starter</artifactId>
+                <version>${admin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>excel-spring-boot-starter</artifactId>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
@@ -221,7 +231,7 @@
             <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>xss-spring-boot-starter</artifactId>
-                <version>0.0.7</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
@@ -256,7 +266,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>oss-spring-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
@@ -267,7 +277,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>xxl-job-spring-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.admin4j</groupId>
@@ -467,12 +477,6 @@
                 <version>${mockito-inline.version}</version> <!-- 支持 Mockito 的 final 类与 static 方法的 mock -->
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-
             <!-- 单元测试，随机生成 POJO 类 -->
             <dependency>
                 <groupId>uk.co.jemos.podam</groupId>
@@ -554,11 +558,7 @@
                 <artifactId>easyexcel</artifactId>
                 <version>${easyexcel.verion}</version>
             </dependency>
-            <dependency>
-                <groupId>com.admin4j.framework</groupId>
-                <artifactId>excel-spring-boot-starter</artifactId>
-                <version>0.6.0-SNAPSHOT</version>
-            </dependency>
+
 
             <dependency>
                 <groupId>org.apache.velocity</groupId>
