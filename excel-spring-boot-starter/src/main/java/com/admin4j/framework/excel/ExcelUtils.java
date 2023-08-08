@@ -1,7 +1,9 @@
 package com.admin4j.framework.excel;
 
+import com.admin4j.framework.excel.listener.ExcelBatchListener;
 import com.admin4j.framework.excel.listener.ExcelListener;
 import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
@@ -17,6 +19,7 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Excel 工具类
@@ -29,6 +32,13 @@ public class ExcelUtils {
     //static ObjectProvider<ExcelReadLifecycle> excelReadLifecycles;
     @Setter
     static ExcelWriteLifecycle excelWriteLifecycle;
+
+    static List<ReadListener<Object>> readListeners;
+
+    static public void init(ExcelWriteLifecycle excelWriteLifecycle, List<ReadListener<Object>> readListeners) {
+        ExcelUtils.excelWriteLifecycle = excelWriteLifecycle;
+        ExcelUtils.readListeners = readListeners;
+    }
 
     /**
      * 将列表以 Excel 响应给前端
@@ -95,11 +105,9 @@ public class ExcelUtils {
     }
 
     public static <T> List<T> read(MultipartFile file, Class<T> clazz) throws IOException {
-        ExcelListener<T> readListener = new ExcelListener<>();
-        EasyExcelFactory.read(file.getInputStream(), clazz, readListener)
-                .autoCloseStream(false)  // 不要自动关闭，交给 Servlet 自己处理
-                .doReadAll();
 
+        ExcelListener<T> readListener = new ExcelListener<>();
+        read(file, clazz, readListener);
         return readListener.getData();
     }
 
@@ -114,9 +122,45 @@ public class ExcelUtils {
      * @throws IOException 读取失败的情况
      */
     public static <T> void read(MultipartFile file, Class<T> clazz, ReadListener<T> readListener) throws IOException {
-        EasyExcelFactory.read(file.getInputStream(), clazz, readListener)
-                .autoCloseStream(false)  // 不要自动关闭，交给 Servlet 自己处理
-                .doReadAll();
+        ExcelReaderBuilder excelReaderBuilder = EasyExcelFactory.read(file.getInputStream(), clazz, readListener)
+                .autoCloseStream(false);
+        if (readListeners != null && !readListeners.isEmpty()) {
+            for (ReadListener<?> listener : readListeners) {
+                excelReaderBuilder.registerReadListener(listener);
+            }
+        }
+        excelReaderBuilder.doReadAll();
+    }
+
+    /**
+     * 批量读取excel
+     *
+     * @param file      excel 文件
+     * @param clazz     返回 数据clazz
+     * @param batchSize 批量次数
+     * @param consumer  批量处理
+     * @return 解析结构
+     * @throws IOException 读取失败的情况
+     */
+    public static <T> void readBatch(MultipartFile file, Class<T> clazz, int batchSize, Consumer<List<T>> consumer) throws IOException {
+
+        ExcelBatchListener<T> readListener = new ExcelBatchListener<>(batchSize, consumer);
+        read(file, clazz, readListener);
+    }
+
+    /**
+     * 批量读取excel
+     *
+     * @param file     excel 文件
+     * @param clazz    返回 数据clazz
+     * @param consumer 批量处理
+     * @return 解析结构
+     * @throws IOException 读取失败的情况
+     */
+    public static <T> void readBatch(MultipartFile file, Class<T> clazz, Consumer<List<T>> consumer) throws IOException {
+
+        ExcelBatchListener<T> readListener = new ExcelBatchListener<>(consumer);
+        read(file, clazz, readListener);
     }
 
 }
