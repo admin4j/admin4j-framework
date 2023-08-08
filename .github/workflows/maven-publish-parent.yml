@@ -5,7 +5,7 @@ name: admin4j-parent deploy
 
 on:
   release:
-    types: [created]
+    types: [ created ]
   workflow_dispatch:
 
 jobs:
@@ -28,11 +28,45 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: Build with Maven
-        run: mvn -B -Dmaven.test.skip=true clean install -f admin4j-parent/pom.xml
+      - name: deploy admin4j-dependencies
+        run: mvn clean install deploy -Dmaven.test.skip=true --file admin4j-dependencies/pom.xml
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Set up Apache Maven Central
-        run: mvn deploy -Dmaven.test.skip=true --file admin4j-parent/pom.xml
+      - name: deploy framework
+        run: mvn clean install deploy -Dmaven.test.skip=true -N --file ./pom.xml
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: deploy admin4j-parent
+        run: mvn clean install deploy -Dmaven.test.skip=true --file admin4j-parent/pom.xml
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: deploy spring-boot-parent
+        run: mvn clean install deploy -Dmaven.test.skip=true --file spring-boot-parent/pom.xml
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: deploy admin4j framework
+        run: mvn clean install deploy -Dmaven.test.skip=true --file admin4j-common/pom.xml &&
+          mvn clean install deploy -Dmaven.test.skip=true --file admin4j-common-spring/pom.xml
+          mvn clean install deploy -Dmaven.test.skip=true --file admin4j-common-spring-web/pom.xml
+          mvn clean install deploy -Dmaven.test.skip=true --file log-spring-boot-starter/pom.xml
+          mvn clean install deploy -Dmaven.test.skip=true --file test-spring-boot-starter/pom.xml
+          mvn clean install deploy -Dmaven.test.skip=true --file web-spring-boot-starter/pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
