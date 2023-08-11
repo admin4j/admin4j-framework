@@ -1,7 +1,7 @@
 package com.admin4j.framework.web.config;
 
 
-import com.admin4j.framework.web.utils.DateTimePattern;
+import com.admin4j.common.time.DateFormatterPattern;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -32,20 +32,20 @@ public class JacksonConfig {
     public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization() {
         return builder -> {
             builder.serializerByType(LocalDateTime.class,
-                    new LocalDateTimeSerializer(DateTimePattern.NORM_DATETIME_FORMATTER));
+                    new LocalDateTimeSerializer(DateFormatterPattern.NORM_DATETIME_FORMATTER));
             builder.deserializerByType(LocalDateTime.class,
-                    new LocalDateTimeDeserializer(DateTimePattern.NORM_DATETIME_FORMATTER));
+                    new LocalDateTimeDeserializer(DateFormatterPattern.NORM_DATETIME_FORMATTER));
 
             builder.serializerByType(LocalDate.class,
-                    new LocalDateSerializer(DateTimePattern.NORM_DATE_FORMATTER));
+                    new LocalDateSerializer(DateFormatterPattern.NORM_DATE_FORMATTER));
             builder.deserializerByType(LocalDate.class,
-                    new LocalDateDeserializer(DateTimePattern.NORM_DATE_FORMATTER));
+                    new LocalDateDeserializer(DateFormatterPattern.NORM_DATE_FORMATTER));
 
 
             builder.serializerByType(LocalTime.class,
-                    new LocalDateSerializer(DateTimePattern.NORM_TIME_FORMATTER));
+                    new LocalDateSerializer(DateFormatterPattern.NORM_TIME_FORMATTER));
             builder.deserializerByType(LocalTime.class,
-                    new LocalTimeDeserializer(DateTimePattern.NORM_TIME_FORMATTER));
+                    new LocalTimeDeserializer(DateFormatterPattern.NORM_TIME_FORMATTER));
 
             builder.failOnUnknownProperties(false);
             builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

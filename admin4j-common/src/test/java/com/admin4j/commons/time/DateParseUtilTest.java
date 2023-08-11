@@ -1,6 +1,6 @@
 package com.admin4j.commons.time;
 
-import com.admin4j.common.time.LocalDateUtil;
+import com.admin4j.common.time.DateParseUtil;
 import junit.framework.TestCase;
 
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import java.util.TimeZone;
  * @author andanyang
  * @since 2022/4/26 17:11
  */
-public class LocalDateUtilTest extends TestCase {
+public class DateParseUtilTest extends TestCase {
 
     public void testParse() {
 
@@ -19,7 +19,7 @@ public class LocalDateUtilTest extends TestCase {
         System.out.println("rawOffset = " + rawOffset);
         String id = ZoneOffset.systemDefault().getId();
         System.out.println("id = " + id);
-        ZoneOffset defaultZoomOffset = LocalDateUtil.DEFAULT_ZONE_OFFSET;
+        ZoneOffset defaultZoomOffset = DateParseUtil.DEFAULT_ZONE_OFFSET;
         System.out.println("defaultZoomOffset = " + defaultZoomOffset);
 
         //ZoneOffset of = ZoneOffset.of("UTC+8");
@@ -31,10 +31,10 @@ public class LocalDateUtilTest extends TestCase {
         System.out.println("of5 = " + of5);
 
 
-        LocalDateTime parse = LocalDateUtil.parse("2015-01-03 00:12:13");
+        LocalDateTime parse = DateParseUtil.parse("2015-01-03 00:12:13");
         System.out.println("parse = " + parse);
 
-        Long aLong = LocalDateUtil.parse2EpochSecond("2015-01-03 00:12:13", "+8");
+        Long aLong = DateParseUtil.toEpochMilli("2015-01-03 00:12:13", "+8");
         System.out.println("aLong = " + aLong);
     }
 

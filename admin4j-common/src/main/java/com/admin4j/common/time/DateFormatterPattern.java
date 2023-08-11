@@ -1,4 +1,4 @@
-package com.admin4j.framework.web.utils;
+package com.admin4j.common.time;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @since 2022/8/4 14:54
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DateTimePattern {
+public class DateFormatterPattern {
 
 
     /**
