@@ -4,6 +4,7 @@ import com.admin4j.common.exception.Admin4jException;
 import com.admin4j.common.exception.BizException;
 import com.admin4j.common.exception.handler.AbstractExceptionHandler;
 import com.admin4j.common.pojo.ResponseEnum;
+import com.admin4j.common.util.ServletUtils;
 import com.admin4j.framework.web.pojo.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,12 +111,12 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<R> noHandlerFoundException(IllegalArgumentException e) {
+    public ResponseEntity<R> illegalArgumentException(IllegalArgumentException e) {
         log.error("IllegalArgumentException：" + e.getMessage(), e);
         publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_ILLEGAL_ARGUMENT, e.getMessage()));
     }
-    
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<R> runtimeException(RuntimeException e) {
         log.error("runtime错误：" + e.getMessage(), e);
@@ -132,8 +133,8 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
 
 
     @ExceptionHandler(DateTimeParseException.class)
-    public ResponseEntity<R> noHandlerFoundException(DateTimeParseException e) {
-        log.error("DateTimeParseException：" + e.getMessage(), e);
+    public ResponseEntity<R> dateTimeParseException(DateTimeParseException e) {
+        log.error("DateTimeParseException：{} path {}", ServletUtils.getRequest().getRequestURL(), e.getMessage());
         publishGlobalExceptionEvent(e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(R.fail(ResponseEnum.ERROR_DATETIME_PARSE, e.getMessage()));
     }
