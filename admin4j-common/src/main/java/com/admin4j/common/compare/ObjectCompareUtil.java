@@ -1,7 +1,7 @@
-package com.admin4j.framework.web.utils.compare;
+package com.admin4j.common.compare;
 
+import com.admin4j.common.pojo.ResponseEnum;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,11 +16,11 @@ public class ObjectCompareUtil {
 
     public static List<ObjectCompareFiledResult> compareFields(Object originObj, Object newObj) throws IllegalAccessException {
 
-        Assert.isTrue(ObjectUtils.allNotNull(originObj, newObj), "obj is null");
+        ResponseEnum.VERIFY_ERROR.isTrue(ObjectUtils.allNotNull(originObj, newObj), "obj is null");
 
         Class<?> originObjClass = originObj.getClass();
 
-        Assert.isTrue(originObjClass.equals(newObj.getClass()), "Class is not equals");
+        ResponseEnum.VERIFY_ERROR.isTrue(originObjClass.equals(newObj.getClass()), "Class is not equals");
 
         Field[] declaredFields = originObjClass.getDeclaredFields();
 

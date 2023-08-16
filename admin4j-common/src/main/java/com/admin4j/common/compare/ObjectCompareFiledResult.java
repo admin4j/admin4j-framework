@@ -1,4 +1,4 @@
-package com.admin4j.framework.web.utils.compare;
+package com.admin4j.common.compare;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
