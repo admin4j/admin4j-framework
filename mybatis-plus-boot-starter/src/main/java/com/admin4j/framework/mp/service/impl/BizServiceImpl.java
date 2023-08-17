@@ -1,4 +1,4 @@
-package com.admin4j.framework.mp.service;
+package com.admin4j.framework.mp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
