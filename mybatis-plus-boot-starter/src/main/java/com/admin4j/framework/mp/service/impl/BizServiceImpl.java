@@ -2,21 +2,19 @@ package com.admin4j.framework.mp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
+ * 业务操作，curd
+ *
  * @author andanyang
  * @since 2023/6/9 15:28
  */
-public class BizServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> {
+public class BizServiceImpl<M extends BaseMapper<T>, T> extends CommandServiceImpl<M, T> {
 
     /**
      * 插入前执行
@@ -90,23 +88,6 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
         return b;
     }
 
-
-    @Override
-    public boolean removeById(T entity) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(this.entityClass);
-        Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!", new Object[0]);
-        String keyProperty = tableInfo.getKeyProperty();
-        Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!", new Object[0]);
-        Object idVal = tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
-
-        if (beforeRemoveById((Serializable) idVal)) {
-            boolean b = super.removeById(entity);
-            afterRemoveById((Serializable) idVal);
-            return b;
-        }
-        return true;
-    }
-
     @Override
     public boolean removeById(Serializable id) {
         if (beforeRemoveById(id)) {
@@ -116,6 +97,8 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T
         }
         return true;
     }
+
+    // ---------------------------------------------------------------- exist ----------------------------------------------------------------
 
     /**
      * 数据是否存在。如：name是否再数据库里存在

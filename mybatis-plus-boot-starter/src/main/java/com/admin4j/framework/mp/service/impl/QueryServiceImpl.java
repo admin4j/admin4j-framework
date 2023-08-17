@@ -1,12 +1,16 @@
-package com.admin4j.framework.mp.service;
+package com.admin4j.framework.mp.service.impl;
 
+import com.admin4j.framework.mp.service.IQueryService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.apache.ibatis.logging.Log;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -19,63 +23,47 @@ import java.util.stream.Collectors;
  * @author andanyang
  * @since 2023/8/17 11:04
  */
-
-public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryService<T> {
-    Log getLog();
-    ///**
-    // * 普通查询
-    // *
-    // * @return QueryWrapper 的包装类
-    // */
-    //protected QueryWrapper<T> query() {
-    //    return Wrappers.query();
-    //}
-    //
-    ///**
-    // * 普通查询
-    // *
-    // * @return QueryWrapper 的包装类
-    // */
-    //protected QueryWrapper<T> query(T entity) {
-    //    return Wrappers.query(entity);
-    //}
-    //
-    ///**
-    // * 链式查询 lambda 式
-    // * <p>注意：不支持 Kotlin </p>
-    // *
-    // * @return LambdaQueryWrapper 的包装类
-    // */
-    //protected LambdaQueryWrapper<T> lambdaQuery() {
-    //    return Wrappers.lambdaQuery();
-    //}
-    //
-    ///**
-    // * 链式查询 lambda 式
-    // * <p>注意：不支持 Kotlin </p>
-    // *
-    // * @param entity 实体对象
-    // * @return LambdaQueryWrapper 的包装类
-    // */
-    //protected LambdaQueryWrapper<T> lambdaQuery(T entity) {
-    //    return Wrappers.lambdaQuery(entity);
-    //}
+public class QueryServiceImpl<M extends BaseMapper<T>, T> extends BaseServiceImpl<M, T> implements IQueryService<T> {
 
     /**
-     * 根据 ID 查询
+     * 普通查询
      *
-     * @param id 主键ID
+     * @return QueryWrapper 的包装类
      */
-
-
-    /**
-     * 查询（根据 columnMap 条件）
-     *
-     * @param columnMap 表字段 map 对象
-     */
-    default List<T> listByMap(Map<String, Object> columnMap) {
-        return getBaseMapper().selectByMap(columnMap);
+    protected QueryWrapper<T> query() {
+        return Wrappers.query();
     }
+
+    /**
+     * 普通查询
+     *
+     * @return QueryWrapper 的包装类
+     */
+    protected QueryWrapper<T> query(T entity) {
+        return Wrappers.query(entity);
+    }
+
+    /**
+     * 链式查询 lambda 式
+     * <p>注意：不支持 Kotlin </p>
+     *
+     * @return LambdaQueryWrapper 的包装类
+     */
+    protected LambdaQueryWrapper<T> lambdaQuery() {
+        return Wrappers.lambdaQuery();
+    }
+
+    /**
+     * 链式查询 lambda 式
+     * <p>注意：不支持 Kotlin </p>
+     *
+     * @param entity 实体对象
+     * @return LambdaQueryWrapper 的包装类
+     */
+    protected LambdaQueryWrapper<T> lambdaQuery(T entity) {
+        return Wrappers.lambdaQuery(entity);
+    }
+
 
     /**
      * 根据 Wrapper，查询一条记录 <br/>
@@ -83,8 +71,18 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default T getOne(Wrapper<T> queryWrapper) {
+    public T getOne(Wrapper<T> queryWrapper) {
         return getOne(queryWrapper, true);
+    }
+
+
+    /**
+     * 根据 ID 查询
+     *
+     * @param id 主键ID
+     */
+    public T getById(Serializable id) {
+        return getBaseMapper().selectById(id);
     }
 
     /**
@@ -93,11 +91,11 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      * @param throwEx      有多个 result 是否抛出异常
      */
-    default T getOne(Wrapper<T> queryWrapper, boolean throwEx) {
+    public T getOne(Wrapper<T> queryWrapper, boolean throwEx) {
         if (throwEx) {
             return getBaseMapper().selectOne(queryWrapper);
         }
-        return SqlHelper.getObject(getLog(), getBaseMapper().selectList(queryWrapper));
+        return SqlHelper.getObject(log, getBaseMapper().selectList(queryWrapper));
     }
 
     /**
@@ -105,8 +103,8 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default Map<String, Object> getMap(Wrapper<T> queryWrapper) {
-        return SqlHelper.getObject(getLog(), getBaseMapper().selectMaps(queryWrapper));
+    public Map<String, Object> getMap(Wrapper<T> queryWrapper) {
+        return SqlHelper.getObject(log, getBaseMapper().selectMaps(queryWrapper));
     }
 
     /**
@@ -115,8 +113,8 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      * @param mapper       转换函数
      */
-    default <V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
-        return SqlHelper.getObject(getLog(), listObjs(queryWrapper, mapper));
+    public <V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
+        return SqlHelper.getObject(log, listObjs(queryWrapper, mapper));
     }
 
     /**
@@ -124,7 +122,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @see Wrappers#emptyWrapper()
      */
-    default long count() {
+    public long count() {
         return count(Wrappers.emptyWrapper());
     }
 
@@ -133,16 +131,48 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default long count(Wrapper<T> queryWrapper) {
+    public long count(Wrapper<T> queryWrapper) {
         return SqlHelper.retCount(getBaseMapper().selectCount(queryWrapper));
     }
+
+
+    //---------------------------------------------------------------- list --------------------------------
+
+    /**
+     * 查询（根据ID 批量查询）
+     *
+     * @param idList 主键ID列表
+     */
+    public List<T> listByIds(Collection<? extends Serializable> idList) {
+        return getBaseMapper().selectBatchIds(idList);
+    }
+
+    /**
+     * 查询（根据 columnMap 条件）
+     *
+     * @param columnMap 表字段 map 对象
+     */
+    public List<T> listByMap(Map<String, Object> columnMap) {
+        return getBaseMapper().selectByMap(columnMap);
+    }
+
+    /**
+     * 查询列表
+     *
+     * @param entity 实体
+     */
+    @Override
+    public List<T> list(T entity) {
+        return getBaseMapper().selectList(Wrappers.query(entity));
+    }
+
 
     /**
      * 查询列表
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default List<T> list(Wrapper<T> queryWrapper) {
+    public List<T> list(Wrapper<T> queryWrapper) {
         return getBaseMapper().selectList(queryWrapper);
     }
 
@@ -151,7 +181,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @see Wrappers#emptyWrapper()
      */
-    default List<T> list() {
+    public List<T> list() {
         return list(Wrappers.emptyWrapper());
     }
 
@@ -161,7 +191,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default List<Map<String, Object>> listMaps(Wrapper<T> queryWrapper) {
+    public List<Map<String, Object>> listMaps(Wrapper<T> queryWrapper) {
         return getBaseMapper().selectMaps(queryWrapper);
     }
 
@@ -170,14 +200,14 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @see Wrappers#emptyWrapper()
      */
-    default List<Map<String, Object>> listMaps() {
+    public List<Map<String, Object>> listMaps() {
         return listMaps(Wrappers.emptyWrapper());
     }
 
     /**
      * 查询全部记录
      */
-    default List<Object> listObjs() {
+    public List<Object> listObjs() {
         return listObjs(Function.identity());
     }
 
@@ -186,7 +216,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @param mapper 转换函数
      */
-    default <V> List<V> listObjs(Function<? super Object, V> mapper) {
+    public <V> List<V> listObjs(Function<? super Object, V> mapper) {
         return listObjs(Wrappers.emptyWrapper(), mapper);
     }
 
@@ -195,7 +225,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default List<Object> listObjs(Wrapper<T> queryWrapper) {
+    public List<Object> listObjs(Wrapper<T> queryWrapper) {
         return listObjs(queryWrapper, Function.identity());
     }
 
@@ -205,9 +235,11 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      * @param mapper       转换函数
      */
-    default <V> List<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
+    public <V> List<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
         return getBaseMapper().selectObjs(queryWrapper).stream().filter(Objects::nonNull).map(mapper).collect(Collectors.toList());
     }
+
+    //---------------------------------------------------------------- page ------------------------
 
     /**
      * 无条件翻页查询
@@ -216,7 +248,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      * @see Wrappers#emptyWrapper()
      */
 
-    default <E extends IPage<T>> E page(E page) {
+    public <E extends IPage<T>> E page(E page) {
         return page(page, Wrappers.emptyWrapper());
     }
 
@@ -227,7 +259,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      * @param entity 实体
      */
 
-    default <E extends IPage<T>> E page(E page, T entity) {
+    public <E extends IPage<T>> E page(E page, T entity) {
         return page(page, Wrappers.query(entity));
     }
 
@@ -237,7 +269,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      * @param page         翻页对象
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default <E extends IPage<T>> E page(E page, Wrapper<T> queryWrapper) {
+    public <E extends IPage<T>> E page(E page, Wrapper<T> queryWrapper) {
         return getBaseMapper().selectPage(page, queryWrapper);
     }
 
@@ -248,7 +280,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      * @param page         翻页对象
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default <E extends IPage<Map<String, Object>>> E pageMaps(E page, Wrapper<T> queryWrapper) {
+    public <E extends IPage<Map<String, Object>>> E pageMaps(E page, Wrapper<T> queryWrapper) {
         return getBaseMapper().selectMapsPage(page, queryWrapper);
     }
 
@@ -258,7 +290,7 @@ public interface IBizQueryService<M extends BaseMapper<T>, T> extends IQueryServ
      * @param page 翻页对象
      * @see Wrappers#emptyWrapper()
      */
-    default <E extends IPage<Map<String, Object>>> E pageMaps(E page) {
+    public <E extends IPage<Map<String, Object>>> E pageMaps(E page) {
         return pageMaps(page, Wrappers.emptyWrapper());
     }
 }

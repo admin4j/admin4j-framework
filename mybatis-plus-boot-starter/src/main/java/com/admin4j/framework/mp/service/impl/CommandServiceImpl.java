@@ -1,112 +1,45 @@
 package com.admin4j.framework.mp.service.impl;
 
+import com.admin4j.framework.mp.service.IBizService;
+import com.admin4j.framework.mp.service.ICommandBatchService;
 import com.admin4j.framework.mp.service.ICommandService;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.*;
+import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
-import org.mybatis.spring.SqlSessionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * @author andanyang
  * @since 2023/8/17 11:04
  */
 
-public class CommandServiceImpl<M extends BaseMapper<T>, T> implements ICommandService<T> {
+public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryServiceImpl<M, T> implements ICommandService<T>, IBizService<T>, ICommandBatchService<T> {
 
 
     protected Log log = LogFactory.getLog(getClass());
 
-    @Autowired
-    protected M baseMapper;
 
     @Override
     public M getBaseMapper() {
         return baseMapper;
     }
 
-    protected Class<T> entityClass = currentModelClass();
-
-    @Override
-    public Class<T> getEntityClass() {
-        return entityClass;
-    }
-
-    protected Class<M> mapperClass = currentMapperClass();
-
-    /**
-     * 判断数据库操作是否成功
-     *
-     * @param result 数据库操作返回影响条数
-     * @return boolean
-     * @deprecated 3.3.1
-     */
-    @Deprecated
-    protected boolean retBool(Integer result) {
-        return SqlHelper.retBool(result);
-    }
-
-    protected Class<M> currentMapperClass() {
-        return (Class<M>) ReflectionKit.getSuperClassGenericType(this.getClass(), ServiceImpl.class, 0);
-    }
-
-    protected Class<T> currentModelClass() {
-        return (Class<T>) ReflectionKit.getSuperClassGenericType(this.getClass(), ServiceImpl.class, 1);
-    }
-
-
-    /**
-     * 批量操作 SqlSession
-     *
-     * @deprecated 3.3.0
-     */
-    @Deprecated
-    protected SqlSession sqlSessionBatch() {
-        return SqlHelper.sqlSessionBatch(entityClass);
-    }
-
-    /**
-     * 释放sqlSession
-     *
-     * @param sqlSession session
-     * @deprecated 3.3.0
-     */
-    @Deprecated
-    protected void closeSqlSession(SqlSession sqlSession) {
-        SqlSessionUtils.closeSqlSession(sqlSession, GlobalConfigUtils.currentSessionFactory(entityClass));
-    }
-
-    /**
-     * 获取 SqlStatement
-     *
-     * @param sqlMethod ignore
-     * @return ignore
-     * @see #getSqlStatement(SqlMethod)
-     * @deprecated 3.4.0
-     */
-    @Deprecated
-    protected String sqlStatement(SqlMethod sqlMethod) {
-        return SqlHelper.table(entityClass).getSqlStatement(sqlMethod.getMethod());
-    }
 
     /**
      * 批量插入
@@ -182,36 +115,6 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> implements ICommandS
         });
     }
 
-    @Override
-    public T getOne(Wrapper<T> queryWrapper, boolean throwEx) {
-        if (throwEx) {
-            return baseMapper.selectOne(queryWrapper);
-        }
-        return SqlHelper.getObject(log, baseMapper.selectList(queryWrapper));
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<T> queryWrapper) {
-        return SqlHelper.getObject(log, baseMapper.selectMaps(queryWrapper));
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper) {
-        return SqlHelper.getObject(log, listObjs(queryWrapper, mapper));
-    }
-
-    /**
-     * 执行批量操作
-     *
-     * @param consumer consumer
-     * @since 3.3.0
-     * @deprecated 3.3.1 后面我打算移除掉 {@link #executeBatch(Collection, int, BiConsumer)} }.
-     */
-    @Deprecated
-    protected boolean executeBatch(Consumer<SqlSession> consumer) {
-        return SqlHelper.executeBatch(this.entityClass, this.log, consumer);
-    }
-
     /**
      * 执行批量操作
      *
@@ -261,6 +164,26 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> implements ICommandS
         return SqlHelper.retBool(getBaseMapper().deleteBatchIds(list));
     }
 
+    /**
+     * 批量删除
+     *
+     * @param list    主键ID或实体列表
+     * @param useFill 是否填充(为true的情况,会将入参转换实体进行delete删除)
+     * @return 删除结果
+     * @since 3.5.0
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean removeByIds(Collection<?> list, boolean useFill) {
+        if (CollectionUtils.isEmpty(list)) {
+            return false;
+        }
+        if (useFill) {
+            return removeBatchByIds(list, true);
+        }
+        return SqlHelper.retBool(getBaseMapper().deleteBatchIds(list));
+    }
+
     @Override
     public boolean removeById(Serializable id, boolean useFill) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
@@ -268,7 +191,7 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> implements ICommandS
             if (!entityClass.isAssignableFrom(id.getClass())) {
                 T instance = tableInfo.newInstance();
                 tableInfo.setPropertyValue(instance, tableInfo.getKeyProperty(), id);
-                return removeById(instance);
+                return removeById((Serializable) instance);
             }
         }
         return SqlHelper.retBool(getBaseMapper().deleteById(id));

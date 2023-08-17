@@ -1,7 +1,6 @@
 package com.admin4j.framework.mp.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
@@ -19,27 +18,11 @@ import java.util.List;
 public interface IQueryService<T> {
 
     /**
-     * 获取对应 entity 的 BaseMapper
-     *
-     * @return BaseMapper
-     */
-    BaseMapper<T> getBaseMapper();
-
-    /**
-     * 获取 entity 的 class
-     *
-     * @return {@link Class<T>}
-     */
-    Class<T> getEntityClass();
-
-    /**
      * 根据 ID 查询
      *
      * @param id 主键ID
      */
-    default T getById(Serializable id) {
-        return getBaseMapper().selectById(id);
-    }
+    T getById(Serializable id);
 
 
     /**
@@ -47,36 +30,28 @@ public interface IQueryService<T> {
      *
      * @param idList 主键ID列表
      */
-    default List<T> listByIds(Collection<? extends Serializable> idList) {
-        return getBaseMapper().selectBatchIds(idList);
-    }
+    List<T> listByIds(Collection<? extends Serializable> idList);
 
     /**
      * 查询列表
      *
      * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
      */
-    default List<T> list(Wrapper<T> queryWrapper) {
-        return getBaseMapper().selectList(queryWrapper);
-    }
+    List<T> list(Wrapper<T> queryWrapper);
 
     /**
      * 查询列表
      *
      * @param entity 实体
      */
-    //default List<T> list(T entity) {
-    //    return getBaseMapper().selectList(Wrappers.query(entity));
-    //}
+    List<T> list(T entity);
 
     /**
      * 查询所有
      *
      * @see Wrappers#emptyWrapper()
      */
-    default List<T> list() {
-        return list(Wrappers.emptyWrapper());
-    }
+    List<T> list();
 
     /**
      * 无条件翻页查询
@@ -84,9 +59,7 @@ public interface IQueryService<T> {
      * @param page 翻页对象
      * @see Wrappers#emptyWrapper()
      */
-    default <E extends IPage<T>> E page(E page) {
-        return page(page, Wrappers.emptyWrapper());
-    }
+    <E extends IPage<T>> E page(E page);
 
     /**
      * 翻页查询
@@ -94,10 +67,7 @@ public interface IQueryService<T> {
      * @param page   翻页对象
      * @param entity 实体
      */
-    //default <E extends IPage<T>> E page(E page, T entity) {
-    //    return page(page, Wrappers.query(entity));
-    //}
-    default <E extends IPage<T>> E page(E page, Wrapper<T> queryWrapper) {
-        return getBaseMapper().selectPage(page, queryWrapper);
-    }
+    <E extends IPage<T>> E page(E page, T entity);
+
+    <E extends IPage<T>> E page(E page, Wrapper<T> queryWrapper);
 }
