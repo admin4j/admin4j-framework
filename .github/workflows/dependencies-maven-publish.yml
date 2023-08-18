@@ -5,7 +5,7 @@ name: dependencies dependencies
 
 on:
   release:
-    types: [created]
+    types: [ created ]
   push:
     branches:
       - master
@@ -35,7 +35,7 @@ jobs:
         run: mvn -B -Dmaven.test.skip=true -Possrh clean install --file admin4j-dependencies/pom.xml
 
       - name: Set up Apache Maven Central
-        run: mvn -Possrh deploy --file admin4j-dependencies/pom.xml
+        run: mvn deploy -Possrh --file admin4j-dependencies/pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
