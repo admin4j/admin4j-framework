@@ -1,9 +1,11 @@
 package com.admin4j.framework.mp.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -86,6 +88,25 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends CommandServiceIm
         boolean b = super.updateById(entity);
         afterUpdateById(entity);
         return b;
+    }
+
+    /**
+     * 根据 UpdateWrapper 条件，更新记录 需要设置sqlset
+     *
+     * @param updateWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper}
+     */
+    protected boolean update(Wrapper<T> updateWrapper) {
+        return update(null, updateWrapper);
+    }
+
+    /**
+     * 根据 whereEntity 条件，更新记录
+     *
+     * @param entity        实体对象
+     * @param updateWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper}
+     */
+    protected boolean update(T entity, Wrapper<T> updateWrapper) {
+        return SqlHelper.retBool(getBaseMapper().update(entity, updateWrapper));
     }
 
     @Override

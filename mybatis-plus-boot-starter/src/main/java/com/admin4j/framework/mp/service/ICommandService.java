@@ -21,7 +21,7 @@ public interface ICommandService<T> {
      */
     BaseMapper<T> getBaseMapper();
 
- 
+
     /**
      * 插入一条记录（选择字段，策略插入）
      *
