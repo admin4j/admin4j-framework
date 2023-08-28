@@ -2,7 +2,6 @@ package com.admin4j.framework.mp.service.impl;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +34,10 @@ abstract class BaseServiceImpl<M extends BaseMapper<T>, T> {
     }
 
     protected Class<M> currentMapperClass() {
-        return (Class<M>) ReflectionKit.getSuperClassGenericType(this.getClass(), ServiceImpl.class, 0);
+        return (Class<M>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseServiceImpl.class, 0);
     }
 
     protected Class<T> currentModelClass() {
-        return (Class<T>) ReflectionKit.getSuperClassGenericType(this.getClass(), ServiceImpl.class, 1);
+        return (Class<T>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseServiceImpl.class, 1);
     }
 }
