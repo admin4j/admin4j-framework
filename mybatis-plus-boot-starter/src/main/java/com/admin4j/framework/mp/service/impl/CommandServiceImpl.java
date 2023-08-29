@@ -3,14 +3,13 @@ package com.admin4j.framework.mp.service.impl;
 import com.admin4j.framework.mp.service.IBizService;
 import com.admin4j.framework.mp.service.ICommandBatchService;
 import com.admin4j.framework.mp.service.ICommandService;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import com.baomidou.mybatisplus.core.toolkit.Assert;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.Constants;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.apache.ibatis.binding.MapperMethod;
@@ -38,6 +37,45 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
     @Override
     public M getBaseMapper() {
         return baseMapper;
+    }
+
+    /**
+     * 普通查询
+     *
+     * @return UpdateWrapper 的包装类
+     */
+    protected UpdateWrapper<T> update() {
+        return Wrappers.update();
+    }
+
+    /**
+     * 普通查询
+     *
+     * @return UpdateWrapper 的包装类
+     */
+    protected UpdateWrapper<T> update(T entity) {
+        return Wrappers.update(entity);
+    }
+
+    /**
+     * 链式查询 lambda 式
+     * <p>注意：不支持 Kotlin </p>
+     *
+     * @return LambdaUpdateWrapper 的包装类
+     */
+    protected LambdaUpdateWrapper<T> lambdaUpdate() {
+        return Wrappers.lambdaUpdate();
+    }
+
+    /**
+     * 链式查询 lambda 式
+     * <p>注意：不支持 Kotlin </p>
+     *
+     * @param entity 实体对象
+     * @return LambdaUpdateWrapper 的包装类
+     */
+    protected LambdaUpdateWrapper<T> lambdaUpdate(T entity) {
+        return Wrappers.lambdaUpdate(entity);
     }
 
 
