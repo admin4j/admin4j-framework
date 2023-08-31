@@ -78,14 +78,14 @@ public @interface Idempotent {
     @AliasFor(annotation = DistributedLock.class, attribute = "waitTimeOutSeconds")
     int waitTimeOutSeconds() default -1;
 
-    /**
-     * 开启租户模式
-     * 需要实现 ILoginUserInfoService 接口告诉当前登录用户的租户信息
-     *
-     * @return boolean
-     */
-    @AliasFor(annotation = DistributedLock.class, attribute = "tenant")
-    boolean tenant() default false;
+    ///**
+    // * 开启租户模式
+    // * 需要实现 ILoginUserInfoService 接口告诉当前登录用户的租户信息
+    // *
+    // * @return boolean
+    // */
+    //@AliasFor(annotation = DistributedLock.class, attribute = "tenant")
+    //boolean tenant() default false;
 
     /**
      * 指定分布式锁执行器。

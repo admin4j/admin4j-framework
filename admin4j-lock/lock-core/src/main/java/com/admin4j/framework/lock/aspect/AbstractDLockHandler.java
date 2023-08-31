@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 
 /**
  * 分布式锁解析器
- * https://github.com/redisson/redisson/wiki/8.-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%92%8C%E5%90%8C%E6%AD%A5%E5%99%A8
+ * <a href="https://github.com/redisson/redisson/wiki/8.-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%92%8C%E5%90%8C%E6%AD%A5%E5%99%A8">...</a>
  *
  * @author andanyang
  * @since 2020/12/22 11:06
@@ -70,12 +70,12 @@ public abstract class AbstractDLockHandler {
     }
 
 
-    private String generateKeyByKeyGenerator(ProceedingJoinPoint joinPoint, DistributedLock distributedLock) {
+    protected String generateKeyByKeyGenerator(ProceedingJoinPoint joinPoint, String keyGenerator) {
         //得到被切面修饰的方法的参数列表
         Object[] args = joinPoint.getArgs();
         // 得到被代理的方法
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        DLockKeyGenerator dLockKeyGenerator = StringUtils.isEmpty(distributedLock.keyGenerator()) ? defaultDLockKeyGenerator() : SpringUtils.getBean(DLockKeyGenerator.class);
+        DLockKeyGenerator dLockKeyGenerator = StringUtils.isEmpty(keyGenerator) ? defaultDLockKeyGenerator() : SpringUtils.getBean(DLockKeyGenerator.class);
         return dLockKeyGenerator.generate(joinPoint.getTarget(), method, args).toString();
     }
 
@@ -88,14 +88,15 @@ public abstract class AbstractDLockHandler {
 
         StringBuilder distributedLockKey = new StringBuilder(distributedLock.prefix());
 
-        if (StringUtils.isEmpty(distributedLock.key())) {
+        String key = StringUtils.defaultString(distributedLock.key(), distributedLock.value());
+        if (StringUtils.isEmpty(key)) {
             //按照 KeyGenerator 生成key
-            String key = generateKeyByKeyGenerator(joinPoint, distributedLock);
+            key = generateKeyByKeyGenerator(joinPoint, distributedLock.keyGenerator());
             distributedLockKey.append(key);
         } else {
             //按照 key 生成key
-            String parseElKey = SpelUtil.parse(joinPoint.getTarget(), distributedLock.value(), method, args);
-            //Assert.isTrue(StringUtils.isNotEmpty(parseElKey), "DistributedLockKey is null");
+            String parseElKey = SpelUtil.parse(joinPoint.getTarget(), key, method, args);
+
             if (StringUtils.isBlank(parseElKey)) {
                 log.error("DistributedLockKey is null Signature: {}", joinPoint.getSignature());
                 throw new DistributedLockException("DistributedLockKey is null");

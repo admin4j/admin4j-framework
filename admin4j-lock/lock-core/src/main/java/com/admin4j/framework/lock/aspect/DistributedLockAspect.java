@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.core.annotation.AnnotationUtils;
 
 /**
  * 分布式锁解析器
@@ -23,7 +22,9 @@ public class DistributedLockAspect extends AbstractDLockHandler {
     @Around("@within(distributedLock) || @annotation(distributedLock)")
     public Object around(ProceedingJoinPoint joinPoint, DistributedLock distributedLock) throws Throwable {
 
-        distributedLock = AnnotationUtils.getAnnotation(distributedLock, DistributedLock.class);
+        if (distributedLock == null) {
+            distributedLock = joinPoint.getTarget().getClass().getAnnotation(DistributedLock.class);
+        }
 
         //获取锁信息
         LockInfo<Object> lockInfo = new LockInfo<>();
