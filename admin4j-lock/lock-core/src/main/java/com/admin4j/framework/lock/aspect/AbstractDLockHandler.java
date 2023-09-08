@@ -88,7 +88,7 @@ public abstract class AbstractDLockHandler {
 
         StringBuilder distributedLockKey = new StringBuilder(distributedLock.prefix());
 
-        String key = StringUtils.defaultString(distributedLock.key(), distributedLock.value());
+        String key = StringUtils.defaultIfEmpty(distributedLock.key(), distributedLock.value());
         if (StringUtils.isEmpty(key)) {
             //按照 KeyGenerator 生成key
             key = generateKeyByKeyGenerator(joinPoint, distributedLock.keyGenerator());
