@@ -164,6 +164,7 @@ public class SnowflakeIdWorker {
         long timestamp = timeGen();
         //闰秒
         if (timestamp < lastTimestamp) {
+            //检测时钟回拨
             long offset = lastTimestamp - timestamp;
             if (offset <= 5) {
                 try {
