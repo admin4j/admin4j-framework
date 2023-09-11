@@ -282,7 +282,7 @@
             <dependency>
                 <groupId>io.github.admin4j</groupId>
                 <artifactId>common-http-starter</artifactId>
-                <version>0.7.2</version>
+                <version>0.8.1</version>
             </dependency>
             <dependency>
                 <groupId>com.xuxueli</groupId>
