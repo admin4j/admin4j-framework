@@ -50,6 +50,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!--根据注释自动生成 /META-INF/spring-configuration-metadata.json-->
         <dependency>
