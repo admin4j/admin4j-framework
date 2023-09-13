@@ -11,10 +11,14 @@ import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,18 +33,13 @@ public class MybatisPlusPluginConfig {
 
     private final MpProperties mpProperties;
 
-    private final ILoginTenantInfoService loginTenantInfoService;
-
-    /**
-     * 分页插件
-     *
-     * @return MP 插件
-     */
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        //多租户
-        interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
+    @ConditionalOnBean(value = {ILoginTenantInfoService.class})
+    @Order(0)
+    //多租户
+    public TenantLineInnerInterceptor tenantLineInnerInterceptor(ILoginTenantInfoService loginTenantInfoService) {
+
+        return new TenantLineInnerInterceptor(new TenantLineHandler() {
             @Override
             public Expression getTenantId() {
 
@@ -66,7 +65,24 @@ public class MybatisPlusPluginConfig {
                 }
                 return ArrayUtils.contains(mpProperties.getIgnoreTenantTable(), tableName);
             }
-        }));
+        });
+    }
+
+    /**
+     * 分页插件
+     *
+     * @return MP 插件
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor(@Autowired(required = false) List<InnerInterceptor> interceptors) {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+
+        if (ObjectUtils.isNotEmpty(interceptors)) {
+            for (InnerInterceptor innerInterceptor : interceptors) {
+                interceptor.addInnerInterceptor(innerInterceptor);
+            }
+        }
+
 
         //分页插件
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
