@@ -12,13 +12,10 @@ import net.sf.jsqlparser.expression.LongValue;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -32,10 +29,13 @@ import java.util.Objects;
 public class MybatisPlusPluginConfig {
 
     private final MpProperties mpProperties;
+    private ILoginTenantInfoService loginTenantInfoService;
 
-    @Bean
-    @ConditionalOnBean(value = {ILoginTenantInfoService.class})
-    @Order(0)
+    @Autowired(required = false)
+    public void setLoginTenantInfoService(ILoginTenantInfoService loginTenantInfoService) {
+        this.loginTenantInfoService = loginTenantInfoService;
+    }
+
     //多租户
     public TenantLineInnerInterceptor tenantLineInnerInterceptor(ILoginTenantInfoService loginTenantInfoService) {
 
@@ -74,13 +74,11 @@ public class MybatisPlusPluginConfig {
      * @return MP 插件
      */
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor(@Autowired(required = false) List<InnerInterceptor> interceptors) {
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
 
-        if (ObjectUtils.isNotEmpty(interceptors)) {
-            for (InnerInterceptor innerInterceptor : interceptors) {
-                interceptor.addInnerInterceptor(innerInterceptor);
-            }
+        if (loginTenantInfoService != null) {
+            interceptor.addInnerInterceptor(tenantLineInnerInterceptor(loginTenantInfoService));
         }
 
 
