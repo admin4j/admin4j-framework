@@ -43,9 +43,7 @@ public interface UploadFileService {
      * @param key oss key
      * @return 文件阅览路径
      */
-    default String getPreviewIntranetUrl(String key) {
-        return getPreviewUrl(key);
-    }
+    String getPreviewIntranetUrl(String key);
 
     /**
      * 删除文件

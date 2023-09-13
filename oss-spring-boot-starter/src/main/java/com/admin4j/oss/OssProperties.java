@@ -55,6 +55,11 @@ public class OssProperties {
     private String intranetUrl;
 
     /**
+     * oss访问链接默认有效期 秒s; -1 没有有效期
+     */
+    private Integer ossUrlExpiration = 300;
+
+    /**
      * 最大线程数，默认： 100
      */
     private Integer maxConnections = 100;

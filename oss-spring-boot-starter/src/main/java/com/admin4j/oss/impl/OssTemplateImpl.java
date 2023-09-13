@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class OssTemplateImpl implements OssTemplate {
 
-    private final AmazonS3 amazonS3;
-    private final OssProperties ossProperties;
+    protected final AmazonS3 amazonS3;
+    protected final OssProperties ossProperties;
 
     /**
      * 创建Bucket

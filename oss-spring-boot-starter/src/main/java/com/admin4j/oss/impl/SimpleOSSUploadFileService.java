@@ -21,11 +21,11 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class SimpleOSSUploadFileService implements UploadFileService {
 
-    private final static DateTimeFormatter FILEPATH_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+    protected final static DateTimeFormatter FILEPATH_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    private final OssTemplate ossTemplate;
+    protected final OssTemplate ossTemplate;
 
-    private final OssProperties ossProperties;
+    protected final OssProperties ossProperties;
 
     /**
      * 上传文件
@@ -91,7 +91,21 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      */
     @Override
     public String getOssPreviewUrl(String key) {
-        return ossTemplate.getObjectURL(defaultBucketName(), key, 3, TimeUnit.HOURS);
+        return ossTemplate.getObjectURL(defaultBucketName(), key, ossProperties.getOssUrlExpiration(), TimeUnit.SECONDS);
+    }
+
+    /**
+     * 文件内网阅览路径
+     *
+     * @param key oss key
+     * @return 文件阅览路径
+     */
+    @Override
+    public String getPreviewIntranetUrl(String key) {
+        if (StringUtils.isNotBlank(ossProperties.getIntranetUrl())) {
+            return ossProperties.getIntranetUrl() + key;
+        }
+        return getPreviewUrl(key);
     }
 
     /**
