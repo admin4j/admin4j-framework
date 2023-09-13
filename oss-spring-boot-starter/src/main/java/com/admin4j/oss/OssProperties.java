@@ -55,9 +55,10 @@ public class OssProperties {
     private String intranetUrl;
 
     /**
-     * oss访问链接默认有效期 秒s; -1 没有有效期
+     * oss访问链接默认有效期 秒s;
+     * -1 没有有效期；视为public类型的桶，否则为private私有桶
      */
-    private Integer ossUrlExpiration = 300;
+    private int expires = -1;
 
     /**
      * 最大线程数，默认： 100

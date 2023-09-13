@@ -21,13 +21,6 @@ public interface UploadFileService {
      */
     UploadFileVO upload(String path, MultipartFile file) throws IOException;
 
-    /**
-     * 通过OSS直接查看文件预览路径
-     *
-     * @param key oss key
-     * @return 文件阅览路径
-     */
-    String getOssPreviewUrl(String key);
 
     /**
      * 文件阅览路径
@@ -44,6 +37,16 @@ public interface UploadFileService {
      * @return 文件阅览路径
      */
     String getPreviewIntranetUrl(String key);
+
+    /**
+     * 通过OSS直接查看文件预览路径
+     * 获取私有链接
+     *
+     * @param key     oss key
+     * @param expires 私有链接有效秒数
+     * @return 文件阅览路径
+     */
+    String getPrivateUrl(String key, Integer expires);
 
     /**
      * 删除文件

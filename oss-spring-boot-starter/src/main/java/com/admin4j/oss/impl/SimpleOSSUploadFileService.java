@@ -77,21 +77,27 @@ public class SimpleOSSUploadFileService implements UploadFileService {
     @Override
     public String getPreviewUrl(String key) {
         if (StringUtils.isNotBlank(ossProperties.getPreviewUrl())) {
-            return ossProperties.getPreviewUrl() + key;
+            if (ossProperties.getExpires() == -1) {
+                return getPrivateUrl(key, ossProperties.getExpires());
+            } else {
+                return ossProperties.getPreviewUrl() + key;
+            }
         }
-        return getOssPreviewUrl(key);
+        return getPrivateUrl(key, ossProperties.getExpires() == -1 ? 300 : ossProperties.getExpires());
     }
 
 
     /**
      * 通过OSS直接查看文件预览路径
+     * 获取私有链接
      *
-     * @param key oss key
+     * @param key     oss key
+     * @param expires 私有链接有效秒数
      * @return 文件阅览路径
      */
     @Override
-    public String getOssPreviewUrl(String key) {
-        return ossTemplate.getObjectURL(defaultBucketName(), key, ossProperties.getOssUrlExpiration(), TimeUnit.SECONDS);
+    public String getPrivateUrl(String key, Integer expires) {
+        return ossTemplate.getObjectURL(defaultBucketName(), key, expires, TimeUnit.SECONDS);
     }
 
     /**
