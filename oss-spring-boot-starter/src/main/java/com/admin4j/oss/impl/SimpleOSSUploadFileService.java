@@ -109,7 +109,11 @@ public class SimpleOSSUploadFileService implements UploadFileService {
     @Override
     public String getPreviewIntranetUrl(String key) {
         if (StringUtils.isNotBlank(ossProperties.getIntranetUrl())) {
-            return ossProperties.getIntranetUrl() + key;
+            if (ossProperties.getExpires() == -1) {
+                return getPrivateUrl(key, ossProperties.getExpires());
+            } else {
+                return ossProperties.getIntranetUrl() + key;
+            }
         }
         return getPreviewUrl(key);
     }
