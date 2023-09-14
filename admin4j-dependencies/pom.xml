@@ -271,7 +271,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>oss-spring-boot-starter</artifactId>
-                <version>0.8.5</version>
+                <version>0.8.6</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>

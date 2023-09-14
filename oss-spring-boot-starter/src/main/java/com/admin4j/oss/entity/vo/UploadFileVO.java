@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @ApiModel("文件上传返回")
 public class UploadFileVO {
 
+    //@ApiModelProperty("生成的文件名称")
+    //private String filename;
     @ApiModelProperty("文件原始名称")
     private String originalFilename;
     private String bucket;

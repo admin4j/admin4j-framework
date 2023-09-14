@@ -4,12 +4,14 @@ import com.admin4j.oss.OssProperties;
 import com.admin4j.oss.OssTemplate;
 import com.admin4j.oss.UploadFileService;
 import com.admin4j.oss.entity.vo.UploadFileVO;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.util.Md5Utils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
@@ -60,6 +62,32 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         }
 
         ossTemplate.putObject(defaultBucketName(), path, file.getInputStream());
+
+
+        afterUpload(uploadFileVO);
+
+        return uploadFileVO;
+    }
+
+    @Override
+    public UploadFileVO upload(String key, InputStream is) throws IOException {
+
+        UploadFileVO uploadFileVO = new UploadFileVO();
+        uploadFileVO.setCreateTime(LocalDateTime.now());
+        uploadFileVO.setBucket(defaultBucketName());
+
+        uploadFileVO.setKey(key);
+        uploadFileVO.setPreviewUrl(getPreviewUrl(key));
+
+        UploadFileVO beforeUploadFileVO = beforeUpload(uploadFileVO);
+        if (beforeUploadFileVO != null) {
+            return beforeUploadFileVO;
+        }
+
+        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), key, is);
+        uploadFileVO.setMd5(putObjectResult.getContentMd5());
+        uploadFileVO.setSize(putObjectResult.getMetadata().getContentLength());
+        uploadFileVO.setContentType(putObjectResult.getMetadata().getContentType());
 
 
         afterUpload(uploadFileVO);
@@ -136,6 +164,9 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      */
     protected String generateFilePath(UploadFileVO uploadFileVO) {
 
+        if (StringUtils.isNotBlank(uploadFileVO.getKey())) {
+            return uploadFileVO.getKey();
+        }
         //后缀
         String postfix = null;
         if (StringUtils.isNotBlank(uploadFileVO.getOriginalFilename()) && StringUtils.contains(uploadFileVO.getOriginalFilename(), ".")) {

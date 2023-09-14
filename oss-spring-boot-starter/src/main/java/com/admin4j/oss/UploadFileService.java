@@ -4,6 +4,7 @@ import com.admin4j.oss.entity.vo.UploadFileVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 上传文件
@@ -21,6 +22,13 @@ public interface UploadFileService {
      */
     UploadFileVO upload(String path, MultipartFile file) throws IOException;
 
+    /**
+     * 上传文件
+     *
+     * @param key 指定路径
+     * @param is  InputStream
+     */
+    UploadFileVO upload(String key, InputStream is) throws IOException;
 
     /**
      * 文件阅览路径
