@@ -5,8 +5,8 @@ import com.admin4j.oss.OssTemplate;
 import com.admin4j.oss.UploadFileService;
 import com.admin4j.oss.entity.vo.UploadFileVO;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.util.Md5Utils;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,7 +45,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         uploadFileVO.setCreateTime(LocalDateTime.now());
         uploadFileVO.setBucket(defaultBucketName());
         //计算文件md5
-        String md5 = Md5Utils.md5AsBase64(file.getBytes());
+        String md5 = DigestUtils.md5Hex(file.getBytes());
         uploadFileVO.setMd5(md5);
 
         //生成文件存储路径
@@ -61,10 +61,8 @@ public class SimpleOSSUploadFileService implements UploadFileService {
             return beforeUploadFileVO;
         }
 
-        ossTemplate.putObject(defaultBucketName(), path, file.getInputStream());
-
-
-        afterUpload(uploadFileVO);
+        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), path, file.getInputStream());
+        afterUpload(uploadFileVO, putObjectResult);
 
         return uploadFileVO;
     }
@@ -85,12 +83,12 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         }
 
         PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), key, is);
-        uploadFileVO.setMd5(putObjectResult.getContentMd5());
+        uploadFileVO.setMd5(putObjectResult.getETag());
         uploadFileVO.setSize(putObjectResult.getMetadata().getContentLength());
         uploadFileVO.setContentType(putObjectResult.getMetadata().getContentType());
 
 
-        afterUpload(uploadFileVO);
+        afterUpload(uploadFileVO, putObjectResult);
 
         return uploadFileVO;
     }
@@ -215,7 +213,8 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      * 上传完成钩子，可以保存上传记录等
      *
      * @param uploadFileVO
+     * @param putObjectResult
      */
-    protected void afterUpload(UploadFileVO uploadFileVO) {
+    protected void afterUpload(UploadFileVO uploadFileVO, PutObjectResult putObjectResult) {
     }
 }
