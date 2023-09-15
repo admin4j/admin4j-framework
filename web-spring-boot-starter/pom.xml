@@ -15,6 +15,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>transmittable-thread-local</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.admin4j.common</groupId>
             <artifactId>admin4j-common</artifactId>
         </dependency>

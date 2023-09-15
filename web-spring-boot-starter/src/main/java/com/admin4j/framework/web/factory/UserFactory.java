@@ -1,0 +1,20 @@
+package com.admin4j.framework.web.factory;
+
+import com.admin4j.common.pojo.AuthenticationUser;
+
+/**
+ * @author andanyang
+ * @since 2023/9/15 9:04
+ */
+public class UserFactory {
+
+    public static AuthenticationUser jobUser(Long tenantId) {
+
+        AuthenticationUser authenticationUser = new AuthenticationUser();
+        authenticationUser.setUserId(1000L);
+        authenticationUser.setUsername("job");
+        authenticationUser.setTenantId(tenantId);
+        authenticationUser.setAdmin(true);
+        return authenticationUser;
+    }
+}

@@ -178,7 +178,10 @@ public class SimpleOSSUploadFileService implements UploadFileService {
 
         //文件前缀
         if (StringUtils.isNotBlank(uploadFileVO.getPrefix())) {
-            filePathBuilder.append(uploadFileVO.getPrefix()).append('/');
+            filePathBuilder.append(uploadFileVO.getPrefix());
+            if (!StringUtils.endsWith(uploadFileVO.getPrefix(), "/")) {
+                filePathBuilder.append('/');
+            }
         }
 
         filePathBuilder.append(uploadFileVO.getCreateTime().format(FILEPATH_DATETIME_FORMATTER))
