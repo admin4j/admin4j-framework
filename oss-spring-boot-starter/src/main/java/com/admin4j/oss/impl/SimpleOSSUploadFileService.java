@@ -54,7 +54,6 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         }
         path = generateFilePath(uploadFileVO);
         uploadFileVO.setKey(path);
-        uploadFileVO.setPreviewUrl(getPreviewUrl(path));
 
         UploadFileVO beforeUploadFileVO = beforeUpload(uploadFileVO);
         if (beforeUploadFileVO != null) {
@@ -62,6 +61,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         }
 
         PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), path, file.getInputStream());
+        uploadFileVO.setPreviewUrl(getPreviewUrl(path));
         afterUpload(uploadFileVO, putObjectResult);
 
         return uploadFileVO;
@@ -73,9 +73,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         UploadFileVO uploadFileVO = new UploadFileVO();
         uploadFileVO.setCreateTime(LocalDateTime.now());
         uploadFileVO.setBucket(defaultBucketName());
-
         uploadFileVO.setKey(key);
-        uploadFileVO.setPreviewUrl(getPreviewUrl(key));
 
         UploadFileVO beforeUploadFileVO = beforeUpload(uploadFileVO);
         if (beforeUploadFileVO != null) {
@@ -86,7 +84,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         uploadFileVO.setMd5(putObjectResult.getETag());
         uploadFileVO.setSize(putObjectResult.getMetadata().getContentLength());
         uploadFileVO.setContentType(putObjectResult.getMetadata().getContentType());
-
+        uploadFileVO.setPreviewUrl(getPreviewUrl(key));
 
         afterUpload(uploadFileVO, putObjectResult);
 
