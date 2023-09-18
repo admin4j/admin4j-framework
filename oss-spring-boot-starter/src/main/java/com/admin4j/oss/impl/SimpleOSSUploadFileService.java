@@ -102,9 +102,9 @@ public class SimpleOSSUploadFileService implements UploadFileService {
     public String getPreviewUrl(String key) {
         if (StringUtils.isNotBlank(ossProperties.getPreviewUrl())) {
             if (ossProperties.getExpires() == -1) {
-                return getPrivateUrl(key, ossProperties.getExpires());
-            } else {
                 return ossProperties.getPreviewUrl() + key;
+            } else {
+                return getPrivateUrl(key, ossProperties.getExpires());
             }
         }
         return getPrivateUrl(key, ossProperties.getExpires() == -1 ? 300 : ossProperties.getExpires());
@@ -134,9 +134,9 @@ public class SimpleOSSUploadFileService implements UploadFileService {
     public String getPreviewIntranetUrl(String key) {
         if (StringUtils.isNotBlank(ossProperties.getIntranetUrl())) {
             if (ossProperties.getExpires() == -1) {
-                return getPrivateUrl(key, ossProperties.getExpires());
-            } else {
                 return ossProperties.getIntranetUrl() + key;
+            } else {
+                return getPrivateUrl(key, ossProperties.getExpires());
             }
         }
         return getPreviewUrl(key);
