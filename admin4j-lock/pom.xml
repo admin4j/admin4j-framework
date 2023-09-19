@@ -12,7 +12,7 @@
     <artifactId>admin4j-lock</artifactId>
     <version>${admin4j-lock.version}</version>
     <packaging>pom</packaging>
-    <description>基于Spring Boot 的分布式锁，支持redisson、zookeeper 分布式锁</description>
+    <description>基于Spring Boot 的分布式锁，支持redisson、zookeeper 分布式锁。提供工具类DistributedLockUtil</description>
     <modules>
         <module>lock-core</module>
         <module>lock-zookeeper-spring-boot-starter</module>
