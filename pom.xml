@@ -37,6 +37,9 @@
         <module>log-spring-boot-starter</module>
         <module>xxl-job-spring-boot-starter</module>
         <module>spring-boot-parent</module>
+        <module>tenant-spring-boot-starter</module>
+        <module>feign-spring-boot-starter</module>
+        <module>ttl-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.9.0-SNAPSHOT</revision>

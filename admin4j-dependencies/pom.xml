@@ -97,6 +97,11 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>2.2.1</version>
+            </dependency>
+            <dependency>
                 <groupId>jakarta.json</groupId>
                 <artifactId>jakarta.json-api</artifactId>
                 <version>2.1.2</version>
@@ -107,6 +112,11 @@
                 <groupId>com.admin4j.spring</groupId>
                 <artifactId>spring-plugin</artifactId>
                 <version>0.8.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>tenant-spring-boot-starter</artifactId>
+                <version>${admin4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>

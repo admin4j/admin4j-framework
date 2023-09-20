@@ -17,4 +17,14 @@ public class UserFactory {
         authenticationUser.setAdmin(true);
         return authenticationUser;
     }
+
+    public static AuthenticationUser mqUser(Long tenantId) {
+
+        AuthenticationUser authenticationUser = new AuthenticationUser();
+        authenticationUser.setUserId(1001L);
+        authenticationUser.setUsername("mq");
+        authenticationUser.setTenantId(tenantId);
+        authenticationUser.setAdmin(true);
+        return authenticationUser;
+    }
 }

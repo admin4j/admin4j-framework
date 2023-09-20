@@ -18,7 +18,7 @@ public class GlobalExceptionEvent {
      * 异常类型
      */
     private String name;
-    private Exception e;
+    private Throwable e;
 
 
     public GlobalExceptionEvent(Exception e) {
