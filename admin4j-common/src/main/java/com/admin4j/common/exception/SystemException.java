@@ -18,7 +18,7 @@ import com.admin4j.common.pojo.ResponseEnum;
 public class SystemException extends Admin4jException {
     private static final long serialVersionUID = 1L;
 
-    public SystemException(Exception e) {
+    public SystemException(Throwable e) {
         super(e);
     }
 
