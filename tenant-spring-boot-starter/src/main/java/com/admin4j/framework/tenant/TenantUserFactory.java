@@ -1,4 +1,4 @@
-package com.admin4j.framework.web.factory;
+package com.admin4j.framework.tenant;
 
 import com.admin4j.common.pojo.AuthenticationUser;
 
@@ -6,7 +6,7 @@ import com.admin4j.common.pojo.AuthenticationUser;
  * @author andanyang
  * @since 2023/9/15 9:04
  */
-public class UserFactory {
+public class TenantUserFactory {
 
     public static AuthenticationUser jobUser(Long tenantId) {
 
