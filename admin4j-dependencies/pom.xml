@@ -120,6 +120,11 @@
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
+                <artifactId>ttl-spring-boot-starter</artifactId>
+                <version>${admin4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
                 <artifactId>excel-spring-boot-starter</artifactId>
                 <version>${admin4j.version}</version>
             </dependency>

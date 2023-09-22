@@ -60,7 +60,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
             return beforeUploadFileVO;
         }
 
-        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), path, file.getInputStream());
+        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), path, file.getInputStream(), file.getContentType());
         uploadFileVO.setPreviewUrl(getPreviewUrl(path));
         afterUpload(uploadFileVO, putObjectResult);
 
