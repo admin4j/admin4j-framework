@@ -2,6 +2,7 @@ package com.admin4j.framework.mp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
@@ -107,6 +108,29 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends CommandServiceIm
      */
     protected boolean update(T entity, Wrapper<T> updateWrapper) {
         return SqlHelper.retBool(getBaseMapper().update(entity, updateWrapper));
+    }
+
+    /**
+     * 更新指定字段
+     *
+     * @param entity    实体
+     * @param where     条件
+     * @param functions 更新字段
+     */
+    public void update(T entity, SFunction<T, Object> where, SFunction<T, Object>... functions) {
+
+        LambdaUpdateWrapper<T> updateWrapper = Wrappers.lambdaUpdate();
+        updateWrapper.eq(where, where.apply(entity));
+
+        for (int i = 0; i < functions.length; i++) {
+            SFunction function = functions[i];
+
+            Object apply = function.apply(entity);
+            if (apply != null) {
+                updateWrapper.set(function, apply);
+            }
+        }
+        update(updateWrapper);
     }
 
     @Override
