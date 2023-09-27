@@ -23,7 +23,7 @@ public class ThreadPoolProperties {
     /**
      * 线程池前缀
      */
-    private String threadNamePrefix = "CesExecutor-";
+    private String threadNamePrefix = "Admin4jExecutor-";
 
     public int getCorePoolSize() {
         return corePoolSize;
