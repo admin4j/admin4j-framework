@@ -31,6 +31,28 @@ public interface UploadFileService {
     UploadFileVO upload(String key, InputStream is) throws IOException;
 
     /**
+     * 上传文件
+     *
+     * @param key              指定路径（key）
+     * @param originalFilename 文件原始名称
+     * @param contentType      文件类型
+     * @param is               上传流
+     * @return
+     * @throws IOException
+     */
+    UploadFileVO upload(String key, String originalFilename, String contentType, InputStream is) throws IOException;
+
+    /**
+     * 上传文件
+     *
+     * @param uploadFileVO 文件描述
+     * @param is
+     * @return
+     * @throws IOException
+     */
+    UploadFileVO upload(UploadFileVO uploadFileVO, InputStream is) throws IOException;
+
+    /**
      * 文件阅览路径
      *
      * @param key oss key

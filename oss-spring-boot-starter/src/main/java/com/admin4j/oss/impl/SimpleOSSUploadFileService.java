@@ -1,5 +1,6 @@
 package com.admin4j.oss.impl;
 
+import com.admin4j.oss.MockMultipartFile;
 import com.admin4j.oss.OssProperties;
 import com.admin4j.oss.OssTemplate;
 import com.admin4j.oss.UploadFileService;
@@ -55,40 +56,68 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         path = generateFilePath(uploadFileVO);
         uploadFileVO.setKey(path);
 
+        return upload(uploadFileVO, file.getInputStream());
+    }
+
+    @Override
+    public UploadFileVO upload(UploadFileVO uploadFileVO, InputStream is) throws IOException {
+
         UploadFileVO beforeUploadFileVO = beforeUpload(uploadFileVO);
         if (beforeUploadFileVO != null) {
+            beforeUploadFileVO.setOriginalFilename(uploadFileVO.getOriginalFilename());
             return beforeUploadFileVO;
         }
 
-        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), path, file.getInputStream(), file.getContentType());
-        uploadFileVO.setPreviewUrl(getPreviewUrl(path));
+        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), uploadFileVO.getKey(), is, uploadFileVO.getContentType());
+        uploadFileVO.setPreviewUrl(getPreviewUrl(uploadFileVO.getKey()));
         afterUpload(uploadFileVO, putObjectResult);
 
         return uploadFileVO;
     }
 
+    /**
+     * 上传文件
+     *
+     * @param key 指定路径（key）
+     * @param is  InputStream
+     * @return
+     * @throws IOException
+     */
     @Override
     public UploadFileVO upload(String key, InputStream is) throws IOException {
 
+
+        return upload(key, null, null, is);
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param key              指定路径（key）
+     * @param originalFilename 文件原始名称
+     * @param contentType      文件类型
+     * @param is               上传流
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public UploadFileVO upload(String key, String originalFilename, String contentType, InputStream is) throws IOException {
+
+        MockMultipartFile file = new MockMultipartFile(key, is);
+
         UploadFileVO uploadFileVO = new UploadFileVO();
+        uploadFileVO.setOriginalFilename(originalFilename);
+        uploadFileVO.setSize(file.getSize());
+        uploadFileVO.setContentType(contentType);
         uploadFileVO.setCreateTime(LocalDateTime.now());
         uploadFileVO.setBucket(defaultBucketName());
+        //计算文件md5
+        String md5 = DigestUtils.md5Hex(file.getBytes());
+        uploadFileVO.setMd5(md5);
+
         uploadFileVO.setKey(key);
 
-        UploadFileVO beforeUploadFileVO = beforeUpload(uploadFileVO);
-        if (beforeUploadFileVO != null) {
-            return beforeUploadFileVO;
-        }
-
-        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), key, is);
-        uploadFileVO.setMd5(putObjectResult.getETag());
-        uploadFileVO.setSize(putObjectResult.getMetadata().getContentLength());
-        uploadFileVO.setContentType(putObjectResult.getMetadata().getContentType());
-        uploadFileVO.setPreviewUrl(getPreviewUrl(key));
-
-        afterUpload(uploadFileVO, putObjectResult);
-
-        return uploadFileVO;
+        return upload(uploadFileVO, file.getInputStream());
     }
 
 

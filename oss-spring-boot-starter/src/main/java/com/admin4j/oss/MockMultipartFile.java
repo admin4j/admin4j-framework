@@ -27,6 +27,12 @@ public class MockMultipartFile implements MultipartFile {
      * 文件名
      */
     private final String name;
+    @Setter
+    @Getter
+    /**
+     * 指定文件Key（路径）
+     */
+    private String key;
 
     /**
      * 原始文件名
@@ -38,7 +44,7 @@ public class MockMultipartFile implements MultipartFile {
      */
     @Nullable
     @Setter
-    private final String contentType;
+    private String contentType;
 
     /**
      * 文件内容
