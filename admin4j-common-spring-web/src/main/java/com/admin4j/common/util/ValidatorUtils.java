@@ -19,8 +19,8 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidatorUtils {
 
-    private static Validator validatorFast = Validation.byProvider(HibernateValidator.class).configure().failFast(true).buildValidatorFactory().getValidator();
-    private static Validator validatorAll = Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory().getValidator();
+    private static final Validator VALIDATOR_FAST = Validation.byProvider(HibernateValidator.class).configure().failFast(true).buildValidatorFactory().getValidator();
+    private static final Validator VALIDATOR_ALL = Validation.byProvider(HibernateValidator.class).configure().failFast(false).buildValidatorFactory().getValidator();
 
     /**
      * @param <T>    class
@@ -29,7 +29,7 @@ public class ValidatorUtils {
      * @Time 2020年6月22日 上午11:36:13
      */
     public static <T> Set<ConstraintViolation<T>> validateFast(T domain, Class<?>... groups) {
-        return validatorFast.validate(domain, groups);
+        return VALIDATOR_FAST.validate(domain, groups);
     }
 
     /**
@@ -42,7 +42,7 @@ public class ValidatorUtils {
      */
     public static <T> void validateFast(T domain, boolean showException, Class<?>... groups) {
         Set<ConstraintViolation<T>> validate = validateFast(domain, groups);
-        if (showException && CollectionUtils.isEmpty(validate)) {
+        if (showException && !CollectionUtils.isEmpty(validate)) {
             throw new ValidateException(validate.stream().map(ConstraintViolation::getMessage).reduce((m1, m2) -> m1 + "；" + m2).orElse(""));
         }
     }
@@ -57,7 +57,7 @@ public class ValidatorUtils {
      * @Time 2020年6月22日 上午11:36:55
      */
     public static <T> Set<ConstraintViolation<T>> validateAll(T domain, Class<?>... groups) {
-        return validatorAll.validate(domain, groups);
+        return VALIDATOR_ALL.validate(domain, groups);
     }
 
     /**
@@ -72,7 +72,7 @@ public class ValidatorUtils {
      */
     public static <T> void validateAll(T domain, boolean showException, Class<?>... groups) {
         Set<ConstraintViolation<T>> validate = validateAll(domain, groups);
-        if (showException && CollectionUtils.isEmpty(validate)) {
+        if (showException && !CollectionUtils.isEmpty(validate)) {
             throw new ValidateException(validate.stream().map(ConstraintViolation::getMessage).reduce((m1, m2) -> m1 + "；" + m2).orElse(""));
         }
     }
