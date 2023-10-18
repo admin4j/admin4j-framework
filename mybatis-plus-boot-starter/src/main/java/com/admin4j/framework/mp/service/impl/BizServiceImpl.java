@@ -143,6 +143,15 @@ public class BizServiceImpl<M extends BaseMapper<T>, T> extends CommandServiceIm
         return true;
     }
 
+    /**
+     * 根据 entity 条件，删除记录
+     *
+     * @param queryWrapper 实体包装类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
+     */
+    protected boolean remove(Wrapper<T> queryWrapper) {
+        return SqlHelper.retBool(getBaseMapper().delete(queryWrapper));
+    }
+
     // ---------------------------------------------------------------- exist ----------------------------------------------------------------
 
     /**

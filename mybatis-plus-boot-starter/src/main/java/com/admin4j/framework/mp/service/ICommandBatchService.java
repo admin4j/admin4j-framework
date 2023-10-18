@@ -13,11 +13,6 @@ import java.util.Collection;
  */
 public interface ICommandBatchService<T> {
 
-    /**
-     * 默认批次提交数量
-     */
-    int DEFAULT_BATCH_SIZE = 1000;
-
 
     /**
      * 插入（批量）
@@ -25,9 +20,7 @@ public interface ICommandBatchService<T> {
      * @param entityList 实体对象集合
      */
     @Transactional(rollbackFor = Exception.class)
-    default boolean saveBatch(Collection<T> entityList) {
-        return saveBatch(entityList, DEFAULT_BATCH_SIZE);
-    }
+    boolean saveBatch(Collection<T> entityList);
 
 
     /**
@@ -45,9 +38,7 @@ public interface ICommandBatchService<T> {
      * @param entityList 实体对象集合
      */
     @Transactional(rollbackFor = Exception.class)
-    default boolean saveOrUpdateBatch(Collection<T> entityList) {
-        return saveOrUpdateBatch(entityList, DEFAULT_BATCH_SIZE);
-    }
+    boolean saveOrUpdateBatch(Collection<T> entityList);
 
 
     /**
@@ -67,9 +58,7 @@ public interface ICommandBatchService<T> {
      * @param entityList 实体对象集合
      */
     @Transactional(rollbackFor = Exception.class)
-    default boolean updateBatchById(Collection<T> entityList) {
-        return updateBatchById(entityList, DEFAULT_BATCH_SIZE);
-    }
+    boolean updateBatchById(Collection<T> entityList);
 
     /**
      * 根据ID 批量更新
@@ -108,9 +97,7 @@ public interface ICommandBatchService<T> {
      * @since 3.5.0
      */
     @Transactional(rollbackFor = Exception.class)
-    default boolean removeBatchByIds(Collection<?> list) {
-        return removeBatchByIds(list, DEFAULT_BATCH_SIZE);
-    }
+    boolean removeBatchByIds(Collection<?> list);
 
     /**
      * 批量删除(jdbc批量提交)
@@ -133,9 +120,7 @@ public interface ICommandBatchService<T> {
      * @since 3.5.0
      */
     @Transactional(rollbackFor = Exception.class)
-    default boolean removeBatchByIds(Collection<?> list, boolean useFill) {
-        return removeBatchByIds(list, DEFAULT_BATCH_SIZE, useFill);
-    }
+    boolean removeBatchByIds(Collection<?> list, boolean useFill);
 
 
     /**
@@ -147,7 +132,5 @@ public interface ICommandBatchService<T> {
      * @return 删除结果
      * @since 3.5.0
      */
-    default boolean removeBatchByIds(Collection<?> list, int batchSize, boolean useFill) {
-        throw new UnsupportedOperationException("不支持的方法!");
-    }
+    boolean removeBatchByIds(Collection<?> list, int batchSize, boolean useFill);
 }

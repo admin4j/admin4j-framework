@@ -1,7 +1,6 @@
 package com.admin4j.framework.mp.service;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 
 import java.io.Serializable;
 
@@ -27,9 +26,7 @@ public interface ICommandService<T> {
      *
      * @param entity 实体对象
      */
-    default boolean save(T entity) {
-        return SqlHelper.retBool(getBaseMapper().insert(entity));
-    }
+    boolean save(T entity);
 
 
     /**
@@ -47,9 +44,7 @@ public interface ICommandService<T> {
      *
      * @param entity 实体对象
      */
-    default boolean updateById(T entity) {
-        return SqlHelper.retBool(getBaseMapper().updateById(entity));
-    }
+    boolean updateById(T entity);
 
 
     //---------------------------------------------------------------- remove ------------------------
@@ -59,9 +54,7 @@ public interface ICommandService<T> {
      *
      * @param id 主键ID
      */
-    default boolean removeById(Serializable id) {
-        return SqlHelper.retBool(getBaseMapper().deleteById(id));
-    }
+    boolean removeById(Serializable id);
 
     /**
      * 根据 ID 删除
@@ -71,7 +64,5 @@ public interface ICommandService<T> {
      * @return 删除结果
      * @since 3.5.0
      */
-    default boolean removeById(Serializable id, boolean useFill) {
-        throw new UnsupportedOperationException("不支持的方法!");
-    }
+    boolean removeById(Serializable id, boolean useFill);
 }

@@ -28,9 +28,9 @@ import java.util.function.BiConsumer;
  * @since 2023/8/17 11:04
  */
 
-public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryServiceImpl<M, T> implements ICommandService<T>, IBizService<T>, ICommandBatchService<T> {
+public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryServiceImpl<M, T> implements ICommandService<T>, ICommandBatchService<T>, IBizService<T> {
 
-
+    protected final static int DEFAULT_BATCH_SIZE = 1000;
     protected Log log = LogFactory.getLog(getClass());
 
 
@@ -78,6 +78,26 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
         return Wrappers.lambdaUpdate(entity);
     }
 
+    /**
+     * 插入一条记录（选择字段，策略插入）
+     *
+     * @param entity 实体对象
+     */
+    @Override
+    public boolean save(T entity) {
+        return SqlHelper.retBool(getBaseMapper().insert(entity));
+    }
+
+    /**
+     * 插入（批量）
+     *
+     * @param entityList 实体对象集合
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean saveBatch(Collection<T> entityList) {
+        return saveBatch(entityList, DEFAULT_BATCH_SIZE);
+    }
+
 
     /**
      * 批量插入
@@ -87,7 +107,6 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
      * @return ignore
      */
     @Transactional(rollbackFor = Exception.class)
-    @Override
     public boolean saveBatch(Collection<T> entityList, int batchSize) {
         String sqlStatement = getSqlStatement(SqlMethod.INSERT_ONE);
         return executeBatch(entityList, batchSize, (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
@@ -124,8 +143,26 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
         return false;
     }
 
+
+    /**
+     * 批量修改插入
+     *
+     * @param entityList 实体对象集合
+     */
     @Transactional(rollbackFor = Exception.class)
-    @Override
+    public boolean saveOrUpdateBatch(Collection<T> entityList) {
+        return saveOrUpdateBatch(entityList, DEFAULT_BATCH_SIZE);
+    }
+
+    /**
+     * 批量修改插入
+     * Params:
+     *
+     * @param entityList 实体对象集合
+     * @param batchSize  每次的数量
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
         Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
@@ -142,8 +179,34 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
         });
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    /**
+     * 根据 ID 选择修改
+     *
+     * @param entity 实体对象
+     */
     @Override
+    public boolean updateById(T entity) {
+        return SqlHelper.retBool(getBaseMapper().updateById(entity));
+    }
+
+    /**
+     * 根据ID 批量更新
+     *
+     * @param entityList 实体对象集合
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateBatchById(Collection<T> entityList) {
+        return updateBatchById(entityList, DEFAULT_BATCH_SIZE);
+    }
+
+    /**
+     * 根据ID 批量更新
+     *
+     * @param entityList 实体对象集合
+     * @param batchSize  更新批次数量
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateBatchById(Collection<T> entityList, int batchSize) {
         String sqlStatement = getSqlStatement(SqlMethod.UPDATE_BY_ID);
         return executeBatch(entityList, batchSize, (sqlSession, entity) -> {
@@ -189,7 +252,6 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
         return SqlHelper.retBool(getBaseMapper().deleteById(id));
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean removeByIds(Collection<?> list) {
         if (CollectionUtils.isEmpty(list)) {
@@ -203,6 +265,19 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
     }
 
     /**
+     * 批量删除(jdbc批量提交)
+     *
+     * @param list    主键ID或实体列表(主键ID类型必须与实体类型字段保持一致)
+     * @param useFill 是否启用填充(为true的情况,会将入参转换实体进行delete删除)
+     * @return 删除结果
+     * @since 3.5.0
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeBatchByIds(Collection<?> list, boolean useFill) {
+        return removeBatchByIds(list, DEFAULT_BATCH_SIZE, useFill);
+    }
+
+    /**
      * 批量删除
      *
      * @param list    主键ID或实体列表
@@ -211,7 +286,6 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
      * @since 3.5.0
      */
     @Transactional(rollbackFor = Exception.class)
-    @Override
     public boolean removeByIds(Collection<?> list, boolean useFill) {
         if (CollectionUtils.isEmpty(list)) {
             return false;
@@ -235,14 +309,34 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
         return SqlHelper.retBool(getBaseMapper().deleteById(id));
     }
 
-    @Override
+
+    /**
+     * 批量删除(jdbc批量提交)
+     *
+     * @param list 主键ID或实体列表(主键ID类型必须与实体类型字段保持一致)
+     * @return 删除结果
+     * @since 3.5.0
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeBatchByIds(Collection<?> list) {
+        return removeBatchByIds(list, DEFAULT_BATCH_SIZE);
+    }
+
+    /**
+     * 批量删除(jdbc批量提交)
+     *
+     * @param list      主键ID或实体列表
+     * @param batchSize 批次大小
+     * @return 删除结果
+     * @since 3.5.0
+     */
     @Transactional(rollbackFor = Exception.class)
     public boolean removeBatchByIds(Collection<?> list, int batchSize) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
         return removeBatchByIds(list, batchSize, tableInfo.isWithLogicDelete() && tableInfo.isWithUpdateFill());
     }
 
-    @Override
+
     @Transactional(rollbackFor = Exception.class)
     public boolean removeBatchByIds(Collection<?> list, int batchSize, boolean useFill) {
         String sqlStatement = getSqlStatement(SqlMethod.DELETE_BY_ID);
