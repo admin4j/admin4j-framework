@@ -33,7 +33,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     UserTokenService userTokenService;
     //@Autowired
-    //UserDetailsService userDetailsService;
+    // UserDetailsService userDetailsService;
     @Autowired
     AuthenticationResult authenticationResult;
 
@@ -49,14 +49,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         try {
             UserDetails userDetails = userTokenService.getUserDetails(token);
 
-            //userDetailsService.loadUserByUsername(userName);
-
             if (userDetails != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                // 认证成功吧 Authentication 对象 setAuthenticated(true), 然存到 SecurityContext 中
+                // 认证失败则清空 SecurityContext 然后交给下一个 Filter 处理
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-                //设置登录
+                // 设置登录
                 JwtUserDetails jwtUserDetails = (JwtUserDetails) userDetails;
 
                 AuthenticationUser authenticationUser = AuthenticationUserFactory.getByJwtUser(jwtUserDetails);
@@ -70,7 +70,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
 
-        //清除登录信息
+        // 清除登录信息
         UserContextUtil.clear();
     }
 }

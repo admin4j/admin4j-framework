@@ -34,7 +34,7 @@ public interface UserTokenService {
     String getToken(HttpServletRequest request);
 
     /**
-     * 获取登录用户名
+     * 根据令牌token, 获取登录用户名
      *
      * @param token
      * @return 登录用户名

@@ -101,7 +101,14 @@ public class JwtUserTokenService implements UserTokenService {
                 .build();
         verifier.verify(token);
 
-        return jwtUserDetailsService.loadUserByUserId(userId);
+        // 可以验证下 salt 是否有效，用来验证令牌是否已注销
+        UserDetails userDetails = jwtUserDetailsService.loadUserByUserId(userId);
+        if (userDetails != null) {
+            if (!jwtUserDetailsService.verifySalt(userDetails, jwt.getClaim(FILED_SALT).asString())) {
+                return null;
+            }
+        }
+        return userDetails;
     }
 
     private String generateSecret(String salt) {
