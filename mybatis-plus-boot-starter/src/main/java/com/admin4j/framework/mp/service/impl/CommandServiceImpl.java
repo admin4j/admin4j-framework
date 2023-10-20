@@ -252,6 +252,12 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
         return SqlHelper.retBool(getBaseMapper().deleteById(id));
     }
 
+
+    /**
+     * 删除（根据ID 批量删除）
+     *
+     * @param list 主键ID或实体列表
+     */
     @Transactional(rollbackFor = Exception.class)
     public boolean removeByIds(Collection<?> list) {
         if (CollectionUtils.isEmpty(list)) {
