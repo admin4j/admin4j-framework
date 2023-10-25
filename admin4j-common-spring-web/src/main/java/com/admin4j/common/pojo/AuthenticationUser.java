@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
+ * UserContext 用户上下文
+ *
  * @author andanyang
  * @since 2021/7/30 9:54
  */
@@ -35,7 +37,7 @@ public class AuthenticationUser implements Serializable {
     @ApiModelProperty("权限code列表")
     private Set<String> permissions;
 
-    //private String fromService;
+    // private String fromService;
 
     private String referer;
 
