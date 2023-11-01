@@ -17,5 +17,4 @@ public class EnumConverterController {
 
         return userStatus;
     }
-
 }
