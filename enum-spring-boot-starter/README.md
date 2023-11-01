@@ -45,6 +45,16 @@ public class EnumConverterController {
 ```
 
 此时使用不到jackson注解`@JsonValue`,因为他使用了 Spring 的 Converter，所以我们需要自定义Converter
+直接使用
+
+```
+<dependency>
+    <groupId>com.admin4j.framework</groupId>
+    <artifactId>enum-spring-boot-starter</artifactId>
+    <version>0.8.0</version>
+</dependency>
+```
+
 参考 `EnumConverterFactory`
 
 ```
