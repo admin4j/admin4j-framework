@@ -9,7 +9,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -24,11 +23,11 @@ import java.util.Date;
 public class JwtUserTokenService implements UserTokenService {
 
 
-    final JwtProperties jwtProperties;
-    final JwtUserDetailsService jwtUserDetailsService;
     static final String FILED_USER_ID = "userID";
     static final String FILED_SALT = "salt";
     static final String FILED_AUTH_TYPE = "authType";
+    final JwtProperties jwtProperties;
+    final JwtUserDetailsService jwtUserDetailsService;
 
     /**
      * 创建令牌
@@ -89,7 +88,7 @@ public class JwtUserTokenService implements UserTokenService {
      * @return SignatureVerificationException
      */
     @Override
-    public UserDetails getUserDetails(String token) {
+    public JwtUserDetails getUserDetails(String token) {
 
         DecodedJWT jwt = JWT.decode(token);
         Long userId = jwt.getClaim(FILED_USER_ID).asLong();
@@ -102,7 +101,7 @@ public class JwtUserTokenService implements UserTokenService {
         verifier.verify(token);
 
         // 可以验证下 salt 是否有效，用来验证令牌是否已注销
-        UserDetails userDetails = jwtUserDetailsService.loadUserByUserId(userId);
+        JwtUserDetails userDetails = jwtUserDetailsService.loadUserByUserId(userId);
         if (userDetails != null) {
             if (!jwtUserDetailsService.verifySalt(userDetails, jwt.getClaim(FILED_SALT).asString())) {
                 return null;
@@ -111,7 +110,7 @@ public class JwtUserTokenService implements UserTokenService {
         return userDetails;
     }
 
-    private String generateSecret(String salt) {
+    protected String generateSecret(String salt) {
         return jwtProperties.getSecret() + "#" + salt;
     }
 }

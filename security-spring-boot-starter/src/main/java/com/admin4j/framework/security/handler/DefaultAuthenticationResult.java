@@ -33,9 +33,9 @@ import java.util.Map;
 public class DefaultAuthenticationResult implements AuthenticationResult {
 
 
-    protected final UserTokenService userTokenService;
     protected static final IResponse FAIL_AUTH_FORBIDDEN = new SimpleResponse(ResponseEnum.FAIL_AUTH_FORBIDDEN);
     protected static final IResponse FAIL_AUTH = new SimpleResponse(ResponseEnum.FAIL_AUTH_TOKEN);
+    protected final UserTokenService userTokenService;
 
     /**
      * 认证成功回调
@@ -54,12 +54,14 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
 
         SpringUtils.getApplicationContext().publishEvent(new AuthenticationSuccessEvent(request, response, authentication));
 
-        String token = userTokenService.createToken((JwtUserDetails) authentication.getPrincipal());
-
         SimpleResponse simpleResponse = new SimpleResponse(ResponseEnum.SUCCESS);
         Map<String, Object> map = new HashMap<>();
-        map.put("token", token);
         simpleResponse.setData(map);
+
+        if (userTokenService != null) {
+            String token = userTokenService.createToken((JwtUserDetails) authentication.getPrincipal());
+            map.put("token", token);
+        }
         ServletUtils.renderString(response, JSON.toJSONString(simpleResponse));
     }
 

@@ -1,8 +1,8 @@
 package com.admin4j.framework.security.jwt;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 /**
+ * 根据用户ID，获取用户信息
+ *
  * @author andanyang
  * @since 2023/6/3 22:04
  */
@@ -19,7 +19,7 @@ public interface JwtUserDetailsService {
      * @param salt
      * @return
      */
-    default boolean verifySalt(UserDetails userDetails, String salt) {
+    default boolean verifySalt(JwtUserDetails userDetails, String salt) {
         return true;
     }
 
@@ -29,7 +29,7 @@ public interface JwtUserDetailsService {
      * @param userId
      * @return
      */
-    UserDetails loadUserByUserId(Long userId);
+    JwtUserDetails loadUserByUserId(Long userId);
 
 
 }
