@@ -91,6 +91,8 @@ curl --location 'http://localhost:8080/login' \
 ```yaml
 admin4j:
   security:
+    ignoring:
+      uris: "login/sendPhoneCode"
     multi:
       auth-map:
         phone: phoneNumber
@@ -102,6 +104,7 @@ auth-map 为渠道登录登录方式配置。对象类型，key为 登录方式 
 
 - 登录方式 (`authType`) : `phone`
 - 登录认证的字段名称: `phoneNumber`
+- ignoring.uris 忽略认证的接口。需要将发送验证码接口，忽略认证。
 
 前端登录接口案例：`/login/phone` (/login/authType)
 
