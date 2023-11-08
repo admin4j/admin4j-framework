@@ -10,12 +10,16 @@
     <groupId>com.admin4j.framework</groupId>
     <artifactId>security-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
-    <version>0.9.1-SNAPSHOT</version>
+    <!--    <version>0.9.1-SNAPSHOT</version>-->
 
     <name>security-spring-boot-starter</name>
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.admin4j.common</groupId>
+            <artifactId>admin4j-common</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
