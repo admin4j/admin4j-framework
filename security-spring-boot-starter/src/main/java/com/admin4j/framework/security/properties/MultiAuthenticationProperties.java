@@ -39,6 +39,6 @@ public class MultiAuthenticationProperties {
      * <p>
      * 如果不配置 key为 phone 的数据，则会取 字段 phone（authType）
      */
-    private Map<String, String> fieldMap;
+    private Map<String, String> authMap;
 
 }

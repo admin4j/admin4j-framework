@@ -22,9 +22,9 @@ import java.io.IOException;
 
 public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
+    static final String DEFAULT_AUTH_TYPE = "";
     private MultiAuthenticationProperties multiAuthenticationProperties;
     private FormLoginProperties formLoginProperties;
-    static final String DEFAULT_AUTH_TYPE = "";
 
 
     public MultiAuthenticationFilter(MultiAuthenticationProperties multiAuthenticationProperties, FormLoginProperties formLoginProperties) {
@@ -47,7 +47,7 @@ public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingF
 
         MultiAuthenticationToken token = obtainToken(request);
         setDetails(request, token);
-        //匹配成功交给 AuthenticationManager 去认证
+        // 匹配成功交给 AuthenticationManager 去认证
         return this.getAuthenticationManager().authenticate(token);
     }
 
@@ -60,22 +60,22 @@ public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingF
 
         if (StringUtils.isBlank(authType)) {
 
-            //尝试去uri路径里面获取
+            // 尝试去uri路径里面获取
             String requestURI = request.getRequestURI();
             authType = StringUtils.substringAfter(requestURI, multiAuthenticationProperties.getLoginProcessingUrlPrefix());
         }
 
         String principal;
         if (StringUtils.isBlank(authType)) {
-            //if (!formLoginProperties.isEnable()) {
+            // if (!formLoginProperties.isEnable()) {
             //    throw new AuthenticationServiceException(
             //            "Authentication authType not find: " + request.getRequestURI());
             //}
-            //默认开启了formLogin 获取默认的 username字段
+            // 默认开启了formLogin 获取默认的 username字段
             authType = DEFAULT_AUTH_TYPE;
             principal = request.getParameter(formLoginProperties.getUsernameParameter());
         } else {
-            String field = multiAuthenticationProperties.getFieldMap() == null ? authType : multiAuthenticationProperties.getFieldMap().getOrDefault(authType, authType);
+            String field = multiAuthenticationProperties.getAuthMap() == null ? authType : multiAuthenticationProperties.getAuthMap().getOrDefault(authType, authType);
             principal = request.getParameter(field);
         }
 

@@ -12,13 +12,10 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
-/**
- * @author andanyang
- * @since 2023/5/31 18:06
- */
+
 public class SecurityHandlerConfiguration {
     @Bean
-    @ConditionalOnMissingBean(AuthenticationResult.class)
+    @ConditionalOnMissingBean({AuthenticationResult.class})
     public AuthenticationResult authenticationResult(UserTokenService userTokenService) {
         return new DefaultAuthenticationResult(userTokenService);
     }

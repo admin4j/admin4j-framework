@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -47,7 +46,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         try {
-            UserDetails userDetails = userTokenService.getUserDetails(token);
+            JwtUserDetails userDetails = userTokenService.getUserDetails(token);
 
             if (userDetails != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 // 认证成功吧 Authentication 对象 setAuthenticated(true), 然存到 SecurityContext 中

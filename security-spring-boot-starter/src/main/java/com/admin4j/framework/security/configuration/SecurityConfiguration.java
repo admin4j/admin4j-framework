@@ -100,7 +100,7 @@ public class SecurityConfiguration {
      * 取消ROLE_前缀
      */
     //@Bean
-    //public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    // public GrantedAuthorityDefaults grantedAuthorityDefaults() {
     //    // Remove the ROLE_ prefix
     //    return new GrantedAuthorityDefaults("");
     //}
@@ -122,9 +122,9 @@ public class SecurityConfiguration {
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-//FilterSecurityInterceptor
+// FilterSecurityInterceptor
         httpSecurity
-                //关闭cors
+                // 关闭cors
                 .cors().disable()
                 // CSRF禁用，因为不使用session
                 .csrf().disable()
@@ -161,7 +161,7 @@ public class SecurityConfiguration {
 
         authorizeRequestsConfigurer(httpSecurity);
 
-        //多渠道登录
+        // 多渠道登录
         if (multiAuthenticationProperties.isEnable()) {
 
             MultiAuthenticationFilter authenticationFilter = new MultiAuthenticationFilter(multiAuthenticationProperties, formLoginProperties);
@@ -174,7 +174,7 @@ public class SecurityConfiguration {
             httpSecurity.apply(multiSecurityConfigurerAdapter);
 
         } else {
-            //开启form表单认证
+            // 开启form表单认证
             httpSecurity.formLogin()
                     .loginProcessingUrl(formLoginProperties.getLoginProcessingUrl())
                     .passwordParameter(formLoginProperties.getPasswordParameter())
@@ -189,8 +189,8 @@ public class SecurityConfiguration {
             httpSecurity.addFilterBefore(actuatorFilter, UsernamePasswordAuthenticationFilter.class);
         }
 
-        //GlobalAuthenticationConfigurerAdapter
-        //WebSecurityConfigurerAdapter
+        // GlobalAuthenticationConfigurerAdapter
+        // WebSecurityConfigurerAdapter
         return httpSecurity.build();
     }
 
@@ -200,7 +200,7 @@ public class SecurityConfiguration {
     private void authorizeRequestsConfigurer(HttpSecurity httpSecurity) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry =
                 httpSecurity.authorizeRequests();
-        //忽略URl配置
+        // 忽略URl配置
         ignoringRequestMatcherRegistry(expressionInterceptUrlRegistry);
         // 除上面外的所有请求全部需要鉴权认证;其他路径必须验证
         expressionInterceptUrlRegistry.anyRequest().authenticated();
@@ -249,7 +249,7 @@ public class SecurityConfiguration {
             }
         }
 
-        //AnonymousAccess 注解
+        // AnonymousAccess 注解
         if (anonymousAccessUrl != null) {
 
             Map<HttpMethod, String[]> anonymousUrl = anonymousAccessUrl.getAnonymousUrl();
@@ -265,7 +265,7 @@ public class SecurityConfiguration {
      */
     //@Bean
     //@ConditionalOnMissingBean(WebSecurityCustomizer.class)
-    //public WebSecurityCustomizer webSecurityCustomizer() {
+    // public WebSecurityCustomizer webSecurityCustomizer() {
     //    return (web) -> {
     //
     //        //设置匿名访问url

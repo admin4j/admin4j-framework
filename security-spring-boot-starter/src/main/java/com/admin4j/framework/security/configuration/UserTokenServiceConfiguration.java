@@ -10,6 +10,7 @@ import com.admin4j.framework.security.mult.UsernamePasswordUserDetailsService;
 import com.admin4j.framework.security.properties.ActuatorProperties;
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.JwtProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,8 +29,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserTokenServiceConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(UserTokenService.class)
-    public UserTokenService userTokenService(JwtProperties jwtProperties, JwtUserDetailsService jwtUserDetailsService) {
+    @ConditionalOnMissingBean({UserTokenService.class})
+    public UserTokenService userTokenService(JwtProperties jwtProperties, @Autowired(required = false) JwtUserDetailsService jwtUserDetailsService) {
         return new JwtUserTokenService(jwtProperties, jwtUserDetailsService);
     }
 
