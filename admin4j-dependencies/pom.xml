@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -220,7 +220,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>web-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.1</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>

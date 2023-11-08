@@ -18,7 +18,7 @@ public class CommonPageMpFactory {
         CommonPage.PageResultVO<T> pageResultVO = new CommonPage.PageResultVO<>();
 
         pageResultVO.setTotal(pageInfo.getTotal());
-        pageResultVO.setCurrent(pageInfo.getPages());
+        pageResultVO.setCurrent(pageInfo.getCurrent());
         pageResultVO.setSize(pageInfo.getSize());
         pageResultVO.setRecords(pageInfo.getRecords());
 
@@ -34,7 +34,7 @@ public class CommonPageMpFactory {
         CommonPage.PageResultVO<T> pageResultVO = new CommonPage.PageResultVO<>();
 
         pageResultVO.setTotal(list.size());
-        pageResultVO.setCurrent(0);
+        pageResultVO.setCurrent(1);
         pageResultVO.setSize(list.size());
         pageResultVO.setRecords(list);
 
@@ -50,7 +50,7 @@ public class CommonPageMpFactory {
         CommonPage.PageResultVO<T> pageResultVO = new CommonPage.PageResultVO<>();
 
         pageResultVO.setTotal(pageInfo.getTotal());
-        pageResultVO.setCurrent(pageInfo.getPages());
+        pageResultVO.setCurrent(pageInfo.getCurrent());
         pageResultVO.setSize(pageInfo.getSize());
         pageResultVO.setRecords(list);
 
