@@ -16,11 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -78,22 +74,11 @@ public class SecurityConfiguration {
     @Autowired(required = false)
     List<MultiUserDetailsService> userDetailServices;
     @Autowired
-    @Lazy
-    AuthenticationManager authenticationManager;
+    AuthenticationConfiguration authenticationConfiguration;
     @Autowired(required = false)
     ActuatorFilter actuatorFilter;
     @Autowired(required = false)
     CorsFilter corsFilter;
-
-
-    /**
-     * 认证管理器，登录的时候参数会传给 authenticationManager
-     */
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-
-        return authenticationConfiguration.getAuthenticationManager();
-    }
 
 
     /**
@@ -105,15 +90,15 @@ public class SecurityConfiguration {
     //    return new GrantedAuthorityDefaults("");
     //}
 
-    /**
-     * 设置中文配置
-     */
-    @Bean
-    public ReloadableResourceBundleMessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:org/springframework/security/messages_zh_CN");
-        return messageSource;
-    }
+    // /**
+    //  * 设置中文配置
+    //  */
+    // @Bean
+    // public ReloadableResourceBundleMessageSource messageSource() {
+    //     ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+    //     messageSource.setBasename("classpath:org/springframework/security/messages_zh_CN");
+    //     return messageSource;
+    // }
 
     /**
      * 安全配置
@@ -122,7 +107,7 @@ public class SecurityConfiguration {
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-// FilterSecurityInterceptor
+        // FilterSecurityInterceptor
         httpSecurity
                 // 关闭cors
                 .cors().disable()
@@ -166,7 +151,7 @@ public class SecurityConfiguration {
 
             MultiAuthenticationFilter authenticationFilter = new MultiAuthenticationFilter(multiAuthenticationProperties, formLoginProperties);
 
-            authenticationFilter.setAuthenticationManager(authenticationManager);
+            authenticationFilter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
             authenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
             authenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
 
@@ -258,68 +243,5 @@ public class SecurityConfiguration {
                 expressionInterceptUrlRegistry.antMatchers(i, anonymousUrl.get(i)).permitAll();
             });
         }
-
     }
-    /**
-     * 网络安全配置，忽略部分路径（如静态文件路径）
-     */
-    //@Bean
-    //@ConditionalOnMissingBean(WebSecurityCustomizer.class)
-    // public WebSecurityCustomizer webSecurityCustomizer() {
-    //    return (web) -> {
-    //
-    //        //设置匿名访问url
-    //        WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
-    //
-    //        if (securityIgnoringUrls != null && !securityIgnoringUrls.isEmpty()) {
-    //            securityIgnoringUrls.forEach(url -> {
-    //
-    //                if (url.ignoringUrls() == null || url.ignoringUrls().length == 0) {
-    //                    return;
-    //                }
-    //
-    //                if (url.support() == null) {
-    //                    ignoring.antMatchers(url.ignoringUrls());
-    //                } else {
-    //                    ignoring.antMatchers(url.support(), url.ignoringUrls());
-    //                }
-    //            });
-    //        }
-    //
-    //        if (ignoringUrlProperties != null) {
-    //
-    //            if (ignoringUrlProperties.getUris() != null && ignoringUrlProperties.getUris().length > 0) {
-    //                ignoring.antMatchers(ignoringUrlProperties.getUris());
-    //            }
-    //            if (ignoringUrlProperties.getGet() != null && ignoringUrlProperties.getGet().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.GET, ignoringUrlProperties.getGet());
-    //            }
-    //
-    //            if (ignoringUrlProperties.getPost() != null && ignoringUrlProperties.getPost().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.POST, ignoringUrlProperties.getPost());
-    //            }
-    //            if (ignoringUrlProperties.getPut() != null && ignoringUrlProperties.getPut().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.PUT, ignoringUrlProperties.getPut());
-    //            }
-    //            if (ignoringUrlProperties.getPatch() != null && ignoringUrlProperties.getPatch().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.PATCH, ignoringUrlProperties.getPatch());
-    //            }
-    //            if (ignoringUrlProperties.getDelete() != null && ignoringUrlProperties.getDelete().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.DELETE, ignoringUrlProperties.getDelete());
-    //            }
-    //        }
-    //
-    //        //AnonymousAccess 注解
-    //        if (anonymousAccessUrl != null) {
-    //
-    //            Map<HttpMethod, String[]> anonymousUrl = anonymousAccessUrl.getAnonymousUrl();
-    //            anonymousUrl.keySet().forEach(i -> {
-    //
-    //                ignoring.antMatchers(i, anonymousUrl.get(i));
-    //            });
-    //        }
-    //    };
-    //}
-
-
 }

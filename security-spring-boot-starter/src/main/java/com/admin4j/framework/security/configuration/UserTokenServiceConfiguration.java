@@ -6,6 +6,7 @@ import com.admin4j.framework.security.context.SecurityUserContextHolder;
 import com.admin4j.framework.security.filter.ActuatorFilter;
 import com.admin4j.framework.security.jwt.JwtUserDetailsService;
 import com.admin4j.framework.security.jwt.JwtUserTokenService;
+import com.admin4j.framework.security.mult.MultiCheckUsernamePasswordService;
 import com.admin4j.framework.security.mult.UsernamePasswordUserDetailsService;
 import com.admin4j.framework.security.properties.ActuatorProperties;
 import com.admin4j.framework.security.properties.FormLoginProperties;
@@ -49,7 +50,7 @@ public class UserTokenServiceConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean(UsernamePasswordUserDetailsService.class)
+    @ConditionalOnMissingBean(MultiCheckUsernamePasswordService.class)
     @ConditionalOnBean(UserDetailsService.class)
     @ConditionalOnProperty(prefix = "admin4j.security.multi", name = "enable", matchIfMissing = true)
     public UsernamePasswordUserDetailsService usernamePasswordUserDetailsService(
@@ -58,9 +59,9 @@ public class UserTokenServiceConfiguration {
             FormLoginProperties formLoginProperties) {
 
         return new UsernamePasswordUserDetailsService(
-                userDetailsService,
                 passwordEncoder,
-                formLoginProperties
+                formLoginProperties,
+                userDetailsService
         );
     }
 

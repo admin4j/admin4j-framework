@@ -1,12 +1,7 @@
 package com.admin4j.framework.security.mult;
 
-import com.admin4j.common.Prioritized;
 import com.admin4j.framework.security.properties.FormLoginProperties;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,42 +13,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @since 2023/6/2 13:43
  */
 @Slf4j
-@RequiredArgsConstructor
-public class UsernamePasswordUserDetailsService implements MultiUserDetailsService {
+public class UsernamePasswordUserDetailsService extends MultiCheckUsernamePasswordService {
 
 
     private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
-    private final FormLoginProperties formLoginProperties;
-    protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
-
-    @Override
-    public int getPriority() {
-        return Prioritized.MAX_PRIORITY;
+    public UsernamePasswordUserDetailsService(PasswordEncoder passwordEncoder, FormLoginProperties formLoginProperties, UserDetailsService userDetailsService) {
+        super(passwordEncoder, formLoginProperties);
+        this.userDetailsService = userDetailsService;
     }
 
-    /**
-     * 该类是否支持指定的authType登录方式
-     *
-     * @param authType 指定的authType登录方式
-     * @return
-     */
-    @Override
-    public String support() {
-        return MultiAuthenticationFilter.DEFAULT_AUTH_TYPE;
-    }
-
-    /**
-     * 加载用户前的认证。比如认证短信验证码是否正确等
-     *
-     * @param multiAuthenticationToken
-     * @return 返回是否认证成功
-     */
-    @Override
-    public boolean preVerify(MultiAuthenticationToken multiAuthenticationToken) {
-        return true;
-    }
 
     /**
      * 多渠道登录加载用户
@@ -66,15 +35,5 @@ public class UsernamePasswordUserDetailsService implements MultiUserDetailsServi
         return userDetailsService.loadUserByUsername(multiToken);
     }
 
-    @Override
-    public void postLoadUser(MultiAuthenticationToken multiAuthenticationToken) {
-        UserDetails principal = (UserDetails) multiAuthenticationToken.getPrincipal();
 
-        //认证密码是否正确
-        if (!passwordEncoder.matches(multiAuthenticationToken.getAuthParameter(formLoginProperties.getPasswordParameter()), principal.getPassword())) {
-            log.debug("Failed to authenticate since password does not match stored value");
-            throw new BadCredentialsException(this.messages
-                    .getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"));
-        }
-    }
 }
