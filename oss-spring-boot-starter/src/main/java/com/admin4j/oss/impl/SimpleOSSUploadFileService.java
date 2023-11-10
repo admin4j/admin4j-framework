@@ -6,7 +6,6 @@ import com.admin4j.oss.OssTemplate;
 import com.admin4j.oss.UploadFileService;
 import com.admin4j.oss.entity.vo.UploadFileVO;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @author andanyang
  * @since 2023/4/14 9:27
  */
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 public class SimpleOSSUploadFileService implements UploadFileService {
 
     protected final static DateTimeFormatter FILEPATH_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -29,6 +28,12 @@ public class SimpleOSSUploadFileService implements UploadFileService {
     protected final OssTemplate ossTemplate;
 
     protected final OssProperties ossProperties;
+
+    public SimpleOSSUploadFileService(OssTemplate ossTemplate, OssProperties ossProperties) {
+        this.ossTemplate = ossTemplate;
+        this.ossProperties = ossProperties;
+    }
+
 
     /**
      * 上传文件
@@ -45,11 +50,11 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         uploadFileVO.setContentType(file.getContentType());
         uploadFileVO.setCreateTime(LocalDateTime.now());
         uploadFileVO.setBucket(defaultBucketName());
-        //计算文件md5
+        // 计算文件md5
         String md5 = DigestUtils.md5Hex(file.getBytes());
         uploadFileVO.setMd5(md5);
 
-        //生成文件存储路径
+        // 生成文件存储路径
         if (StringUtils.isNotBlank(path)) {
             uploadFileVO.setPrefix(path);
         }
@@ -111,7 +116,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         uploadFileVO.setContentType(contentType);
         uploadFileVO.setCreateTime(LocalDateTime.now());
         uploadFileVO.setBucket(defaultBucketName());
-        //计算文件md5
+        // 计算文件md5
         String md5 = DigestUtils.md5Hex(file.getBytes());
         uploadFileVO.setMd5(md5);
 
@@ -133,7 +138,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
             if (ossProperties.getExpires() == -1) {
                 return ossProperties.getPreviewUrl() + key;
             } else {
-                return getPrivateUrl(key, ossProperties.getExpires());
+                return getPrivateUrl(ossProperties.getPreviewUrl(), key, ossProperties.getExpires());
             }
         }
         return getPrivateUrl(key, ossProperties.getExpires() == -1 ? 300 : ossProperties.getExpires());
@@ -154,6 +159,25 @@ public class SimpleOSSUploadFileService implements UploadFileService {
     }
 
     /**
+     * 使用预览域名，通过OSS直接查看文件预览路径
+     * 获取私有链接
+     *
+     * @param url     域名前缀
+     * @param key     oss key
+     * @param expires 私有链接有效秒数
+     * @return 文件阅览路径
+     */
+    // @Override
+    public String getPrivateUrl(String url, String key, Integer expires) {
+        String objectURL = ossTemplate.getObjectURL(defaultBucketName(), key, expires, TimeUnit.SECONDS);
+        if (StringUtils.isNotBlank(url)) {
+
+            return objectURL.replace(ossProperties.getEndpoint() + "/" + defaultBucketName() + "/", url);
+        }
+        return objectURL;
+    }
+
+    /**
      * 文件内网阅览路径
      *
      * @param key oss key
@@ -165,7 +189,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
             if (ossProperties.getExpires() == -1) {
                 return ossProperties.getIntranetUrl() + key;
             } else {
-                return getPrivateUrl(key, ossProperties.getExpires());
+                return getPrivateUrl(ossProperties.getIntranetUrl(), key, ossProperties.getExpires());
             }
         }
         return getPreviewUrl(key);
@@ -192,7 +216,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         if (StringUtils.isNotBlank(uploadFileVO.getKey())) {
             return uploadFileVO.getKey();
         }
-        //后缀
+        // 后缀
         String postfix = null;
         if (StringUtils.isNotBlank(uploadFileVO.getOriginalFilename()) && StringUtils.contains(uploadFileVO.getOriginalFilename(), ".")) {
 
@@ -201,7 +225,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
 
         StringBuilder filePathBuilder = new StringBuilder();
 
-        //文件前缀
+        // 文件前缀
         if (StringUtils.isNotBlank(uploadFileVO.getPrefix())) {
             filePathBuilder.append(uploadFileVO.getPrefix());
             if (!StringUtils.endsWith(uploadFileVO.getPrefix(), "/")) {

@@ -9,7 +9,7 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>oss-spring-boot-starter</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
     <packaging>jar</packaging>
     <description>封装基于Amazon S3的OSS对象存储服务。在SpringBoot 中通过封装，简单地方式将文件存储到
         MinIO、阿里云OSS、华为云OBS、七牛云Kodo、腾讯云COS等支持

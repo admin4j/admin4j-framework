@@ -1,6 +1,8 @@
 package com.admin4j.oss;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -9,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "admin4j.oss")
-public class OssProperties {
+public class OssProperties implements InitializingBean {
     /**
      * 是否启用
      */
@@ -64,4 +66,28 @@ public class OssProperties {
      * 最大线程数，默认： 100
      */
     private Integer maxConnections = 100;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        init();
+    }
+
+    /**
+     * 初始化方法
+     * - Endpoint 不能带 /
+     * - PreviewUrl, IntranetUrl 需要带 /
+     */
+    public void init() {
+
+        if (StringUtils.endsWith(getEndpoint(), "/")) {
+            setEndpoint(StringUtils.substring(getEndpoint(), 0, -1));
+        }
+
+        if (!StringUtils.endsWith(getPreviewUrl(), "/")) {
+            setPreviewUrl(getPreviewUrl() + "/");
+        }
+        if (!StringUtils.endsWith(getIntranetUrl(), "/")) {
+            setIntranetUrl(getIntranetUrl() + "/");
+        }
+    }
 }
