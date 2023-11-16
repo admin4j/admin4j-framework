@@ -1,4 +1,4 @@
-package com.admin4j.framework.web.config;
+package com.admin4j.framework.web.autoconfigure;
 
 import com.admin4j.common.service.IUserContextHolder;
 import com.admin4j.framework.web.SimpleUserContextHolder;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2023/9/15 9:19
  */
 @Configuration
-public class UserContextConfig {
+public class UserContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(IUserContextHolder.class)
