@@ -39,12 +39,6 @@ public enum ResponseEnum implements IResponse, Assert {
 
 
     /**
-     * token 认证失败
-     */
-    FAIL_NO_TOKEN(405, "FAIL_NO_TOKEN"),
-
-
-    /**
      * 服务未找到
      */
     NOT_FOUND(404, "The uri is not found"),

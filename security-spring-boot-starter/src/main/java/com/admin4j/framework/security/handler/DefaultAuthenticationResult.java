@@ -67,6 +67,8 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
 
     /**
      * 认证失败回调
+     * <p>
+     * ExceptionHandlerExceptionResolver.resolveException 可以模拟这个方法
      */
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, Exception exception) {
