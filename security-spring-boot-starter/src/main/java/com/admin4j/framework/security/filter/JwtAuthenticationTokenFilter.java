@@ -4,6 +4,7 @@ import com.admin4j.common.pojo.AuthenticationUser;
 import com.admin4j.common.util.UserContextUtil;
 import com.admin4j.framework.security.AuthenticationResult;
 import com.admin4j.framework.security.UserTokenService;
+import com.admin4j.framework.security.exception.JwtTokenExpiredException;
 import com.admin4j.framework.security.factory.AuthenticationUserFactory;
 import com.admin4j.framework.security.jwt.JwtUserDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -62,8 +63,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 UserContextUtil.setUser(authenticationUser);
             }
         } catch (Exception e) {
-            log.error("onAuthenticationFailure {}", e.getMessage(), e);
-            authenticationResult.onAuthenticationFailure(request, response, e);
+            log.error("authenticationEntryPoint {}", e.getMessage(), e);
+            authenticationResult.authenticationEntryPoint(request, response, new JwtTokenExpiredException(e.getMessage(), e));
             return;
         }
 
