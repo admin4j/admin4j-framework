@@ -125,7 +125,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>tenant-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.3-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -220,7 +220,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>web-spring-boot-starter</artifactId>
-                <version>0.9.2</version>
+                <version>0.9.3-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -311,7 +311,7 @@
             <dependency>
                 <groupId>io.github.admin4j</groupId>
                 <artifactId>common-http-starter</artifactId>
-                <version>0.8.1</version>
+                <version>0.9.1</version>
             </dependency>
             <dependency>
                 <groupId>com.xuxueli</groupId>
