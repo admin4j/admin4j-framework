@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.admin4j.signature.configuration.SignatureAutoConfiguration,\
+  com.admin4j.framework.signature.DefaultSignature
