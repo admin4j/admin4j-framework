@@ -21,7 +21,6 @@
  * 签名API实现类
  */
 @Service
-@DubboService(version = "1.0.0")
 public class SignatureApiImpl implements SignatureApi {
 
     @Override
@@ -75,8 +74,9 @@ public class SignatureController {
            timestamp=1701521859352
            nonce=1730934251223891968
            sign=337337309c3e799c9a13c6ad9ddbf767
-           RequestParam请求参数：
-           name=张三
+         
+         4、RequestParam请求参数：
+            name=张三
          */
         User user = new User(name, id, id == 1 ? "男" : "女");
         return R.ok(user);
@@ -113,14 +113,14 @@ public class SignatureController {
                }
          
          2、签名：
-         sign：上面所有字段按key排序后keyvalue拼接，最后再拼接appSecret进行签名：md5("appIdzs001body{"password":"1","user":{"1":"xx","2":"xx","area":"浦东新区","data":{"1":"xx","100":"xx","2":"xx","3":"xx","99":"xx"},"name":"张三","province":"上海市","sex":"男"},"username":"xiaoming"}nonce1731034287702024192param{"name":"张三"}timestamp1701545709907uri/register/1d3cbeed9baf4e68673a1f69a2445359a20022b7c28ea2933dd9db9f3a29f902b")
+         sign：上面所有字段按key排序后keyvalue拼接，最后再拼接appSecret进行签名：md5("appIdzs001body{"password":"1","user":{"1":"xx","2":"xx","area":"浦东新区","data":{"1":"xx","100":"xx","2":"xx","3":"xx","99":"xx"},"name":"张三","province":"上海市","sex":"男"},"username":"xiaoming"}nonce1731062642266603520timestamp1701552470162uri/registerd3cbeed9baf4e68673a1f69a2445359a20022b7c28ea2933dd9db9f3a29f902b")
          "sign": "828a98e3c52e6c0c6a015fc99715e6e3"
          
          3、RequestHeader请求参数：
             appId=327189637812637
             timestamp=1701521859352
             nonce=1730934251223891968
-            sign=1b784de10dd365318cccda5bdf9423c6
+            sign=1b695558ae9932f1d4544ba2bc6b6c05
          
          4、RequestBody请求参数：
             {
