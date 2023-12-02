@@ -8,7 +8,7 @@
 <dependency>
     <groupId>com.admin4j.signature</groupId>
     <artifactId>admin4j-signature</artifactId>
-    <version>0.8.1</version>
+    <version>0.8.0-SNAPSHOT</version>
 </dependency>
 ```
 
