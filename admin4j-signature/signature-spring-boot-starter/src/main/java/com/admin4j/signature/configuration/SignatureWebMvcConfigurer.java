@@ -1,6 +1,6 @@
 package com.admin4j.signature.configuration;
 
-import com.admin4j.framework.signature.interceptor.SignatureInterceptor;
+import com.admin4j.framework.signature.core.interceptor.SignatureInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 

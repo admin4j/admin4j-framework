@@ -1,39 +1,42 @@
-package com.admin4j.framework.signature;
+package com.admin4j.framework.signature.core;
 
-import com.admin4j.framework.signature.annotation.Signature;
-import com.admin4j.framework.signature.properties.SignatureProperties;
+import com.admin4j.framework.signature.core.annotation.Signature;
+import com.admin4j.framework.signature.core.properties.SignatureProperties;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhougang
  * @since 2023/11/10 10:43
  */
-public abstract class AbstractSignature implements SignatureService {
+public abstract class AbstractSignatureStrategy implements SignatureStrategy {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractSignature.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractSignatureStrategy.class);
 
     private final StringRedisTemplate stringRedisTemplate;
 
     private final SignatureProperties signatureProperties;
 
-    private static final String SIGNATURE_NONCE_REDIS_KEY = "signature:nonce:";
+    private final SignatureApi signatureApi;
 
-    public AbstractSignature(StringRedisTemplate stringRedisTemplate, SignatureProperties signatureProperties) {
+    public AbstractSignatureStrategy(StringRedisTemplate stringRedisTemplate,
+                                     SignatureProperties signatureProperties,
+                                     SignatureApi signatureApi) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.signatureProperties = signatureProperties;
+        this.signatureApi = signatureApi;
     }
 
     /**
@@ -48,7 +51,7 @@ public abstract class AbstractSignature implements SignatureService {
         String appId = request.getHeader(signature.appId().filedName());
         String appSecret;
         if (StringUtils.isBlank(appId) ||
-                StringUtils.isBlank(appSecret = getAppSecret(request.getHeader(signature.appId().filedName())))) {
+                StringUtils.isBlank(appSecret = signatureApi.getAppSecret(appId))) {
             return false;
         }
         // 根据request 中 header值生成SignatureHeaders实体
@@ -60,7 +63,7 @@ public abstract class AbstractSignature implements SignatureService {
         // 生成服务端签名
         String plainText = paramsSplicing(allParams, appSecret);
         // 将digest 转换成UTF-8 的 byte[] 后 使用MD5算法加密，最后将生成的md5字符串
-        String serverSign = digestEncoder(plainText);
+        String serverSign = signatureApi.digestEncoder(plainText);
         // 客户端签名
         String clientSign = request.getHeader(signature.sign().filedName());
         if (!StringUtils.equals(clientSign, serverSign)) {
@@ -68,20 +71,9 @@ public abstract class AbstractSignature implements SignatureService {
         }
         String nonce = allParams.get(signature.nonce().filedName());
         // 将 nonce 记入缓存，防止重复使用（重点二：此处需要将 ttl 设定为允许 timestamp 时间差的值 x 2 ）
-        stringRedisTemplate.opsForValue().set(SIGNATURE_NONCE_REDIS_KEY + nonce, nonce, signatureProperties.getExpireTime() * 2, TimeUnit.MILLISECONDS);
+        stringRedisTemplate.opsForValue().set(signatureProperties.getSignatureNonceCacheKey() + nonce, nonce, signatureProperties.getExpireTime() * 2, TimeUnit.MILLISECONDS);
         return true;
     }
-
-    /*
-    private SignatureHeaders getSignatureHeaders(Signature signature, HttpServletRequest request) {
-        SignatureHeaders signatureHeaders = new SignatureHeaders();
-        signatureHeaders.setAppId(request.getHeader(signature.appId().filedName()));
-        signatureHeaders.setAppId(request.getHeader(signature.timestamp().filedName()));
-        signatureHeaders.setAppId(request.getHeader(signature.nonce().filedName()));
-        signatureHeaders.setAppId(request.getHeader(signature.sign().filedName()));
-        return signatureHeaders;
-    }
-     */
 
     /**
      * 1.appId是否合法，appId是否有对应的appSecret。
@@ -92,56 +84,57 @@ public abstract class AbstractSignature implements SignatureService {
     private boolean verifyHeaders(Signature signature, HttpServletRequest request) {
 
         String timestamp = request.getHeader(signature.timestamp().filedName());
-        //Assert.notNull(timestamp, "timestamp cannot be empty");
         if (StringUtils.isBlank(timestamp)) {
             return false;
         }
 
         Long expireTime = signatureProperties.getExpireTime();
-        //其他合法性校验
+        // 其他合法性校验
         long requestTimestamp = Long.parseLong(timestamp);
         // 检查 timestamp 是否超出允许的范围 （重点一：此处需要取绝对值）
         long timestampDisparity = Math.abs(System.currentTimeMillis() - requestTimestamp);
-        //Assert.isTrue(!(timestampDisparity > expireTime), "Request time exceeds the specified limit");
         if (timestampDisparity > expireTime) {
             return false;
         }
 
         String nonce = request.getHeader(signature.nonce().filedName());
-        //Assert.notNull(nonce, "Random strings cannot be empty");
         if (StringUtils.isBlank(nonce)) {
             return false;
         }
-        //Assert.isTrue(!(nonce.length() < 10), "The random string nonce length is at least 10 bits");
         if (nonce.length() < 10) {
             return false;
         }
-        String cacheNonce = stringRedisTemplate.opsForValue().get(SIGNATURE_NONCE_REDIS_KEY + nonce);
-        //Assert.isNull(cacheNonce, "This nonce has already been used and the request is invalid");
+        String cacheNonce = stringRedisTemplate.opsForValue().get(signatureProperties.getSignatureNonceCacheKey() + nonce);
         if (StringUtils.isNotBlank(cacheNonce)) {
             return false;
         }
 
         String sign = request.getHeader(signature.sign().filedName());
-        //Assert.notNull(sign, "sign cannot be empty");
         return StringUtils.isNotBlank(sign);
     }
 
     /**
      * 获取全部参数(包括URL和Body上的)
      *
-     * @param request    request
-     * @return
+     * @param request request
+     * @return SortedMap
      */
     protected SortedMap<String, String> getAllParams(Signature signature, HttpServletRequest request) throws IOException {
 
         SortedMap<String, String> sortedMap = new TreeMap<>();
-
-        sortedMap.put(signature.appId().filedName(), request.getHeader(signature.appId().filedName()));
-        sortedMap.put(signature.timestamp().filedName(), request.getHeader(signature.timestamp().filedName()));
-        sortedMap.put(signature.nonce().filedName(), request.getHeader(signature.nonce().filedName()));
-        // 有url带动态参数的情况, 所以加上url, 客户端对应也要拼接
-        sortedMap.put("url", request.getServletPath());
+        if (signature.appId().enable()) {
+            sortedMap.put(signature.appId().filedName(), request.getHeader(signature.appId().filedName()));
+        }
+        if (signature.uri().enable()) {
+            // 例：/user/{id}  有uri带动态参数的情况, 此字段不用传递到后端，但是需要用这个字段参与签名
+            sortedMap.put(signature.uri().filedName(), request.getServletPath());
+        }
+        if (signature.timestamp().enable()) {
+            sortedMap.put(signature.timestamp().filedName(), request.getHeader(signature.timestamp().filedName()));
+        }
+        if (signature.nonce().enable()) {
+            sortedMap.put(signature.nonce().filedName(), request.getHeader(signature.nonce().filedName()));
+        }
 
         // 获取parameters（对应@RequestParam）
         if (!CollectionUtils.isEmpty(request.getParameterMap())) {
@@ -152,14 +145,25 @@ public abstract class AbstractSignature implements SignatureService {
             }
         }
 
-        BodyReaderHttpServletRequestWrapper requestWrapper = new BodyReaderHttpServletRequestWrapper(request);
+        CacheHttpServletRequestWrapper requestWrapper = new CacheHttpServletRequestWrapper(request);
         // 分别获取了request input stream中的body信息、parameter信息
-        JSONObject data = JSONObject.parseObject(requestWrapper.getBody());
-        // 获取POST请求的JSON参数,以键值对形式保存
-        for (Map.Entry<String, Object> entry : data.entrySet()) {
-            sortedMap.put(entry.getKey(), entry.getValue().toString());
+        String body = new String(requestWrapper.getBody(), StandardCharsets.UTF_8);
+        if (StringUtils.isNotBlank(body)) {
+            // body可能为JSON对象或JSON数组
+            if (body.trim().startsWith("{")) {
+                JSONObject jsonObj = JSONObject.parseObject(body);
+                // 获取POST请求的JSON参数,以键值对形式保存
+                sortedMap.put("body", JSON.toJSONString(convertJsonObjToSortedMap(jsonObj)));
+            } else {
+                List<SortedMap<String, String>> list = new ArrayList<>();
+                JSONArray jsonArray = JSONArray.parseArray(body);
+                for (Object obj : jsonArray) {
+                    JSONObject jsonObj = (JSONObject) obj;
+                    list.add(convertJsonObjToSortedMap(jsonObj));
+                }
+                sortedMap.put("body", JSON.toJSONString(list));
+            }
         }
-
         return sortedMap;
     }
 
@@ -176,30 +180,27 @@ public abstract class AbstractSignature implements SignatureService {
         for (Map.Entry<String, String> entry : sortedMap.entrySet()) {
             plainText.append(entry.getKey()).append(entry.getValue());
         }
-
         // 结尾拼接应用密钥 appSecret
         plainText.append(appSecret);
-
-        // 摘要
         return plainText.toString();
     }
 
     /**
-     * 获取appId对应的secret,假数据
-     *
-     * @param appId 应用id
+     * JSON对象按key排序，value转字符串
+     * @param data
      * @return
      */
-    protected String getAppSecret(String appId) {
-        return "";
-    }
-
-    /**
-     * 摘要加密
-     * @param plainText
-     * @return
-     */
-    protected String digestEncoder(String plainText) throws IOException {
-        return DigestUtils.md5DigestAsHex(StringUtils.getBytes(plainText, "UTF-8"));
+    private static SortedMap<String, String> convertJsonObjToSortedMap(JSONObject data) {
+        SortedMap<String, String> sortedMap = new TreeMap<>();
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            Object value = entry.getValue();
+            // 判断value的类型
+            if (value instanceof JSONArray || value instanceof JSONObject) {
+                sortedMap.put(entry.getKey(), JSON.toJSONString(value));
+            } else {
+                sortedMap.put(entry.getKey(), String.valueOf(value));
+            }
+        }
+        return sortedMap;
     }
 }

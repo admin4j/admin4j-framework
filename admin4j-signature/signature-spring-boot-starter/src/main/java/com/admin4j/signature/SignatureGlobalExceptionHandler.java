@@ -4,9 +4,8 @@ import com.admin4j.common.exception.handler.AbstractExceptionHandler;
 import com.admin4j.common.pojo.IResponse;
 import com.admin4j.common.pojo.ResponseEnum;
 import com.admin4j.common.pojo.SimpleResponse;
-import com.admin4j.framework.signature.exception.SignatureException;
+import com.admin4j.framework.signature.core.exception.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,12 +22,7 @@ public class SignatureGlobalExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity<IResponse> distributedLockException(SignatureException e) {
         log.error("SignatureException：" + e.getMessage(), e);
 
-        return renderException(e, SimpleResponse.of(ResponseEnum.REQUEST_TOO_MANY_REQUESTS.getCode(), e.getMessage()));
+        return renderException(e, SimpleResponse.of(ResponseEnum.REQUEST_SIGNATURE_FAILURE.getCode(), e.getMessage()));
     }
 
-    @Override
-    public ResponseEntity<IResponse> renderException(Exception e, IResponse response) {
-        publishGlobalExceptionEvent(e);
-        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(response);
-    }
 }
