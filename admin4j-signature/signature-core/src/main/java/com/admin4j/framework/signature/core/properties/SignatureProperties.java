@@ -1,4 +1,4 @@
-package com.admin4j.framework.signature.properties;
+package com.admin4j.framework.signature.core.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,6 +17,11 @@ public class SignatureProperties {
      * 是否开启
      */
     private boolean enabled = false;
+
+    /**
+     * nonce缓存key
+     */
+    private String signatureNonceCacheKey = "signature:nonce:";
 
     /**
      * 同一个请求多长时间内有效 默认10分钟

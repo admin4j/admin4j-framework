@@ -1,9 +1,11 @@
-package com.admin4j.signature.configuration;
+package com.admin4j.framework.signature.configuration;
 
-import com.admin4j.framework.signature.filter.RequestReplaceFilter;
-import com.admin4j.framework.signature.interceptor.SignatureInterceptor;
-import com.admin4j.framework.signature.properties.SignatureProperties;
-import com.admin4j.signature.SignatureGlobalExceptionHandler;
+import com.admin4j.framework.signature.SignatureGlobalExceptionHandler;
+import com.admin4j.framework.signature.core.DefaultSignatureStrategy;
+import com.admin4j.framework.signature.core.SignatureApi;
+import com.admin4j.framework.signature.core.filter.CacheRequestBodyFilter;
+import com.admin4j.framework.signature.core.interceptor.SignatureInterceptor;
+import com.admin4j.framework.signature.core.properties.SignatureProperties;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,6 +16,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * @author zhougang
@@ -26,20 +29,20 @@ import org.springframework.core.annotation.Order;
 public class SignatureAutoConfiguration implements ApplicationContextAware {
 
     @Bean
-    public RequestReplaceFilter requestReplaceFilter() {
-        return new RequestReplaceFilter();
+    public CacheRequestBodyFilter cacheRequestBodyFilter() {
+        return new CacheRequestBodyFilter();
     }
 
     /**
-     * 配置RequestReplaceFilter对象过滤器
+     * 配置CacheRequestBodyFilter对象过滤器
      *
      * @return
      */
     @Bean
-    public FilterRegistrationBean<RequestReplaceFilter> filterRegistrationBean(RequestReplaceFilter requestReplaceFilter) {
-        FilterRegistrationBean<RequestReplaceFilter> filterRegistration = new FilterRegistrationBean<>(requestReplaceFilter);
+    public FilterRegistrationBean<CacheRequestBodyFilter> filterRegistrationBean(CacheRequestBodyFilter cacheRequestBodyFilter) {
+        FilterRegistrationBean<CacheRequestBodyFilter> filterRegistration = new FilterRegistrationBean<>(cacheRequestBodyFilter);
         filterRegistration.addUrlPatterns("/*");
-        filterRegistration.setOrder(2);
+        filterRegistration.setOrder(Integer.MAX_VALUE);
         return filterRegistration;
     }
 
@@ -54,7 +57,14 @@ public class SignatureAutoConfiguration implements ApplicationContextAware {
     }
 
     @Bean
-    @Order(2)
+    public DefaultSignatureStrategy defaultSignatureStrategy(StringRedisTemplate stringRedisTemplate,
+                                                             SignatureProperties signatureProperties,
+                                                             SignatureApi signatureApi) {
+        return new DefaultSignatureStrategy(stringRedisTemplate, signatureProperties, signatureApi);
+    }
+
+    @Bean
+    @Order(3)
     @ConditionalOnClass(name = "com.admin4j.common.pojo.SimpleResponse")
     public SignatureGlobalExceptionHandler signatureGlobalExceptionHandler() {
         return new SignatureGlobalExceptionHandler();

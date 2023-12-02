@@ -1,6 +1,6 @@
-package com.admin4j.framework.signature;
+package com.admin4j.framework.signature.core;
 
-import com.admin4j.framework.signature.annotation.Signature;
+import com.admin4j.framework.signature.core.annotation.Signature;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author zhougang
  * @since 2023/11/10 9:42
  */
-public interface SignatureService {
+public interface SignatureStrategy {
 
     /**
      * 验证签名是否通过

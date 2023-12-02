@@ -1,4 +1,4 @@
-package com.admin4j.framework.signature.annotation;
+package com.admin4j.framework.signature.core.annotation;
 
 import java.lang.annotation.*;
 
@@ -11,17 +11,13 @@ import java.lang.annotation.*;
 public @interface SignatureField {
 
     /**
-     * 字段：自定义name，对应前端传入的字段名
-     *
-     * @return
+     * 字段：自定义字段名，对应前端传入的字段名
      */
     String filedName() default "";
 
     /**
-     * 签名顺序
-     *
-     * @return
+     * 是否参与签名
      */
-    int order() default 0;
+    boolean enable() default true;
 
 }
