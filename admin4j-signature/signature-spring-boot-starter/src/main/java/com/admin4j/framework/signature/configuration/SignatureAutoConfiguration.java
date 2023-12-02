@@ -1,11 +1,10 @@
-package com.admin4j.signature.configuration;
+package com.admin4j.framework.signature.configuration;
 
-import com.admin4j.framework.signature.core.DefaultSignatureStrategy;
+import com.admin4j.framework.signature.SignatureGlobalExceptionHandler;import com.admin4j.framework.signature.core.DefaultSignatureStrategy;
 import com.admin4j.framework.signature.core.SignatureApi;
 import com.admin4j.framework.signature.core.filter.CacheRequestBodyFilter;
 import com.admin4j.framework.signature.core.interceptor.SignatureInterceptor;
 import com.admin4j.framework.signature.core.properties.SignatureProperties;
-import com.admin4j.signature.SignatureGlobalExceptionHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

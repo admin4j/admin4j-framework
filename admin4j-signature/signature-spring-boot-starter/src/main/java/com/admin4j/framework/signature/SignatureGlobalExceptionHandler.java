@@ -1,4 +1,4 @@
-package com.admin4j.signature;
+package com.admin4j.framework.signature;
 
 import com.admin4j.common.exception.handler.AbstractExceptionHandler;
 import com.admin4j.common.pojo.IResponse;
