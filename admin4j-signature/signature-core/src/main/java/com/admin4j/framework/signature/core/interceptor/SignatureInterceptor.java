@@ -1,8 +1,8 @@
-package com.admin4j.framework.signature.interceptor;
+package com.admin4j.framework.signature.core.interceptor;
 
-import com.admin4j.framework.signature.SignatureService;
-import com.admin4j.framework.signature.annotation.Signature;
-import com.admin4j.framework.signature.exception.SignatureException;
+import com.admin4j.framework.signature.core.SignatureStrategy;
+import com.admin4j.framework.signature.core.annotation.Signature;
+import com.admin4j.framework.signature.core.exception.SignatureException;
 import com.admin4j.spring.util.SpringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -45,8 +45,12 @@ public class SignatureInterceptor implements HandlerInterceptor, ApplicationCont
             signature = annotation;
         }
 
-        SignatureService signatureService = SpringUtils.getBean(signature.signatureClass());
-        if (!signatureService.verify(signature, request)) {
+        if (!signature.enable()) {
+            return true;
+        }
+
+        SignatureStrategy signatureStrategy = SpringUtils.getBean(signature.signatureClass());
+        if (!signatureStrategy.verify(signature, request)) {
             throw new SignatureException("Signature failure");
         }
         return true;
