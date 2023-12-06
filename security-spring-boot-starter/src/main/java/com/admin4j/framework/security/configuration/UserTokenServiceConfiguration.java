@@ -1,5 +1,6 @@
 package com.admin4j.framework.security.configuration;
 
+import com.admin4j.common.constant.WebConstant;
 import com.admin4j.common.service.IUserContextHolder;
 import com.admin4j.framework.security.UserTokenService;
 import com.admin4j.framework.security.context.SecurityUserContextHolder;
@@ -18,6 +19,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -69,6 +71,7 @@ public class UserTokenServiceConfiguration {
     @Bean
     @ConditionalOnMissingBean(IUserContextHolder.class)
     @ConditionalOnClass(name = "com.admin4j.common.service.IUserContextHolder")
+    @Order(WebConstant.IUserContextHolderOrder)
     public SecurityUserContextHolder securityUserContextHolder() {
         return new SecurityUserContextHolder();
     }

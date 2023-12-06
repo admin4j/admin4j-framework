@@ -4,6 +4,7 @@ import com.admin4j.common.service.IUserContextHolder;
 import com.admin4j.framework.tenant.openfeign.FeignRequestInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Bean;
  * @since 2023/9/20 9:42
  */
 @AutoConfigureOrder(Integer.MAX_VALUE)
-@ConditionalOnBean(value = IUserContextHolder.class, name = "feignAutoConfiguration")
+@ConditionalOnClass(name = "org.springframework.cloud.openfeign.FeignAutoConfiguration")
 public class TFeignAutoConfiguration {
 
     @Bean
