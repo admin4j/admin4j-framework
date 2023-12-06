@@ -13,7 +13,9 @@ import com.admin4j.framework.security.properties.IgnoringUrlProperties;
 import com.admin4j.framework.security.properties.JwtProperties;
 import com.admin4j.framework.security.properties.MultiAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -44,6 +46,7 @@ import java.util.Map;
  */
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableConfigurationProperties({IgnoringUrlProperties.class, JwtProperties.class, FormLoginProperties.class, MultiAuthenticationProperties.class})
+@AutoConfigureBefore(UserDetailsServiceAutoConfiguration.class)
 public class SecurityConfiguration {
 
 
