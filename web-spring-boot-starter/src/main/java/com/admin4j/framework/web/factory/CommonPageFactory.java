@@ -23,7 +23,7 @@ public class CommonPageFactory {
 
         pageResultVO.setTotal(pageInfo.getTotal());
         pageResultVO.setCurrent(pageInfo.getPageNum());
-        pageResultVO.setSize(pageInfo.getPageSize());
+        pageResultVO.setSize(pageInfo.size());
         pageResultVO.setRecords(pageInfo);
 
         return CommonPage.ok(pageResultVO);
@@ -56,7 +56,7 @@ public class CommonPageFactory {
 
         pageResultVO.setTotal(pageInfo.getTotal());
         pageResultVO.setCurrent(pageInfo.getPageNum());
-        pageResultVO.setSize(pageInfo.getPageSize());
+        pageResultVO.setSize(pageInfo.size());
         pageResultVO.setRecords(list);
 
         return CommonPage.ok(pageResultVO);
