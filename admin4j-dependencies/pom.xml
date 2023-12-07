@@ -165,7 +165,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>elasticsearch-spring-boot-starter</artifactId>
-                <version>7.x.2</version>
+                <version>8.x.2</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.redis</groupId>
