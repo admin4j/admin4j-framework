@@ -1,15 +1,14 @@
 package com.admin4j.elasticsearch.properties;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author andanyang
  * @since 2023/4/18 11:31
  */
 @Data
-@ConfigurationProperties(prefix = "admin4j.elasticsearc")
-
+@Deprecated
+// @ConfigurationProperties(prefix = "admin4j.elasticsearc")
 public class ElasticsearchProperties {
 
     /**
@@ -26,5 +25,5 @@ public class ElasticsearchProperties {
      */
     private String password;
 
- 
+
 }

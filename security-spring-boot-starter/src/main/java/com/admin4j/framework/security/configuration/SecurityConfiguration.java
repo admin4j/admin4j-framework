@@ -37,6 +37,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * TODO 需要注入，取消 UserDetailsServiceAutoConfiguration 开启
+ * 		value = { AuthenticationManager.class, AuthenticationProvider.class, UserDetailsService.class,
+ * 				AuthenticationManagerResolver.class },
+ *
  * @author andanyang
  * @since 2023/3/24 16:34
  */
