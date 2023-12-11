@@ -110,7 +110,7 @@
             <dependency>
                 <groupId>com.admin4j.dict</groupId>
                 <artifactId>dict-spring-boot-starter</artifactId>
-                <version>0.9.3</version>
+                <version>0.9.4</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
