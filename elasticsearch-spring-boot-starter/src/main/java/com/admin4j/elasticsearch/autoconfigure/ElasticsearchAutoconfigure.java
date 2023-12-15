@@ -43,7 +43,7 @@ public class ElasticsearchAutoconfigure {
 
     @Bean
     @Lazy
-    public ElasticsearchClient client(@Autowired(required = false) JsonpMapper jsonpMapper, @Autowired ObjectMapper objectMapper) {
+    public ElasticsearchClient client(@Autowired(required = false) JsonpMapper jsonpMapper, @Autowired(required = false) ObjectMapper objectMapper) {
         // 解析hostlist配置信息
         // 创建HttpHost数组，其中存放es主机和端口的配置信息
         HttpHost[] httpHostArray = new HttpHost[elasticsearchProperties.getUris().size()];
