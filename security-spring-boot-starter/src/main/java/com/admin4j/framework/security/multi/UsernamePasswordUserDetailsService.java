@@ -1,4 +1,4 @@
-package com.admin4j.framework.security.mult;
+package com.admin4j.framework.security.multi;
 
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 public class UsernamePasswordUserDetailsService extends MultiCheckUsernamePasswordService {
 
-
+    /**
+     * 兼容系统 原来的 UserDetailsService
+     */
     private final UserDetailsService userDetailsService;
 
     public UsernamePasswordUserDetailsService(PasswordEncoder passwordEncoder, FormLoginProperties formLoginProperties, UserDetailsService userDetailsService) {
@@ -32,6 +34,8 @@ public class UsernamePasswordUserDetailsService extends MultiCheckUsernamePasswo
      */
     @Override
     public UserDetails loadUserByMultiToken(String multiToken) {
+
+
         return userDetailsService.loadUserByUsername(multiToken);
     }
 

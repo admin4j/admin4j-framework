@@ -2,12 +2,8 @@ package com.admin4j.framework.security.configuration;
 
 import com.admin4j.framework.security.ISecurityIgnoringUrl;
 import com.admin4j.framework.security.filter.ActuatorFilter;
-import com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.admin4j.framework.security.ignoringUrl.AnonymousAccessUrl;
-import com.admin4j.framework.security.mult.MultiAuthenticationFilter;
-import com.admin4j.framework.security.mult.MultiAuthenticationProvider;
-import com.admin4j.framework.security.mult.MultiSecurityConfigurerAdapter;
-import com.admin4j.framework.security.mult.MultiUserDetailsService;
+import com.admin4j.framework.security.multi.MultiSecurityConfigurerAdapter;
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.IgnoringUrlProperties;
 import com.admin4j.framework.security.properties.JwtProperties;
@@ -19,7 +15,6 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
@@ -47,6 +42,8 @@ import java.util.Map;
 
 /**
  * 开启方法级别的注解支持
+ *
+ * @author andanyang
  */
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableConfigurationProperties({IgnoringUrlProperties.class, JwtProperties.class, FormLoginProperties.class, MultiAuthenticationProperties.class})
@@ -72,21 +69,16 @@ public class SecurityConfiguration {
     AnonymousAccessUrl anonymousAccessUrl;
     @Autowired
     LogoutSuccessHandler logoutSuccessHandler;
-    @Autowired
-    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-    @Autowired(required = false)
-    List<UsernamePasswordAuthenticationFilter> usernamePasswordAuthenticationFilters;
-    @Autowired
-    MultiAuthenticationProperties multiAuthenticationProperties;
-    @Autowired(required = false)
-    List<MultiUserDetailsService> userDetailServices;
-    @Autowired
-    AuthenticationConfiguration authenticationConfiguration;
+    // @Autowired
+    // JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    // @Autowired(required = false)
+    // List<UsernamePasswordAuthenticationFilter> usernamePasswordAuthenticationFilters;
     @Autowired(required = false)
     ActuatorFilter actuatorFilter;
     @Autowired(required = false)
     CorsFilter corsFilter;
-
+    @Autowired(required = false)
+    MultiSecurityConfigurerAdapter multiSecurityConfigurerAdapter;
 
     /**
      * 取消ROLE_前缀
@@ -137,35 +129,27 @@ public class SecurityConfiguration {
         ;
 
         // 添加Logout filter
-        httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
-        // 添加JWT filter
-        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.logout().logoutUrl(formLoginProperties.getLogOutProcessingUrl()).permitAll().logoutSuccessHandler(logoutSuccessHandler);
+
+        // 授权请求配置
+        // 忽略URl配置
+        ignoringRequestMatcherRegistry(httpSecurity.authorizeRequests());
+        // 除上面外的所有请求全部需要鉴权认证;其他路径必须验证
+        httpSecurity.authorizeRequests().anyRequest().authenticated();
+
         // 添加CORS filter
         if (corsFilter != null) {
-            httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
+            httpSecurity.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
         }
 
-
-        if (usernamePasswordAuthenticationFilters != null && usernamePasswordAuthenticationFilters.size() > 0) {
-            usernamePasswordAuthenticationFilters.forEach(usernameFilter -> httpSecurity.addFilterBefore(usernameFilter, UsernamePasswordAuthenticationFilter.class));
+        if (actuatorFilter != null) {
+            httpSecurity.addFilterBefore(actuatorFilter, UsernamePasswordAuthenticationFilter.class);
         }
-
-
-        authorizeRequestsConfigurer(httpSecurity);
-
+        
         // 多渠道登录
-        if (multiAuthenticationProperties.isEnable()) {
-
-            MultiAuthenticationFilter authenticationFilter = new MultiAuthenticationFilter(multiAuthenticationProperties, formLoginProperties);
-
-            authenticationFilter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
-            authenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-            authenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-
-            MultiSecurityConfigurerAdapter multiSecurityConfigurerAdapter = new MultiSecurityConfigurerAdapter(authenticationFilter, new MultiAuthenticationProvider(userDetailServices));
+        if (multiSecurityConfigurerAdapter != null) {
             httpSecurity.apply(multiSecurityConfigurerAdapter);
-
-        } else {
+        } else if (formLoginProperties.isEnable()) {
             // 开启form表单认证
             httpSecurity.formLogin()
                     .loginProcessingUrl(formLoginProperties.getLoginProcessingUrl())
@@ -174,29 +158,11 @@ public class SecurityConfiguration {
                     .failureHandler(authenticationFailureHandler)
                     .successHandler(authenticationSuccessHandler)
                     .permitAll();
-
         }
 
-        if (actuatorFilter != null) {
-            httpSecurity.addFilterBefore(actuatorFilter, UsernamePasswordAuthenticationFilter.class);
-        }
-
-        // GlobalAuthenticationConfigurerAdapter
-        // WebSecurityConfigurerAdapter
         return httpSecurity.build();
     }
 
-    /**
-     * 授权请求配置
-     */
-    private void authorizeRequestsConfigurer(HttpSecurity httpSecurity) throws Exception {
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry =
-                httpSecurity.authorizeRequests();
-        // 忽略URl配置
-        ignoringRequestMatcherRegistry(expressionInterceptUrlRegistry);
-        // 除上面外的所有请求全部需要鉴权认证;其他路径必须验证
-        expressionInterceptUrlRegistry.anyRequest().authenticated();
-    }
 
     /**
      * 忽略URl配置

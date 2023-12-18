@@ -1,4 +1,4 @@
-package com.admin4j.framework.security.mult;
+package com.admin4j.framework.security.multi;
 
 import com.admin4j.common.Prioritized;
 import org.springframework.security.core.userdetails.UserDetails;

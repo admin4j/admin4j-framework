@@ -7,20 +7,15 @@ import com.admin4j.framework.security.context.SecurityUserContextHolder;
 import com.admin4j.framework.security.filter.ActuatorFilter;
 import com.admin4j.framework.security.jwt.JwtUserDetailsService;
 import com.admin4j.framework.security.jwt.JwtUserTokenService;
-import com.admin4j.framework.security.mult.MultiCheckUsernamePasswordService;
-import com.admin4j.framework.security.mult.UsernamePasswordUserDetailsService;
 import com.admin4j.framework.security.properties.ActuatorProperties;
-import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.JwtProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -44,27 +39,6 @@ public class UserTokenServiceConfiguration {
     @ConditionalOnMissingBean(PasswordEncoder.class)
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    /**
-     * 默认的表达登录
-     *
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean(MultiCheckUsernamePasswordService.class)
-    @ConditionalOnBean(UserDetailsService.class)
-    @ConditionalOnProperty(prefix = "admin4j.security.multi", name = "enable", matchIfMissing = true)
-    public UsernamePasswordUserDetailsService usernamePasswordUserDetailsService(
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder,
-            FormLoginProperties formLoginProperties) {
-
-        return new UsernamePasswordUserDetailsService(
-                passwordEncoder,
-                formLoginProperties,
-                userDetailsService
-        );
     }
 
 

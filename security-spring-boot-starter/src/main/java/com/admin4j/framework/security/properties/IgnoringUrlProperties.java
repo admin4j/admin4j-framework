@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 忽略url 配置文件
+ * 根据配置文件 忽略url
  *
  * @author andanyang
  * @since 2023/3/24 17:00
@@ -14,7 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class IgnoringUrlProperties {
 
     /**
-     * 包含所有请求类型的路径
+     * 包含所有请求类型的路径,不考虑请求方法
      */
     private String[] uris;
     /**
