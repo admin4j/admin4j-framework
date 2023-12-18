@@ -1,5 +1,10 @@
 # admin security
 
+## Features
+
+- 多渠道登录
+- 一个注解/一个配置，解决匿名url访问（忽略认证）
+
 ## USAGES
 
 1. 引入 pom

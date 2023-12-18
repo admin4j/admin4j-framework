@@ -69,5 +69,4 @@ public class MultiAuthenticationManagerAutoConfiguration {
 
         return new ProviderManager(new MultiAuthenticationProvider(userDetailServices));
     }
-
 }
