@@ -36,7 +36,7 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
     /**
      * Determines if access is granted for a specific authentication and object.
      *
-     * @param authentication the {@link Supplier} of the {@link Authentication} to check
+     * @param authentication the {@link Supplier} of the {@link Authentication} to check 当前登录人
      * @param object         the {@link T} object to check
      * @return an {@link AuthorizationDecision} or null if no decision could be made
      */
