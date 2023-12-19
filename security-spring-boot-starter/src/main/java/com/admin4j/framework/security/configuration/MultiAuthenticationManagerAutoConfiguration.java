@@ -50,7 +50,7 @@ public class MultiAuthenticationManagerAutoConfiguration {
 
 
     /**
-     * 获取 AuthenticationManager
+     * 获取 PermissionAuthorizationManager
      * <p>
      * 或者：
      * <code>

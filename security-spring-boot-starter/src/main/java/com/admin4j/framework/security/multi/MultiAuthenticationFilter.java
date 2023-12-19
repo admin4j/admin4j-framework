@@ -47,7 +47,7 @@ public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingF
 
         MultiAuthenticationToken token = obtainToken(request);
         setDetails(request, token);
-        // 匹配成功交给 AuthenticationManager 去认证
+        // 匹配成功交给 PermissionAuthorizationManager 去认证
         return this.getAuthenticationManager().authenticate(token);
     }
 
