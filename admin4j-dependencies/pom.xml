@@ -215,7 +215,7 @@
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common-spring-web</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.3-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
