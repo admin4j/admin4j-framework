@@ -29,7 +29,7 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
      */
     protected static final AuthorizationDecision UN_AUTHORIZED = new AuthorizationDecision(false);
 
-    protected final IPermissionUriService permissionUriService;
+    protected final IPermissionUrlService permissionUriService;
 
     protected AntPathMatcher antPathMatcher = new AntPathMatcher();
 
@@ -43,6 +43,10 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
 
+        if (ignoreCheck()) {
+            return GRANTED;
+        }
+
         // 获取当前请求的 URL 地址
         String requestURI = object.getRequest().getRequestURI();
         String method = object.getRequest().getMethod();
@@ -53,6 +57,17 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
 
         // 沒有匹配到, 查看当前 requestURI 是否需要权限控制
         return urlNeedPermission(requestURI, method) ? UN_AUTHORIZED : GRANTED;
+    }
+
+    /**
+     * 是否忽略 检查权限
+     * 例如 admin、管理员可以直接忽略检查拥有全部权限
+     *
+     * @return
+     */
+    protected boolean ignoreCheck() {
+
+        return permissionUriService.ignoreCheck();
     }
 
     /**

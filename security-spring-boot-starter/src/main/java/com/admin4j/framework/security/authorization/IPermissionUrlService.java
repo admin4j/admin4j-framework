@@ -8,8 +8,18 @@ import java.util.List;
  * @author andanyang
  * @since 2023/12/19 14:34
  */
-public interface IPermissionUriService {
+public interface IPermissionUrlService {
 
+    /**
+     * 是否忽略 检查权限
+     * 例如 admin、管理员可以直接忽略检查拥有全部权限
+     *
+     * @return
+     */
+    default boolean ignoreCheck() {
+        return false;
+    }
+    
     /**
      * 获取 系统 所有的 PermissionUri
      *
@@ -23,4 +33,6 @@ public interface IPermissionUriService {
      * @return
      */
     List<HttpUrlPermission> getMyPermissionUrls();
+
+
 }
