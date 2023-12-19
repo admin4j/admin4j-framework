@@ -15,12 +15,12 @@ public interface IPermissionUriService {
      *
      * @return
      */
-    List<String> allPermissionUri();
+    List<HttpUrlPermission> allPermissionUrl();
 
     /**
      * 当前用户拥有的权限
      *
      * @return
      */
-    List<String> getMyPermissionUrls();
+    List<HttpUrlPermission> getMyPermissionUrls();
 }

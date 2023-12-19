@@ -45,13 +45,14 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
 
         // 获取当前请求的 URL 地址
         String requestURI = object.getRequest().getRequestURI();
-        boolean matchPermission = matchPermission(requestURI);
+        String method = object.getRequest().getMethod();
+        boolean matchPermission = matchPermission(requestURI, method);
         if (matchPermission) {
             return GRANTED;
         }
 
         // 沒有匹配到, 查看当前 requestURI 是否需要权限控制
-        return urlNeedPermission(requestURI) ? UN_AUTHORIZED : GRANTED;
+        return urlNeedPermission(requestURI, method) ? UN_AUTHORIZED : GRANTED;
     }
 
     /**
@@ -60,11 +61,15 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
      *
      * @return
      */
-    public boolean urlNeedPermission(String requestURI) {
+    public boolean urlNeedPermission(String requestURI, String method) {
 
-        Collection<String> allPermissionUrls = getAllPermissionUrls();
-        for (String url : allPermissionUrls) {
-            if (antPathMatcher.match(url, requestURI)) {
+        Collection<HttpUrlPermission> allPermissionUrls = getAllPermissionUrls();
+        for (HttpUrlPermission urlPermission : allPermissionUrls) {
+            // method 相同 && 请求路径可以匹配
+            if (
+                    (urlPermission.getHttpMethod() == null || urlPermission.getHttpMethod().name().equalsIgnoreCase(method))
+                            &&
+                            antPathMatcher.match(urlPermission.getRequestURI(), requestURI)) {
                 return true;
             }
         }
@@ -77,15 +82,20 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
      * @param requestURI
      * @return
      */
-    public boolean matchPermission(String requestURI) {
-        Collection<String> permissionUrls = getPermissionUrls();
+    public boolean matchPermission(String requestURI, String method) {
+        Collection<HttpUrlPermission> permissionUrls = getPermissionUrls();
 
         if (permissionUrls == null || permissionUrls.isEmpty()) {
             return false;
         }
 
-        for (String url : permissionUrls) {
-            if (antPathMatcher.match(url, requestURI)) {
+        for (HttpUrlPermission urlPermission : permissionUrls) {
+
+            // method 相同 && 请求路径可以匹配
+            if (
+                    (urlPermission.getHttpMethod() == null || urlPermission.getHttpMethod().name().equalsIgnoreCase(method))
+                            &&
+                            antPathMatcher.match(urlPermission.getRequestURI(), requestURI)) {
                 return true;
             }
         }
@@ -97,7 +107,7 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
      *
      * @return
      */
-    public Collection<String> getPermissionUrls() {
+    public Collection<HttpUrlPermission> getPermissionUrls() {
 
         return permissionUriService.getMyPermissionUrls();
     }
@@ -108,7 +118,7 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
      *
      * @return
      */
-    protected Collection<String> getAllPermissionUrls() {
-        return permissionUriService.allPermissionUri();
+    protected Collection<HttpUrlPermission> getAllPermissionUrls() {
+        return permissionUriService.allPermissionUrl();
     }
 }
