@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 认证成功结果回调处理
+ *
  * @author andanyang
  * @since 2023/5/31 17:57
  */
-public interface AuthenticationResult {
+public interface AuthenticationHandler {
 
     /**
      * 认证成功回调

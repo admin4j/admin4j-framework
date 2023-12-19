@@ -1,6 +1,6 @@
 package com.admin4j.framework.security.handler;
 
-import com.admin4j.framework.security.AuthenticationResult;
+import com.admin4j.framework.security.AuthenticationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
-    final AuthenticationResult authenticationResult;
+    final AuthenticationHandler authenticationHandler;
 
     @Override
     public void handle(
@@ -26,6 +26,6 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
             throws IOException, ServletException {
 
 
-        authenticationResult.accessDeniedHandler(httpServletRequest, response, e);
+        authenticationHandler.accessDeniedHandler(httpServletRequest, response, e);
     }
 }

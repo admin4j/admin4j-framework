@@ -1,6 +1,6 @@
 package com.admin4j.framework.security.handler;
 
-import com.admin4j.framework.security.AuthenticationResult;
+import com.admin4j.framework.security.AuthenticationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -19,6 +19,7 @@ import java.io.IOException;
  */
 @RequiredArgsConstructor
 public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHandler, ApplicationContextAware {
+    final AuthenticationHandler authenticationHandler;
     private ApplicationContext applicationContext;
 
     @Override
@@ -26,14 +27,10 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
         this.applicationContext = applicationContext;
     }
 
-
-    final AuthenticationResult authenticationResult;
-
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
 
-        authenticationResult.onAuthenticationSuccess(request, response, authentication);
+        authenticationHandler.onAuthenticationSuccess(request, response, authentication);
     }
 }

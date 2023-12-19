@@ -145,7 +145,7 @@ public class SecurityConfiguration {
         if (actuatorFilter != null) {
             httpSecurity.addFilterBefore(actuatorFilter, UsernamePasswordAuthenticationFilter.class);
         }
-        
+
         // 多渠道登录
         if (multiSecurityConfigurerAdapter != null) {
             httpSecurity.apply(multiSecurityConfigurerAdapter);

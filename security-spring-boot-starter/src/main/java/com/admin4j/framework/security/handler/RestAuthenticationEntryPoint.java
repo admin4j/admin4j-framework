@@ -1,6 +1,6 @@
 package com.admin4j.framework.security.handler;
 
-import com.admin4j.framework.security.AuthenticationResult;
+import com.admin4j.framework.security.AuthenticationHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -19,8 +19,8 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    
-    private final AuthenticationResult authenticationResult;
+
+    private final AuthenticationHandler authenticationHandler;
 
     @Override
     public void commence(
@@ -29,6 +29,6 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
             AuthenticationException authException)
             throws IOException, ServletException {
 
-        authenticationResult.authenticationEntryPoint(request, response, authException);
+        authenticationHandler.authenticationEntryPoint(request, response, authException);
     }
 }
