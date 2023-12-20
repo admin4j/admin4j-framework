@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.9.6-SNAPSHOT</version>
+    <version>0.9.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -28,8 +28,8 @@
         <servlet.versoin>2.5</servlet.versoin>
         <!-- DB 相关 -->
         <druid.version>1.2.18</druid.version>
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-        <mybatis-plus-generator.version>3.5.3.1</mybatis-plus-generator.version>
+        <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
+        <mybatis-plus-generator.version>3.5.4.1</mybatis-plus-generator.version>
         <dynamic-datasource.version>3.6.1</dynamic-datasource.version>
         <redisson.version>3.18.0</redisson.version>
 
@@ -225,7 +225,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>kaptcha-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -375,7 +375,7 @@
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>2.1.0</version>
+                <version>2.0.0</version>
             </dependency>
 
             <dependency>

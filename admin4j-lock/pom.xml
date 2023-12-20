@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.admin4j</groupId>
         <artifactId>framework</artifactId>
-        <version>0.9.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>admin4j-lock</artifactId>
