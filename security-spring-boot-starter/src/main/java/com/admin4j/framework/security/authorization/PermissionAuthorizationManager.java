@@ -1,6 +1,7 @@
 package com.admin4j.framework.security.authorization;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.Authentication;
@@ -43,6 +44,15 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
 
+        // 是否允许匿名访问
+        if (!canAnonymousAccess()) {
+            Authentication authenticationGet = authentication.get();
+            if (authenticationGet instanceof AnonymousAuthenticationToken) {
+                // 匿名访问
+                return UN_AUTHORIZED;
+            }
+        }
+
         if (ignoreCheck()) {
             return GRANTED;
         }
@@ -57,6 +67,16 @@ public class PermissionAuthorizationManager implements AuthorizationManager<Requ
 
         // 沒有匹配到, 查看当前 requestURI 是否需要权限控制
         return urlNeedPermission(requestURI, method) ? UN_AUTHORIZED : GRANTED;
+    }
+
+    /**
+     * 是否允许匿名访问。
+     * 默认不允许。
+     *
+     * @return
+     */
+    protected boolean canAnonymousAccess() {
+        return permissionUriService.canAnonymousAccess();
     }
 
     /**

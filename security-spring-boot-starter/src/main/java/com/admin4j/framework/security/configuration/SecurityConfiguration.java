@@ -16,7 +16,6 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
@@ -43,11 +42,12 @@ import java.util.Map;
  */
 
 /**
- * 开启方法级别的注解支持
+ * spring security 配置。
  *
  * @author andanyang
+ * @EnableGlobalMethodSecurity 有应用出自己开启
  */
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+// @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableConfigurationProperties({IgnoringUrlProperties.class, JwtProperties.class, FormLoginProperties.class, MultiAuthenticationProperties.class})
 @AutoConfigureBefore(UserDetailsServiceAutoConfiguration.class)
 public class SecurityConfiguration {

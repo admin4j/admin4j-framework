@@ -3,7 +3,6 @@ package com.admin4j.framework.security.configuration;
 import com.admin4j.framework.security.AuthenticationHandler;
 import com.admin4j.framework.security.UserTokenService;
 import com.admin4j.framework.security.handler.*;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -51,7 +50,7 @@ public class SecurityHandlerConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass(name = {"io.jsonwebtoken.SignatureException"})
+    // @ConditionalOnClass(name = {"io.jsonwebtoken.SignatureException"})
     public SecurityExceptionHandler securityExceptionHandler() {
         return new SecurityExceptionHandler();
     }

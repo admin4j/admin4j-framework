@@ -43,7 +43,7 @@
         <module>enum-spring-boot-starter</module>
     </modules>
     <properties>
-        <revision>0.9.3-SNAPSHOT</revision>
+        <revision>0.9.5-SNAPSHOT</revision>
         <admin4j-dependencies.version>0.9.3-SNAPSHOT</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

@@ -46,7 +46,7 @@ public class WebAutoConfiguration {
      *
      * @return
      */
-    @Bean
+    @Bean("admin4jGlobalExceptionHandler")
     public GlobalExceptionHandler globalExceptionHandler() {
         return new GlobalExceptionHandler();
     }

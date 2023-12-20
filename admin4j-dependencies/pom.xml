@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>0.9.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -64,7 +64,7 @@
 
         <flowable.version>6.7.2</flowable.version>
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
-        <admin4j.version>0.9.0</admin4j.version>
+        <admin4j.version>0.9.5-SNAPSHOT</admin4j.version>
         <admin4j-lock.version>0.8.2</admin4j-lock.version>
         <admin4j-limiter.version>0.8.0</admin4j-limiter.version>
         <admin4j-redis.version>0.8.0</admin4j-redis.version>

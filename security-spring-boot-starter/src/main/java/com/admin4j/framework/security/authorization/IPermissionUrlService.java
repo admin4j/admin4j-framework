@@ -19,9 +19,18 @@ public interface IPermissionUrlService {
     default boolean ignoreCheck() {
         return false;
     }
-    
+
     /**
-     * 获取 系统 所有的 PermissionUri
+     * 是否允许匿名访问
+     *
+     * @return
+     */
+    default boolean canAnonymousAccess() {
+        return false;
+    }
+
+    /**
+     * 获取系统所有需要授权的 PermissionUri
      *
      * @return
      */
