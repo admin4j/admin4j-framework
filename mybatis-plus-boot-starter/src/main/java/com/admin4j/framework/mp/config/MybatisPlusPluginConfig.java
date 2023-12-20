@@ -36,7 +36,7 @@ public class MybatisPlusPluginConfig {
         this.loginTenantInfoService = loginTenantInfoService;
     }
 
-    //多租户
+    // 多租户
     public TenantLineInnerInterceptor tenantLineInnerInterceptor(ILoginTenantInfoService loginTenantInfoService) {
 
         return new TenantLineInnerInterceptor(new TenantLineHandler() {
@@ -55,7 +55,7 @@ public class MybatisPlusPluginConfig {
             public boolean ignoreTable(String tableName) {
 
                 Long tenantId = loginTenantInfoService.getTenantId();
-                //没有登录，可关闭 租户
+                // 没有登录，可关闭 租户
                 if (ObjectUtils.isEmpty(tenantId) || Objects.equals(0L, tenantId)) {
                     return true;
                 }
@@ -77,22 +77,22 @@ public class MybatisPlusPluginConfig {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
 
-        if (loginTenantInfoService != null) {
+        if (loginTenantInfoService != null && mpProperties.isTenantEnable()) {
             interceptor.addInnerInterceptor(tenantLineInnerInterceptor(loginTenantInfoService));
         }
 
 
-        //分页插件
+        // 分页插件
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
-        //乐观锁
+        // 乐观锁
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
-        //防止全表更新与删除
+        // 防止全表更新与删除
         interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
 
-        //动态表名
-        //interceptor.addInnerInterceptor(new DynamicTableNameInnerInterceptor());
+        // 动态表名
+        // interceptor.addInnerInterceptor(new DynamicTableNameInnerInterceptor());
 
-        //sql 性能规范
+        // sql 性能规范
         if (mpProperties.isIllegalSql()) {
             interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
         }

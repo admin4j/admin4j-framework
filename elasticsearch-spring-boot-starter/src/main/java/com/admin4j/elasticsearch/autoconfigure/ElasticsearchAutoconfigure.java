@@ -1,9 +1,11 @@
-package com.admin4j.elasticsearch;
+package com.admin4j.elasticsearch.autoconfigure;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.JsonpMapper;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import nl.altindag.ssl.SSLFactory;
 import org.apache.http.HttpHost;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 
 import java.net.URI;
 
@@ -29,7 +32,8 @@ import java.net.URI;
  */
 @Data
 @EnableConfigurationProperties(ElasticsearchProperties.class)
-public class ElasticsearchConfig {
+public class ElasticsearchAutoconfigure {
+
     /**
      * elasticsearch url.
      * 集群使用英文逗号隔开
@@ -38,9 +42,10 @@ public class ElasticsearchConfig {
     private ElasticsearchProperties elasticsearchProperties;
 
     @Bean
-    public ElasticsearchClient client() {
-        //解析hostlist配置信息
-        //创建HttpHost数组，其中存放es主机和端口的配置信息
+    @Lazy
+    public ElasticsearchClient client(@Autowired(required = false) JsonpMapper jsonpMapper, @Autowired(required = false) ObjectMapper objectMapper) {
+        // 解析hostlist配置信息
+        // 创建HttpHost数组，其中存放es主机和端口的配置信息
         HttpHost[] httpHostArray = new HttpHost[elasticsearchProperties.getUris().size()];
 
 
@@ -67,7 +72,7 @@ public class ElasticsearchConfig {
                 .build();
 
         // Create the low-level client
-        //添加认证
+        // 添加认证
         if (elasticsearchProperties.getUsername() != null) {
             final CredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(elasticsearchProperties.getUsername(), elasticsearchProperties.getPassword()));
@@ -86,8 +91,16 @@ public class ElasticsearchConfig {
 
         RestClient restClient = builder.build();
 
+        ElasticsearchTransport transport = null;
+        if (jsonpMapper != null) {
+            transport = new RestClientTransport(restClient, jsonpMapper);
+        } else if (objectMapper != null) {
+            transport = new RestClientTransport(restClient, new JacksonJsonpMapper(objectMapper));
+        } else {
+            transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+        }
         // Create the transport with a Jackson mapper
-        ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+
 
         // And create the API client
         return new ElasticsearchClient(transport);

@@ -1,4 +1,4 @@
-package com.admin4j.framework.security.mult;
+package com.admin4j.framework.security.multi;
 
 import lombok.Getter;
 import lombok.Setter;

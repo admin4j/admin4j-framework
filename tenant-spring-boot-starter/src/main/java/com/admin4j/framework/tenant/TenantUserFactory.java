@@ -11,8 +11,8 @@ public class TenantUserFactory {
     public static AuthenticationUser jobUser(Long tenantId) {
 
         AuthenticationUser authenticationUser = new AuthenticationUser();
-        authenticationUser.setUserId(1000L);
-        authenticationUser.setUsername("job");
+        authenticationUser.setUserId(TenantConstant.JOB_USER_ID);
+        authenticationUser.setUsername(TenantConstant.JOB_USER_NAME);
         authenticationUser.setTenantId(tenantId);
         authenticationUser.setAdmin(true);
         return authenticationUser;
@@ -21,8 +21,8 @@ public class TenantUserFactory {
     public static AuthenticationUser mqUser(Long tenantId) {
 
         AuthenticationUser authenticationUser = new AuthenticationUser();
-        authenticationUser.setUserId(1001L);
-        authenticationUser.setUsername("mq");
+        authenticationUser.setUserId(TenantConstant.MQ_USER_ID);
+        authenticationUser.setUsername(TenantConstant.MQ_USER_NAME);
         authenticationUser.setTenantId(tenantId);
         authenticationUser.setAdmin(true);
         return authenticationUser;

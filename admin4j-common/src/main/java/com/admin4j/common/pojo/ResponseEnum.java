@@ -33,15 +33,9 @@ public enum ResponseEnum implements IResponse, Assert {
      */
     FAIL_AUTH(402, "登录失败，账号或者密码错误"),
     /**
-     *
+     * 没有权限
      */
     FAIL_AUTH_FORBIDDEN(403, "FAIL_AUTH_FORBIDDEN"),
-
-
-    /**
-     * token 认证失败
-     */
-    FAIL_NO_TOKEN(405, "FAIL_NO_TOKEN"),
 
 
     /**

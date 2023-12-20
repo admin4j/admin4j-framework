@@ -1,4 +1,4 @@
-package com.admin4j.framework.security.mult;
+package com.admin4j.framework.security.multi;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,6 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
 
     private final List<MultiUserDetailsService> userDetailServices;
     protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
-
     private UserDetailsChecker preAuthenticationChecks = new DefaultPreAuthenticationChecks();
 
     private UserDetailsChecker postAuthenticationChecks = new DefaultPostAuthenticationChecks();
@@ -43,6 +42,7 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         MultiAuthenticationToken authenticationToken = (MultiAuthenticationToken) authentication;
 
+        // 查找支持当前登录方式的 MultiUserDetailsService
         MultiUserDetailsService userDetailService = null;
         if (userDetailServices != null) {
             for (MultiUserDetailsService item : userDetailServices) {
@@ -59,13 +59,16 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
 
         boolean b = userDetailService.preVerify(authenticationToken);
         if (!b) {
-            throw new InternalAuthenticationServiceException("Authentication failure");
+            throw new InternalAuthenticationServiceException("Authentication preVerify failure");
         }
 
+        // 加载用户信息
         UserDetails userDetails = userDetailService.loadUserByMultiToken((String) authenticationToken.getPrincipal());
+
+        // 检查用户信息
         this.preAuthenticationChecks.check(userDetails);
 
-        //生成一个认证成功 Authentication
+        // 生成一个认证成功 Authentication
         MultiAuthenticationToken multiAuthenticationToken = new MultiAuthenticationToken(authenticationToken.getAuthType(), userDetails, userDetails.getAuthorities());
         multiAuthenticationToken.setDetails(authenticationToken.getDetails());
         multiAuthenticationToken.setAuthParameters(authenticationToken.getAuthParameters());

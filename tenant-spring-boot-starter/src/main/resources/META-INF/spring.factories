@@ -1,7 +1,8 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
    com.admin4j.framework.tenant.autoconfigure.TFeignAutoConfiguration,\
    com.admin4j.framework.tenant.autoconfigure.TXxlJobAutoConfiguration,\
-  com.admin4j.framework.tenant.autoconfigure.TRocketMQAutoConfiguration
+   com.admin4j.framework.tenant.autoconfigure.TRocketMQAutoConfiguration,\
+   com.admin4j.framework.tenant.autoconfigure.TTenantFilterAutoConfiguration
 
 
   

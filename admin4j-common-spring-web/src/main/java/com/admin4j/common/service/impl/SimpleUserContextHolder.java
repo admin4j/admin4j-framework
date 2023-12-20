@@ -1,4 +1,4 @@
-package com.admin4j.framework.web;
+package com.admin4j.common.service.impl;
 
 import com.admin4j.common.pojo.AuthenticationUser;
 import com.admin4j.common.pojo.ResponseEnum;
@@ -13,7 +13,6 @@ import org.apache.commons.lang3.ObjectUtils;
  * @author andanyang
  * @since 2021/7/27 10:56
  */
-
 public class SimpleUserContextHolder implements IUserContextHolder {
 
     /**
@@ -29,6 +28,11 @@ public class SimpleUserContextHolder implements IUserContextHolder {
         clear();
     }
 
+    @Override
+    public AuthenticationUser getAuthenticationUser() {
+        return THREAD_LOCAL_USER.get();
+    }
+
     /**
      * 设置登录者信息
      *
@@ -37,11 +41,6 @@ public class SimpleUserContextHolder implements IUserContextHolder {
     @Override
     public void setAuthenticationUser(AuthenticationUser authenticationUser) {
         THREAD_LOCAL_USER.set(authenticationUser);
-    }
-
-    @Override
-    public AuthenticationUser getAuthenticationUser() {
-        return THREAD_LOCAL_USER.get();
     }
 
     /**
@@ -91,6 +90,20 @@ public class SimpleUserContextHolder implements IUserContextHolder {
     }
 
     /**
+     * get租户
+     */
+    @Override
+    public Long getTenantId() {
+        AuthenticationUser loginUserNoCheck = getLoginUserNoCheck();
+        // 小心三目表达式，NPE
+        if (loginUserNoCheck == null) {
+            return null;
+        } else {
+            return loginUserNoCheck.getTenantId();
+        }
+    }
+
+    /**
      * 设置租户
      *
      * @param tenant
@@ -101,12 +114,11 @@ public class SimpleUserContextHolder implements IUserContextHolder {
     }
 
     /**
-     * get租户
+     * get用户ID
      */
     @Override
-    public Long getTenantId() {
-        AuthenticationUser loginUserNoCheck = getLoginUserNoCheck();
-        return loginUserNoCheck == null ? 0L : loginUserNoCheck.getTenantId();
+    public Long getUserId() {
+        return getLoginUser().getUserId();
     }
 
     /**
@@ -117,13 +129,5 @@ public class SimpleUserContextHolder implements IUserContextHolder {
     @Override
     public void setUserId(Long userId) {
         getLoginUser().setUserId(userId);
-    }
-
-    /**
-     * get用户ID
-     */
-    @Override
-    public Long getUserId() {
-        return getLoginUser().getUserId();
     }
 }

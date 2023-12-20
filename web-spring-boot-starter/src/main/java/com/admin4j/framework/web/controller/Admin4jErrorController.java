@@ -1,15 +1,12 @@
 package com.admin4j.framework.web.controller;
 
 import com.admin4j.common.pojo.ResponseEnum;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
-import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,14 +19,15 @@ import java.util.Map;
  * @author andanyang
  * @since 2023/5/29 17:44
  */
-@AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
-@ConditionalOnMissingBean(ErrorController.class)
+@Controller
+@RequestMapping({"${server.error.path:${error.path:/error}}"})
 public class Admin4jErrorController extends BasicErrorController {
-    private final ServerProperties serverProperties;
 
-    public Admin4jErrorController(ErrorAttributes errorAttributes, ServerProperties serverProperties, List<ErrorViewResolver> errorViewResolvers) {
-        super(errorAttributes, serverProperties.getError(), errorViewResolvers);
-        this.serverProperties = serverProperties;
+    private ResponseEntity<Map<String, Object>> error404;
+
+
+    public Admin4jErrorController(ErrorAttributes errorAttributes, ErrorProperties error, List collect) {
+        super(errorAttributes, error, collect);
     }
 
     @Override
@@ -43,8 +41,6 @@ public class Admin4jErrorController extends BasicErrorController {
 
         return super.error(request);
     }
-
-    private ResponseEntity<Map<String, Object>> error404;
 
     public ResponseEntity<Map<String, Object>> error404(HttpServletRequest request) {
 

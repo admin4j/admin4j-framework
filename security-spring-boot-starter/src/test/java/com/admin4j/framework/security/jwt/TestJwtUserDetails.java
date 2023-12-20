@@ -1,9 +1,7 @@
 package com.admin4j.framework.security.jwt;
 
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -32,16 +30,6 @@ public class TestJwtUserDetails implements JwtUserDetails {
         return null;
     }
 
-
-    /**
-     * Returns the authorities granted to the user. Cannot return <code>null</code>.
-     *
-     * @return the authorities, sorted by natural key (never <code>null</code>)
-     */
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
 
     /**
      * Returns the password used to authenticate the user.

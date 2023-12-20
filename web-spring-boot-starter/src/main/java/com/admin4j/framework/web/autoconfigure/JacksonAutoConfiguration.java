@@ -1,4 +1,4 @@
-package com.admin4j.framework.web.config;
+package com.admin4j.framework.web.autoconfigure;
 
 
 import com.admin4j.common.time.DateFormatterPattern;
@@ -22,7 +22,7 @@ import java.util.TimeZone;
  * @author andanyang
  * @since 2022/8/4 15:24
  */
-public class JacksonConfig {
+public class JacksonAutoConfiguration {
 
     /**
      * 时区配置
@@ -51,7 +51,7 @@ public class JacksonConfig {
             builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             builder.timeZone(TimeZone.getDefault());
 
-            //防止前端Long型丢失精度
+            // 防止前端Long型丢失精度
             builder.serializerByType(Long.class, ToStringSerializer.instance);
         };
     }

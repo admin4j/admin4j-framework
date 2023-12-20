@@ -6,7 +6,7 @@ import com.admin4j.common.pojo.ResponseEnum;
 import com.admin4j.common.pojo.SimpleResponse;
 import com.admin4j.common.util.ServletUtils;
 import com.admin4j.common.util.UserContextUtil;
-import com.admin4j.framework.security.AuthenticationResult;
+import com.admin4j.framework.security.AuthenticationHandler;
 import com.admin4j.framework.security.UserTokenService;
 import com.admin4j.framework.security.event.AuthenticationSuccessEvent;
 import com.admin4j.framework.security.factory.AuthenticationUserFactory;
@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class DefaultAuthenticationResult implements AuthenticationResult {
+public class DefaultAuthenticationHandler implements AuthenticationHandler {
 
 
     protected static final IResponse FAIL_AUTH_FORBIDDEN = new SimpleResponse(ResponseEnum.FAIL_AUTH_FORBIDDEN);
@@ -67,6 +67,8 @@ public class DefaultAuthenticationResult implements AuthenticationResult {
 
     /**
      * 认证失败回调
+     * <p>
+     * ExceptionHandlerExceptionResolver.resolveException 可以模拟这个方法
      */
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, Exception exception) {

@@ -1,4 +1,4 @@
-package com.admin4j.framework.security.mult;
+package com.admin4j.framework.security.multi;
 
 import com.admin4j.common.Prioritized;
 import com.admin4j.framework.security.properties.FormLoginProperties;
@@ -8,25 +8,21 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * 默认的账号密码form登录用户加载类
+ * 检查账号密码是否正确
  *
  * @author andanyang
- * @since 2023/6/2 13:43
+ * @since 2023/11/10 15:53
  */
 @Slf4j
 @RequiredArgsConstructor
-public class UsernamePasswordUserDetailsService implements MultiUserDetailsService {
+public abstract class MultiCheckUsernamePasswordService implements MultiUserDetailsService {
 
-
-    private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
-    private final FormLoginProperties formLoginProperties;
+    protected final PasswordEncoder passwordEncoder;
+    protected final FormLoginProperties formLoginProperties;
     protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
-
 
     @Override
     public int getPriority() {
@@ -45,7 +41,10 @@ public class UsernamePasswordUserDetailsService implements MultiUserDetailsServi
     }
 
     /**
-     * 加载用户前的认证。比如认证短信验证码是否正确等
+     * 加载用户前的认证。
+     * - 比如认证短信验证码是否正确等
+     * - 接口限速
+     * 等
      *
      * @param multiAuthenticationToken
      * @return 返回是否认证成功
@@ -55,22 +54,11 @@ public class UsernamePasswordUserDetailsService implements MultiUserDetailsServi
         return true;
     }
 
-    /**
-     * 多渠道登录加载用户
-     *
-     * @param multiToken 多渠道登录key，可以是手机号、邮箱号，openid等
-     * @return 具体用户信息
-     */
-    @Override
-    public UserDetails loadUserByMultiToken(String multiToken) {
-        return userDetailsService.loadUserByUsername(multiToken);
-    }
-
     @Override
     public void postLoadUser(MultiAuthenticationToken multiAuthenticationToken) {
         UserDetails principal = (UserDetails) multiAuthenticationToken.getPrincipal();
 
-        //认证密码是否正确
+        // 认证密码是否正确
         if (!passwordEncoder.matches(multiAuthenticationToken.getAuthParameter(formLoginProperties.getPasswordParameter()), principal.getPassword())) {
             log.debug("Failed to authenticate since password does not match stored value");
             throw new BadCredentialsException(this.messages
