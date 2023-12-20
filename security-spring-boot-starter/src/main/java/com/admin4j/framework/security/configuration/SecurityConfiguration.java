@@ -1,30 +1,24 @@
 package com.admin4j.framework.security.configuration;
 
 import com.admin4j.framework.security.ISecurityIgnoringUrl;
+import com.admin4j.framework.security.authorization.PermissionAuthorizationManager;
 import com.admin4j.framework.security.filter.ActuatorFilter;
-import com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.admin4j.framework.security.ignoringUrl.AnonymousAccessUrl;
-import com.admin4j.framework.security.mult.MultiAuthenticationFilter;
-import com.admin4j.framework.security.mult.MultiAuthenticationProvider;
-import com.admin4j.framework.security.mult.MultiSecurityConfigurerAdapter;
-import com.admin4j.framework.security.mult.MultiUserDetailsService;
+import com.admin4j.framework.security.multi.MultiSecurityConfigurerAdapter;
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.IgnoringUrlProperties;
 import com.admin4j.framework.security.properties.JwtProperties;
 import com.admin4j.framework.security.properties.MultiAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,15 +33,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * TODO 需要注入，取消 UserDetailsServiceAutoConfiguration 开启
+ * 		value = { PermissionAuthorizationManager.class, AuthenticationProvider.class, UserDetailsService.class,
+ * 				AuthenticationManagerResolver.class },
+ *
  * @author andanyang
  * @since 2023/3/24 16:34
  */
 
 /**
- * 开启方法级别的注解支持
+ * spring security 配置。
+ *
+ * @author andanyang
+ * @EnableGlobalMethodSecurity 有应用出自己开启
  */
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+// @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableConfigurationProperties({IgnoringUrlProperties.class, JwtProperties.class, FormLoginProperties.class, MultiAuthenticationProperties.class})
+@AutoConfigureBefore(UserDetailsServiceAutoConfiguration.class)
 public class SecurityConfiguration {
 
 
@@ -69,33 +71,18 @@ public class SecurityConfiguration {
     AnonymousAccessUrl anonymousAccessUrl;
     @Autowired
     LogoutSuccessHandler logoutSuccessHandler;
-    @Autowired
-    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-    @Autowired(required = false)
-    List<UsernamePasswordAuthenticationFilter> usernamePasswordAuthenticationFilters;
-    @Autowired
-    MultiAuthenticationProperties multiAuthenticationProperties;
-    @Autowired(required = false)
-    List<MultiUserDetailsService> userDetailServices;
-    @Autowired
-    @Lazy
-    AuthenticationManager authenticationManager;
+    // @Autowired
+    // JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    // @Autowired(required = false)
+    // List<UsernamePasswordAuthenticationFilter> usernamePasswordAuthenticationFilters;
     @Autowired(required = false)
     ActuatorFilter actuatorFilter;
     @Autowired(required = false)
     CorsFilter corsFilter;
-
-
-    /**
-     * 认证管理器，登录的时候参数会传给 authenticationManager
-     */
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-
+    @Autowired(required = false)
+    MultiSecurityConfigurerAdapter multiSecurityConfigurerAdapter;
+    @Autowired(required = false)
+    PermissionAuthorizationManager permissionAuthorizationManager;
     /**
      * 取消ROLE_前缀
      */
@@ -105,15 +92,15 @@ public class SecurityConfiguration {
     //    return new GrantedAuthorityDefaults("");
     //}
 
-    /**
-     * 设置中文配置
-     */
-    @Bean
-    public ReloadableResourceBundleMessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:org/springframework/security/messages_zh_CN");
-        return messageSource;
-    }
+    // /**
+    //  * 设置中文配置
+    //  */
+    // @Bean
+    // public ReloadableResourceBundleMessageSource messageSource() {
+    //     ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+    //     messageSource.setBasename("classpath:org/springframework/security/messages_zh_CN");
+    //     return messageSource;
+    // }
 
     /**
      * 安全配置
@@ -122,7 +109,7 @@ public class SecurityConfiguration {
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-// FilterSecurityInterceptor
+        // FilterSecurityInterceptor
         httpSecurity
                 // 关闭cors
                 .cors().disable()
@@ -145,35 +132,22 @@ public class SecurityConfiguration {
         ;
 
         // 添加Logout filter
-        httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
-        // 添加JWT filter
-        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.logout().logoutUrl(formLoginProperties.getLogOutProcessingUrl()).permitAll().logoutSuccessHandler(logoutSuccessHandler);
+
+
         // 添加CORS filter
         if (corsFilter != null) {
-            httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
+            httpSecurity.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
         }
 
-
-        if (usernamePasswordAuthenticationFilters != null && usernamePasswordAuthenticationFilters.size() > 0) {
-            usernamePasswordAuthenticationFilters.forEach(usernameFilter -> httpSecurity.addFilterBefore(usernameFilter, UsernamePasswordAuthenticationFilter.class));
+        if (actuatorFilter != null) {
+            httpSecurity.addFilterBefore(actuatorFilter, UsernamePasswordAuthenticationFilter.class);
         }
-
-
-        authorizeRequestsConfigurer(httpSecurity);
 
         // 多渠道登录
-        if (multiAuthenticationProperties.isEnable()) {
-
-            MultiAuthenticationFilter authenticationFilter = new MultiAuthenticationFilter(multiAuthenticationProperties, formLoginProperties);
-
-            authenticationFilter.setAuthenticationManager(authenticationManager);
-            authenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-            authenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-
-            MultiSecurityConfigurerAdapter multiSecurityConfigurerAdapter = new MultiSecurityConfigurerAdapter(authenticationFilter, new MultiAuthenticationProvider(userDetailServices));
+        if (multiSecurityConfigurerAdapter != null) {
             httpSecurity.apply(multiSecurityConfigurerAdapter);
-
-        } else {
+        } else if (formLoginProperties.isEnable()) {
             // 开启form表单认证
             httpSecurity.formLogin()
                     .loginProcessingUrl(formLoginProperties.getLoginProcessingUrl())
@@ -182,34 +156,33 @@ public class SecurityConfiguration {
                     .failureHandler(authenticationFailureHandler)
                     .successHandler(authenticationSuccessHandler)
                     .permitAll();
-
         }
 
-        if (actuatorFilter != null) {
-            httpSecurity.addFilterBefore(actuatorFilter, UsernamePasswordAuthenticationFilter.class);
-        }
+        // 授权请求配置 authorizeHttpRequests(6.0 新版) authorizeRequests（旧版） 区别
+        // httpSecurity.authorizeRequests().anyRequest().authenticated();
+        httpSecurity.authorizeHttpRequests(register -> {
 
-        // GlobalAuthenticationConfigurerAdapter
-        // WebSecurityConfigurerAdapter
+            // 忽略URl配置
+            ignoringRequestMatcherRegistry(register);
+            if (permissionAuthorizationManager != null) {
+                // 自定义授权
+                register.anyRequest().access(permissionAuthorizationManager);
+            } else {
+                // 除上面外的所有请求全部需要鉴权认证;其他路径必须验证
+                register.anyRequest().authenticated();
+            }
+
+        });
+
         return httpSecurity.build();
     }
 
-    /**
-     * 授权请求配置
-     */
-    private void authorizeRequestsConfigurer(HttpSecurity httpSecurity) throws Exception {
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry =
-                httpSecurity.authorizeRequests();
-        // 忽略URl配置
-        ignoringRequestMatcherRegistry(expressionInterceptUrlRegistry);
-        // 除上面外的所有请求全部需要鉴权认证;其他路径必须验证
-        expressionInterceptUrlRegistry.anyRequest().authenticated();
-    }
 
     /**
      * 忽略URl配置
      */
-    private void ignoringRequestMatcherRegistry(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
+    private void ignoringRequestMatcherRegistry(AbstractRequestMatcherRegistry<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizedUrl> matcherRegistry) {
+
 
         if (securityIgnoringUrls != null && !securityIgnoringUrls.isEmpty()) {
             securityIgnoringUrls.forEach(url -> {
@@ -219,9 +192,9 @@ public class SecurityConfiguration {
                 }
 
                 if (url.support() == null) {
-                    expressionInterceptUrlRegistry.antMatchers(url.ignoringUrls()).permitAll();
+                    matcherRegistry.mvcMatchers(url.ignoringUrls()).permitAll();
                 } else {
-                    expressionInterceptUrlRegistry.antMatchers(url.support(), url.ignoringUrls()).permitAll();
+                    matcherRegistry.antMatchers(url.support(), url.ignoringUrls()).permitAll();
                 }
             });
         }
@@ -229,23 +202,23 @@ public class SecurityConfiguration {
         if (ignoringUrlProperties != null) {
 
             if (ignoringUrlProperties.getUris() != null && ignoringUrlProperties.getUris().length > 0) {
-                expressionInterceptUrlRegistry.antMatchers(ignoringUrlProperties.getUris()).permitAll();
+                matcherRegistry.antMatchers(ignoringUrlProperties.getUris()).permitAll();
             }
             if (ignoringUrlProperties.getGet() != null && ignoringUrlProperties.getGet().length > 0) {
-                expressionInterceptUrlRegistry.antMatchers(HttpMethod.GET, ignoringUrlProperties.getGet()).permitAll();
+                matcherRegistry.antMatchers(HttpMethod.GET, ignoringUrlProperties.getGet()).permitAll();
             }
 
             if (ignoringUrlProperties.getPost() != null && ignoringUrlProperties.getPost().length > 0) {
-                expressionInterceptUrlRegistry.antMatchers(HttpMethod.POST, ignoringUrlProperties.getPost()).permitAll();
+                matcherRegistry.antMatchers(HttpMethod.POST, ignoringUrlProperties.getPost()).permitAll();
             }
             if (ignoringUrlProperties.getPut() != null && ignoringUrlProperties.getPut().length > 0) {
-                expressionInterceptUrlRegistry.antMatchers(HttpMethod.PUT, ignoringUrlProperties.getPut()).permitAll();
+                matcherRegistry.antMatchers(HttpMethod.PUT, ignoringUrlProperties.getPut()).permitAll();
             }
             if (ignoringUrlProperties.getPatch() != null && ignoringUrlProperties.getPatch().length > 0) {
-                expressionInterceptUrlRegistry.antMatchers(HttpMethod.PATCH, ignoringUrlProperties.getPatch()).permitAll();
+                matcherRegistry.antMatchers(HttpMethod.PATCH, ignoringUrlProperties.getPatch()).permitAll();
             }
             if (ignoringUrlProperties.getDelete() != null && ignoringUrlProperties.getDelete().length > 0) {
-                expressionInterceptUrlRegistry.antMatchers(HttpMethod.DELETE, ignoringUrlProperties.getDelete()).permitAll();
+                matcherRegistry.antMatchers(HttpMethod.DELETE, ignoringUrlProperties.getDelete()).permitAll();
             }
         }
 
@@ -255,71 +228,8 @@ public class SecurityConfiguration {
             Map<HttpMethod, String[]> anonymousUrl = anonymousAccessUrl.getAnonymousUrl();
             anonymousUrl.keySet().forEach(i -> {
 
-                expressionInterceptUrlRegistry.antMatchers(i, anonymousUrl.get(i)).permitAll();
+                matcherRegistry.antMatchers(i, anonymousUrl.get(i)).permitAll();
             });
         }
-
     }
-    /**
-     * 网络安全配置，忽略部分路径（如静态文件路径）
-     */
-    //@Bean
-    //@ConditionalOnMissingBean(WebSecurityCustomizer.class)
-    // public WebSecurityCustomizer webSecurityCustomizer() {
-    //    return (web) -> {
-    //
-    //        //设置匿名访问url
-    //        WebSecurity.IgnoredRequestConfigurer ignoring = web.ignoring();
-    //
-    //        if (securityIgnoringUrls != null && !securityIgnoringUrls.isEmpty()) {
-    //            securityIgnoringUrls.forEach(url -> {
-    //
-    //                if (url.ignoringUrls() == null || url.ignoringUrls().length == 0) {
-    //                    return;
-    //                }
-    //
-    //                if (url.support() == null) {
-    //                    ignoring.antMatchers(url.ignoringUrls());
-    //                } else {
-    //                    ignoring.antMatchers(url.support(), url.ignoringUrls());
-    //                }
-    //            });
-    //        }
-    //
-    //        if (ignoringUrlProperties != null) {
-    //
-    //            if (ignoringUrlProperties.getUris() != null && ignoringUrlProperties.getUris().length > 0) {
-    //                ignoring.antMatchers(ignoringUrlProperties.getUris());
-    //            }
-    //            if (ignoringUrlProperties.getGet() != null && ignoringUrlProperties.getGet().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.GET, ignoringUrlProperties.getGet());
-    //            }
-    //
-    //            if (ignoringUrlProperties.getPost() != null && ignoringUrlProperties.getPost().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.POST, ignoringUrlProperties.getPost());
-    //            }
-    //            if (ignoringUrlProperties.getPut() != null && ignoringUrlProperties.getPut().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.PUT, ignoringUrlProperties.getPut());
-    //            }
-    //            if (ignoringUrlProperties.getPatch() != null && ignoringUrlProperties.getPatch().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.PATCH, ignoringUrlProperties.getPatch());
-    //            }
-    //            if (ignoringUrlProperties.getDelete() != null && ignoringUrlProperties.getDelete().length > 0) {
-    //                ignoring.antMatchers(HttpMethod.DELETE, ignoringUrlProperties.getDelete());
-    //            }
-    //        }
-    //
-    //        //AnonymousAccess 注解
-    //        if (anonymousAccessUrl != null) {
-    //
-    //            Map<HttpMethod, String[]> anonymousUrl = anonymousAccessUrl.getAnonymousUrl();
-    //            anonymousUrl.keySet().forEach(i -> {
-    //
-    //                ignoring.antMatchers(i, anonymousUrl.get(i));
-    //            });
-    //        }
-    //    };
-    //}
-
-
 }

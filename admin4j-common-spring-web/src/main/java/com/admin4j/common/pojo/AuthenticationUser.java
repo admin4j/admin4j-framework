@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * UserContext 用户上下文
@@ -35,7 +35,7 @@ public class AuthenticationUser implements Serializable {
      * 权限列表
      */
     @ApiModelProperty("权限code列表")
-    private Set<String> permissions;
+    private Collection<String> permissions;
 
     // private String fromService;
 

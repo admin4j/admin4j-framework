@@ -1,6 +1,6 @@
 package com.admin4j.framework.security.handler;
 
-import com.admin4j.framework.security.AuthenticationResult;
+import com.admin4j.framework.security.AuthenticationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -17,10 +17,10 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class RestAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    final AuthenticationResult authenticationResult;
+    final AuthenticationHandler authenticationHandler;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        authenticationResult.onAuthenticationFailure(request, response, exception);
+        authenticationHandler.onAuthenticationFailure(request, response, exception);
     }
 }

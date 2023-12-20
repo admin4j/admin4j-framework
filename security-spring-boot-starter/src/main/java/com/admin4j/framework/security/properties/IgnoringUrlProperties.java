@@ -4,7 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 忽略url 配置文件
+ * 根据配置文件 忽略url
+ * 注意支持 ant-style 风格语法;如果开头没有模糊匹配，请以 / 开头。
  *
  * @author andanyang
  * @since 2023/3/24 17:00
@@ -14,7 +15,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class IgnoringUrlProperties {
 
     /**
-     * 包含所有请求类型的路径
+     * 包含所有请求类型的路径,不考虑请求方法
+     * 注意支持 ant-style 风格语法;如果开头没有模糊匹配，请以 / 开头。
      */
     private String[] uris;
     /**
@@ -37,6 +39,4 @@ public class IgnoringUrlProperties {
      * patch 请求
      */
     private String[] patch;
-
-
 }

@@ -4,6 +4,8 @@ import com.admin4j.framework.security.properties.CorsProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -16,6 +18,7 @@ public class CorsConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "admin4j.security.cors", name = "enabled", matchIfMissing = true)
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     public CorsFilter corsFilter(CorsProperties properties) {
 
         org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();

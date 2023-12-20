@@ -1,4 +1,4 @@
-package com.admin4j.framework.security.mult;
+package com.admin4j.framework.security.multi;
 
 import com.admin4j.framework.security.properties.FormLoginProperties;
 import com.admin4j.framework.security.properties.MultiAuthenticationProperties;
@@ -23,8 +23,8 @@ import java.io.IOException;
 public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     static final String DEFAULT_AUTH_TYPE = "";
-    private MultiAuthenticationProperties multiAuthenticationProperties;
-    private FormLoginProperties formLoginProperties;
+    private final MultiAuthenticationProperties multiAuthenticationProperties;
+    private final FormLoginProperties formLoginProperties;
 
 
     public MultiAuthenticationFilter(MultiAuthenticationProperties multiAuthenticationProperties, FormLoginProperties formLoginProperties) {
@@ -47,11 +47,17 @@ public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingF
 
         MultiAuthenticationToken token = obtainToken(request);
         setDetails(request, token);
-        // 匹配成功交给 AuthenticationManager 去认证
+        // 匹配成功交给 PermissionAuthorizationManager 去认证
         return this.getAuthenticationManager().authenticate(token);
     }
 
-    private MultiAuthenticationToken obtainToken(HttpServletRequest request) {
+    /**
+     * 获取未认证的令牌
+     *
+     * @param request
+     * @return
+     */
+    protected MultiAuthenticationToken obtainToken(HttpServletRequest request) {
 
         /**
          * 获取授权方式
@@ -60,17 +66,13 @@ public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingF
 
         if (StringUtils.isBlank(authType)) {
 
-            // 尝试去uri路径里面获取
+            // 尝试去uri路径里面获取 /login/phone
             String requestURI = request.getRequestURI();
             authType = StringUtils.substringAfter(requestURI, multiAuthenticationProperties.getLoginProcessingUrlPrefix());
         }
 
         String principal;
         if (StringUtils.isBlank(authType)) {
-            // if (!formLoginProperties.isEnable()) {
-            //    throw new AuthenticationServiceException(
-            //            "Authentication authType not find: " + request.getRequestURI());
-            //}
             // 默认开启了formLogin 获取默认的 username字段
             authType = DEFAULT_AUTH_TYPE;
             principal = request.getParameter(formLoginProperties.getUsernameParameter());
@@ -78,7 +80,6 @@ public class MultiAuthenticationFilter extends AbstractAuthenticationProcessingF
             String field = multiAuthenticationProperties.getAuthMap() == null ? authType : multiAuthenticationProperties.getAuthMap().getOrDefault(authType, authType);
             principal = request.getParameter(field);
         }
-
 
         return MultiAuthenticationToken.unauthenticated(authType, principal, request.getParameterMap());
     }

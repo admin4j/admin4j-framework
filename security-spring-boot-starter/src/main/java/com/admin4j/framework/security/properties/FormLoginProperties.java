@@ -17,6 +17,10 @@ public class FormLoginProperties {
      */
     private String loginProcessingUrl = "/login";
     /**
+     * 退出处理url
+     */
+    private String logOutProcessingUrl = "/logout";
+    /**
      * 密码字段名
      */
     private String passwordParameter = "password";
@@ -24,4 +28,8 @@ public class FormLoginProperties {
      * 账号字段名
      */
     private String usernameParameter = "username";
+    /**
+     * 开启默认的表单登录
+     */
+    private boolean enable = true;
 }

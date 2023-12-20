@@ -1,8 +1,8 @@
-package com.admin4j.framework.security.mult;
+package com.admin4j.framework.security.multi;
 
+import com.admin4j.framework.security.filter.JwtAuthenticationTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -15,14 +15,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class MultiSecurityConfigurerAdapter extends AbstractHttpConfigurer<MultiSecurityConfigurerAdapter, HttpSecurity> {
 
     private final MultiAuthenticationFilter multiAuthenticationFilter;
-    private final AuthenticationProvider authenticationProvider;
+
+    private final AuthenticationManager authenticationManager;
+
+    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+        
         multiAuthenticationFilter.setAuthenticationManager(authenticationManager);
-        http.authenticationProvider(authenticationProvider)
+        http.authenticationManager(authenticationManager)
+                // 添加JWT filter
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(multiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

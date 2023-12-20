@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.admin4j.elasticsearch.ElasticsearchConfig
+  com.admin4j.elasticsearch.autoconfigure.ElasticsearchAutoconfigure,\
+  com.admin4j.elasticsearch.autoconfigure.JsonpMapperAutoconfigure

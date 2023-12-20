@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.admin4j.common.config.UserContextConfig
+  com.admin4j.common.config.UserContextAutoConfiguration

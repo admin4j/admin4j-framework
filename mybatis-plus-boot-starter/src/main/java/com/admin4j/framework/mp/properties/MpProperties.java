@@ -12,9 +12,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class MpProperties {
 
     /**
+     * 多租户功能开关
+     */
+    private boolean tenantEnable = false;
+
+    /**
      * 多租需要忽略的表
      */
     private String[] ignoreTenantTable;
+
     /**
      * 是否开启 sql 性能规范插件
      */

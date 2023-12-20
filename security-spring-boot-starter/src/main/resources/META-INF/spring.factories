@@ -6,7 +6,10 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
    com.admin4j.framework.security.configuration.SecurityConfiguration, \
    com.admin4j.framework.security.configuration.SecurityHandlerConfiguration, \
    com.admin4j.framework.security.configuration.CorsConfiguration, \
-   com.admin4j.framework.security.configuration.UserTokenServiceConfiguration
+   com.admin4j.framework.security.configuration.UserTokenServiceConfiguration, \
+   com.admin4j.framework.security.configuration.MultiAuthenticationManagerAutoConfiguration, \
+   com.admin4j.framework.security.configuration.MultiAuthenticationAutoConfiguration, \
+   com.admin4j.framework.security.configuration.PermissionAutoConfiguration
 
 
   

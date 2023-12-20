@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>0.9.5</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -64,7 +64,7 @@
 
         <flowable.version>6.7.2</flowable.version>
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
-        <admin4j.version>0.9.0</admin4j.version>
+        <admin4j.version>0.9.5</admin4j.version>
         <admin4j-lock.version>0.8.2</admin4j-lock.version>
         <admin4j-limiter.version>0.8.0</admin4j-limiter.version>
         <admin4j-redis.version>0.8.0</admin4j-redis.version>
@@ -98,7 +98,7 @@
             <dependency>
                 <groupId>org.apache.rocketmq</groupId>
                 <artifactId>rocketmq-spring-boot-starter</artifactId>
-                <version>2.2.1</version>
+                <version>2.2.3</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.json</groupId>
@@ -110,7 +110,7 @@
             <dependency>
                 <groupId>com.admin4j.dict</groupId>
                 <artifactId>dict-spring-boot-starter</artifactId>
-                <version>0.9.0</version>
+                <version>0.9.4</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -125,47 +125,47 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>tenant-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.5</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>ttl-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>excel-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>log-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>test-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>desensitize-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>security-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.5</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.5</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>elasticsearch-spring-boot-starter</artifactId>
-                <version>7.x.1</version>
+                <version>8.x.3</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.redis</groupId>
@@ -215,12 +215,12 @@
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common-spring-web</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.5</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>web-spring-boot-starter</artifactId>
-                <version>0.9.1</version>
+                <version>0.9.5</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -230,12 +230,12 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>prometheus-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.5</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>excel-spring-boot-starter</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
@@ -311,7 +311,7 @@
             <dependency>
                 <groupId>io.github.admin4j</groupId>
                 <artifactId>common-http-starter</artifactId>
-                <version>0.8.1</version>
+                <version>0.9.1</version>
             </dependency>
             <dependency>
                 <groupId>com.xuxueli</groupId>
@@ -356,7 +356,7 @@
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
-                <version>2.0.29</version>
+                <version>2.0.43</version>
             </dependency>
             <!-- 业务相关 end -->
 
@@ -375,7 +375,7 @@
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.1.0</version>
             </dependency>
 
             <dependency>
