@@ -15,12 +15,13 @@ Spring Security 最佳实践封装。
 
 ### 1.1 引入 pom
 
-```
-        <dependency>
-            <groupId>com.admin4j.framework</groupId>
-            <artifactId>security-spring-boot-starter</artifactId>
-            <version>0.9.0</version>
-        </dependency>
+```xml
+<!--https://central.sonatype.com/artifact/com.admin4j.framework/security-spring-boot-starter-->
+<dependency>
+    <groupId>com.admin4j.framework</groupId>
+    <artifactId>security-spring-boot-starter</artifactId>
+    <version>0.9.0</version>
+</dependency>
 ```
 
 ### 1.2 实现 JwtUserDetailsService 接口,用于根据用户ID获取用户详情。由于我们的JWT Token 存的是 userId,所以这里的入参为userId
