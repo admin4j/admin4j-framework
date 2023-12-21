@@ -11,7 +11,7 @@
 
     <groupId>com.admin4j.common</groupId>
     <artifactId>admin4j-common-spring-web</artifactId>
-    <version>0.9.5</version>
+    <version>0.9.7-SNAPSHOT</version>
     <description>与业务无关的工具类库</description>
 
     <properties>
