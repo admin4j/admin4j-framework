@@ -210,7 +210,7 @@
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.common</groupId>
