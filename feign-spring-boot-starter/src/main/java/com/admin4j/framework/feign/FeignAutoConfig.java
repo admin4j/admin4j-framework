@@ -1,6 +1,7 @@
 package com.admin4j.framework.feign;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.springframework.context.annotation.Bean;
 
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,10 @@ public class FeignAutoConfig {
         // 当HTTP返回码为3xx（重定向）时，是否执行重定向操作
         builder.setFollowRedirects$okhttp(true);
         builder.setFollowSslRedirects$okhttp(true);
+
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new FeignLogger("FeignLogger"));
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addNetworkInterceptor(httpLoggingInterceptor);
         return builder;
     }
 }
