@@ -108,6 +108,11 @@
 
             <!-- admin4j相关-->
             <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>feign-spring-boot-starter</artifactId>
+                <version>0.9.7-SNAPSHOT</version>
+            </dependency>
+            <dependency>
                 <groupId>com.admin4j.dict</groupId>
                 <artifactId>dict-spring-boot-starter</artifactId>
                 <version>0.9.4</version>
