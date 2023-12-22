@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.admin4j.framework.feign.exception.handler.FeignFallbackGlobalExceptionHandler, \
+  com.admin4j.framework.feign.exception.handler.FeignHystrixGlobalExceptionHandler, \
+  com.admin4j.framework.feign.configuration.FeignErrorDecoderAutoConfiguration
