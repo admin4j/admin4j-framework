@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ConditionalOnClass(name = "com.netflix.hystrix.exception.HystrixRuntimeException")
 public class FeignHystrixGlobalExceptionHandler extends AbstractExceptionHandler {
-
+    // TODO SentinelInvocationHandler
 
     @ExceptionHandler(HystrixRuntimeException.class)
     public ResponseEntity<SimpleResponse> hystrixRuntimeException(HystrixRuntimeException e) {
