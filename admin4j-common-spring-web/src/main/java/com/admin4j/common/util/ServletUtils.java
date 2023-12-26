@@ -110,7 +110,6 @@ public class ServletUtils {
      *
      * @param object     渲染对象
      * @param httpStatus http 状态
-     * @return null
      */
     public static void renderJson(Object object, int httpStatus) {
         renderString(JSONObject.toJSONString(object), httpStatus);
@@ -126,14 +125,13 @@ public class ServletUtils {
         renderString(response, str, httpStatus);
     }
 
-  
+
     /**
      * 将字符串渲染到客户端
      *
      * @param response   渲染对象
      * @param string     待渲染的字符串
      * @param httpStatus http 状态
-     * @return null
      */
     public static void renderString(HttpServletResponse response, String string, int httpStatus) {
         try {
