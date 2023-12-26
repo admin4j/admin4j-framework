@@ -108,32 +108,39 @@ public class ServletUtils {
     /**
      * 将字符串渲染到客户端
      *
-     * @param object 渲染对象
+     * @param object     渲染对象
+     * @param httpStatus http 状态
      * @return null
      */
-    public static void renderJson(Object object) {
-        renderString(JSONObject.toJSONString(object));
+    public static void renderJson(Object object, int httpStatus) {
+        renderString(JSONObject.toJSONString(object), httpStatus);
     }
 
     public static void renderString(String str) {
-        
-        HttpServletResponse response = getResponse();
-        renderString(response, str);
+        renderString(str, 200);
     }
 
+    public static void renderString(String str, int httpStatus) {
+
+        HttpServletResponse response = getResponse();
+        renderString(response, str, httpStatus);
+    }
+
+  
     /**
      * 将字符串渲染到客户端
      *
-     * @param response 渲染对象
-     * @param string   待渲染的字符串
+     * @param response   渲染对象
+     * @param string     待渲染的字符串
+     * @param httpStatus http 状态
      * @return null
      */
-    public static void renderString(HttpServletResponse response, String string) {
+    public static void renderString(HttpServletResponse response, String string, int httpStatus) {
         try {
             if (response == null) {
                 return;
             }
-            response.setStatus(200);
+            response.setStatus(httpStatus);
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             response.getWriter().write(string);
