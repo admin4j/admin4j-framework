@@ -1,6 +1,7 @@
 package com.admin4j.common.util;
 
 
+import com.admin4j.common.exception.SystemException;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
@@ -111,16 +112,15 @@ public class ServletUtils {
      * @param string   待渲染的字符串
      * @return null
      */
-    public static String renderString(HttpServletResponse response, String string) {
+    public static void renderString(HttpServletResponse response, String string) {
         try {
             response.setStatus(200);
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(string);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SystemException(e);
         }
-        return null;
     }
 
     /**
@@ -129,21 +129,25 @@ public class ServletUtils {
      * @param object 渲染对象
      * @return null
      */
-    public static String renderJson(Object object) {
+    public static void renderJson(Object object) {
         try {
 
             HttpServletResponse response = getResponse();
+            if (response == null) {
+                return;
+            }
             response.setStatus(200);
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             PrintWriter out = response.getWriter();
             out.write(JSONObject.toJSONString(object));
-            out.flush();
-            out.close();
+            // 通常您不应该关闭流。在 servlet 完成生命周期之后，servlet 容器会自动关闭流。
+            // 举个例子，如果你关闭了流的话，在你实现的 Filter 中就不能再使用了。
+            //out.flush();
+            //out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SystemException(e);
         }
-        return null;
     }
 
     /**
@@ -168,10 +172,7 @@ public class ServletUtils {
         }
 
         String ajax = request.getParameter("__ajax");
-        if (StringUtils.equalsAnyIgnoreCase(ajax, "json", "xml")) {
-            return true;
-        }
-        return false;
+        return StringUtils.equalsAnyIgnoreCase(ajax, "json", "xml");
     }
 
     /**
