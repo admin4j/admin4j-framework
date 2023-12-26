@@ -130,6 +130,10 @@ public class ServletUtils {
      * @return null
      */
     public static void renderJson(Object object) {
+        renderJson(JSONObject.toJSONString(object));
+    }
+
+    public static void renderJson(String str) {
         try {
 
             HttpServletResponse response = getResponse();
@@ -140,7 +144,7 @@ public class ServletUtils {
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             PrintWriter out = response.getWriter();
-            out.write(JSONObject.toJSONString(object));
+            out.write(str);
             // 通常您不应该关闭流。在 servlet 完成生命周期之后，servlet 容器会自动关闭流。
             // 举个例子，如果你关闭了流的话，在你实现的 Filter 中就不能再使用了。
             //out.flush();
