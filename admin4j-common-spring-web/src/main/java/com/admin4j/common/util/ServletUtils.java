@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -105,6 +104,23 @@ public class ServletUtils {
         return map;
     }
 
+
+    /**
+     * 将字符串渲染到客户端
+     *
+     * @param object 渲染对象
+     * @return null
+     */
+    public static void renderJson(Object object) {
+        renderString(JSONObject.toJSONString(object));
+    }
+
+    public static void renderString(String str) {
+        
+        HttpServletResponse response = getResponse();
+        renderString(response, str);
+    }
+
     /**
      * 将字符串渲染到客户端
      *
@@ -114,37 +130,13 @@ public class ServletUtils {
      */
     public static void renderString(HttpServletResponse response, String string) {
         try {
-            response.setStatus(200);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().print(string);
-        } catch (IOException e) {
-            throw new SystemException(e);
-        }
-    }
-
-    /**
-     * 将字符串渲染到客户端
-     *
-     * @param object 渲染对象
-     * @return null
-     */
-    public static void renderJson(Object object) {
-        renderJson(JSONObject.toJSONString(object));
-    }
-
-    public static void renderJson(String str) {
-        try {
-
-            HttpServletResponse response = getResponse();
             if (response == null) {
                 return;
             }
             response.setStatus(200);
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
-            PrintWriter out = response.getWriter();
-            out.write(str);
+            response.getWriter().write(string);
             // 通常您不应该关闭流。在 servlet 完成生命周期之后，servlet 容器会自动关闭流。
             // 举个例子，如果你关闭了流的话，在你实现的 Filter 中就不能再使用了。
             //out.flush();
