@@ -238,11 +238,6 @@
                 <version>0.9.5</version>
             </dependency>
             <dependency>
-                <groupId>com.admin4j.framework</groupId>
-                <artifactId>excel-spring-boot-starter</artifactId>
-                <version>0.9.0</version>
-            </dependency>
-            <dependency>
                 <groupId>com.admin4j</groupId>
                 <artifactId>plugin-core</artifactId>
                 <version>${admin4j-plugin.version}</version>
