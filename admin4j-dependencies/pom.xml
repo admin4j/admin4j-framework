@@ -130,7 +130,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>tenant-spring-boot-starter</artifactId>
-                <version>0.9.5</version>
+                <version>0.9.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
