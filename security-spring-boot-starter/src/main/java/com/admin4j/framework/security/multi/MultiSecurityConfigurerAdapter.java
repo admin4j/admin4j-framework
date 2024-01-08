@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 /**
  * @author andanyang
@@ -22,12 +22,12 @@ public class MultiSecurityConfigurerAdapter extends AbstractHttpConfigurer<Multi
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        
+
         multiAuthenticationFilter.setAuthenticationManager(authenticationManager);
         http.authenticationManager(authenticationManager)
                 // 添加JWT filter
-                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(multiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationTokenFilter, LogoutFilter.class)
+                .addFilterBefore(multiAuthenticationFilter, LogoutFilter.class);
     }
 
 
