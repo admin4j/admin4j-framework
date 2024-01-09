@@ -252,6 +252,29 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
         return SqlHelper.retBool(getBaseMapper().deleteById(id));
     }
 
+    /**
+     * 根据实体(ID)删除
+     *
+     * @param entity 实体
+     * @since 3.4.4
+     */
+    protected boolean removeById(T entity) {
+        return SqlHelper.retBool(getBaseMapper().deleteById(entity));
+    }
+
+    @Override
+    public boolean removeById(Serializable id, boolean useFill) {
+        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
+        if (useFill && tableInfo.isWithLogicDelete()) {
+            if (!entityClass.isAssignableFrom(id.getClass())) {
+                T instance = tableInfo.newInstance();
+                tableInfo.setPropertyValue(instance, tableInfo.getKeyProperty(), id);
+                return removeById(instance);
+            }
+        }
+        return SqlHelper.retBool(getBaseMapper().deleteById(id));
+    }
+
 
     /**
      * 删除（根据ID 批量删除）
@@ -300,19 +323,6 @@ public class CommandServiceImpl<M extends BaseMapper<T>, T> extends QueryService
             return removeBatchByIds(list, true);
         }
         return SqlHelper.retBool(getBaseMapper().deleteBatchIds(list));
-    }
-
-    @Override
-    public boolean removeById(Serializable id, boolean useFill) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
-        if (useFill && tableInfo.isWithLogicDelete()) {
-            if (!entityClass.isAssignableFrom(id.getClass())) {
-                T instance = tableInfo.newInstance();
-                tableInfo.setPropertyValue(instance, tableInfo.getKeyProperty(), id);
-                return removeById((Serializable) instance);
-            }
-        }
-        return SqlHelper.retBool(getBaseMapper().deleteById(id));
     }
 
 
