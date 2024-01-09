@@ -10,4 +10,9 @@ public class RateLimiterException extends RuntimeException {
 
         super("Too Many Request");
     }
+
+    public RateLimiterException(String key) {
+
+        super("Too Many Request:" + key);
+    }
 }
