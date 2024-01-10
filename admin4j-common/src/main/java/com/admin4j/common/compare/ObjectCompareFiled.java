@@ -11,7 +11,19 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 public @interface ObjectCompareFiled {
 
+    /**
+     * 忽略比较
+     *
+     * @return
+     */
     boolean ignore() default false;
+
+    /**
+     * 目标为空时，是否忽略比较
+     *
+     * @return
+     */
+    boolean ignoreTargetNull() default false;
 
     String value() default "";
 }

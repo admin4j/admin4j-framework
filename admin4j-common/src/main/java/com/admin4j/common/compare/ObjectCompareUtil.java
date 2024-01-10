@@ -14,13 +14,21 @@ import java.util.Objects;
  */
 public class ObjectCompareUtil {
 
-    public static List<ObjectCompareFiledResult> compareFields(Object originObj, Object newObj) throws IllegalAccessException {
+    /**
+     * 比较对象
+     *
+     * @param originObj
+     * @param targetObj
+     * @return
+     * @throws IllegalAccessException
+     */
+    public static List<ObjectCompareFiledResult> compareFields(Object originObj, Object targetObj) throws IllegalAccessException {
 
-        ResponseEnum.VERIFY_ERROR.isTrue(ObjectUtils.allNotNull(originObj, newObj), "obj is null");
+        ResponseEnum.VERIFY_ERROR.isTrue(ObjectUtils.allNotNull(originObj, targetObj), "obj is null");
 
         Class<?> originObjClass = originObj.getClass();
 
-        ResponseEnum.VERIFY_ERROR.isTrue(originObjClass.equals(newObj.getClass()), "Class is not equals");
+        ResponseEnum.VERIFY_ERROR.isTrue(originObjClass.equals(targetObj.getClass()), "Class is not equals");
 
         Field[] declaredFields = originObjClass.getDeclaredFields();
 
@@ -40,17 +48,22 @@ public class ObjectCompareUtil {
                 continue;
             }
 
+
             String fieldName = field.getName();
             boolean accessible = field.isAccessible();
             field.setAccessible(true);
 
             // 获取值
             Object originValue = field.get(originObj);
-            Object newValue = field.get(newObj);
+            Object newValue = field.get(targetObj);
+            
+            if (newValue == null && fieldAnnotation != null && fieldAnnotation.ignoreTargetNull()) {
+                continue;
+            }
 
             field.setAccessible(accessible);
 
-            //比较值
+            // 比较值
             if (!Objects.equals(originValue, newValue)) {
                 ObjectCompareFiledResult objectCompareFiledResult = new ObjectCompareFiledResult();
 
