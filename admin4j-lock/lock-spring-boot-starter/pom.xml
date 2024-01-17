@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <name>lock-spring-boot-starter</name>
-    <description>基于Spring Boot 的分布式锁，支持redisson、zookeeper 分布式锁</description>
+    <description>基于Spring Boot 的分布式锁，支持redisson、zookeeper 分布式锁,双级锁（本地+远程）</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,9 +29,19 @@
             <version>${admin4j-lock.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.admin4j</groupId>
+            <artifactId>lock-local-spring-boot-starter</artifactId>
+            <version>${admin4j-lock.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

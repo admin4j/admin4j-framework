@@ -43,8 +43,8 @@ public class IdempotentAspect extends AbstractDLockHandler {
             idempotent = joinPoint.getTarget().getClass().getAnnotation(Idempotent.class);
         }
 
-        //获取锁信息
-        LockInfo<Object> lockInfo = new LockInfo<>();
+        // 获取锁信息
+        LockInfo lockInfo = new LockInfo();
         lockInfo.setLockModel(idempotent.lockModel());
         lockInfo.setLockKey(getIdempotentLockKey(joinPoint, idempotent));
         lockInfo.setTryLock(idempotent.tryLock());
@@ -65,7 +65,7 @@ public class IdempotentAspect extends AbstractDLockHandler {
 
     protected String getIdempotentLockKey(ProceedingJoinPoint joinPoint, Idempotent idempotent) {
 
-        //得到被切面修饰的方法的参数列表
+        // 得到被切面修饰的方法的参数列表
         Object[] args = joinPoint.getArgs();
         // 得到被代理的方法
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
@@ -74,11 +74,11 @@ public class IdempotentAspect extends AbstractDLockHandler {
 
         String key = StringUtils.defaultString(idempotent.key(), idempotent.value());
         if (StringUtils.isEmpty(key)) {
-            //按照 KeyGenerator 生成key
+            // 按照 KeyGenerator 生成key
             key = generateKeyByKeyGenerator(joinPoint, idempotent.keyGenerator());
             distributedLockKey.append(key);
         } else {
-            //按照 key 生成key
+            // 按照 key 生成key
             String parseElKey = SpelUtil.parse(joinPoint.getTarget(), key, method, args);
 
             if (StringUtils.isBlank(parseElKey)) {
@@ -89,7 +89,7 @@ public class IdempotentAspect extends AbstractDLockHandler {
             distributedLockKey.append(parseElKey);
         }
 
-        //开启用户模式
+        // 开启用户模式
         ILoginUserInfoService loginUserService = SpringUtils.getBean(ILoginUserInfoService.class);
         Assert.notNull(loginUserService, "ILoginUserInfoService must implement");
         distributedLockKey.append(":U").append(loginUserService.getUserId());

@@ -21,15 +21,15 @@ public class DistributedLockUtil {
      */
     public static final String DISTRIBUTED_LOCK_PRE = "D_LOCK:";
 
-    private static LockExecutor DWDAULT_LOCK_EXECUTOR;
+    private static LockExecutor<?> DEFAULT_LOCK_EXECUTOR;
 
     /**
      * 设置默认执行器
      *
      * @param lockExecutor 默认执行器
      */
-    public static void setDefaultLockExecutor(LockExecutor lockExecutor) {
-        DistributedLockUtil.DWDAULT_LOCK_EXECUTOR = lockExecutor;
+    public static void setDefaultLockExecutor(LockExecutor<?> lockExecutor) {
+        DistributedLockUtil.DEFAULT_LOCK_EXECUTOR = lockExecutor;
     }
 
     /**
@@ -38,12 +38,12 @@ public class DistributedLockUtil {
      * @param lockInfo 加锁信息
      * @return 锁执行器
      */
-    public static LockExecutor getLockExecutor(LockInfo lockInfo) {
+    public static LockExecutor<?> getLockExecutor(LockInfo lockInfo) {
 
         if (lockInfo.getExecutor() == null || lockInfo.getExecutor() == LockExecutor.class) {
-            return DWDAULT_LOCK_EXECUTOR;
+            return DEFAULT_LOCK_EXECUTOR;
         } else {
-            return (LockExecutor) SpringUtils.getBean(lockInfo.getExecutor());
+            return SpringUtils.getBean(lockInfo.getExecutor());
         }
     }
 
@@ -57,7 +57,7 @@ public class DistributedLockUtil {
      */
     public static <T> T lock(String lockKey, Supplier<T> supplier) {
 
-        LockInfo<Object> lockInfo = new LockInfo<>();
+        LockInfo lockInfo = new LockInfo();
         lockInfo.setLockKey(lockKey);
         return lock(lockInfo, supplier);
     }
@@ -73,12 +73,11 @@ public class DistributedLockUtil {
      */
     public static <T> T lock(LockInfo lockInfo, Supplier<T> supplier) {
 
-        LockExecutor lockExecutor = getLockExecutor(lockInfo);
-        Object lock = lockExecutor.getLock(lockInfo);
-        lockInfo.setLockInstance(lock);
+        LockExecutor<?> lockExecutor = getLockExecutor(lockInfo);
+        lockExecutor.setLockInstance(lockInfo);
 
-        lockExecutor.lock(lockInfo);
         try {
+            lockExecutor.lock(lockInfo);
             return supplier.get();
         } finally {
             lockExecutor.unlock(lockInfo);
@@ -93,17 +92,16 @@ public class DistributedLockUtil {
      */
     public static void lock(String lockKey, Runnable runnable) {
 
-        LockInfo<Object> lockInfo = new LockInfo<>();
+        LockInfo lockInfo = new LockInfo();
         lockInfo.setLockKey(lockKey);
-        Object lock = DWDAULT_LOCK_EXECUTOR.getLock(lockInfo);
-        lockInfo.setLockInstance(lock);
 
-        DWDAULT_LOCK_EXECUTOR.lock(lockInfo);
+        DEFAULT_LOCK_EXECUTOR.setLockInstance(lockInfo);
 
         try {
+            DEFAULT_LOCK_EXECUTOR.lock(lockInfo);
             runnable.run();
         } finally {
-            DWDAULT_LOCK_EXECUTOR.unlock(lockInfo);
+            DEFAULT_LOCK_EXECUTOR.unlock(lockInfo);
         }
     }
 
@@ -116,23 +114,21 @@ public class DistributedLockUtil {
      */
     public static boolean tryLock(String lockKey, Runnable runnable) {
 
-        LockInfo<Object> lockInfo = new LockInfo<>();
+        LockInfo lockInfo = new LockInfo();
         lockInfo.setLockKey(lockKey);
         lockInfo.setTryLock(true);
-        Object lock = DWDAULT_LOCK_EXECUTOR.getLock(lockInfo);
-        lockInfo.setLockInstance(lock);
 
+        DEFAULT_LOCK_EXECUTOR.setLockInstance(lockInfo);
 
-        if (!DWDAULT_LOCK_EXECUTOR.tryLock(lockInfo)) {
-            log.error("DistributedLockUtil tryLock fail {}", lockKey);
-            return false;
-
-        } else {
-            try {
+        try {
+            if (!DEFAULT_LOCK_EXECUTOR.tryLock(lockInfo)) {
+                log.debug("DistributedLockUtil tryLock fail {}", lockKey);
+                return false;
+            } else {
                 runnable.run();
-            } finally {
-                DWDAULT_LOCK_EXECUTOR.unlock(lockInfo);
             }
+        } finally {
+            DEFAULT_LOCK_EXECUTOR.unlock(lockInfo);
         }
 
         return true;
@@ -149,22 +145,20 @@ public class DistributedLockUtil {
      */
     public static <T> T tryLock(String lockKey, Supplier<T> supplier) {
 
-        LockInfo<Object> lockInfo = new LockInfo<>();
+        LockInfo lockInfo = new LockInfo();
         lockInfo.setLockKey(lockKey);
         lockInfo.setTryLock(true);
-        Object lock = DWDAULT_LOCK_EXECUTOR.getLock(lockInfo);
-        lockInfo.setLockInstance(lock);
+        DEFAULT_LOCK_EXECUTOR.setLockInstance(lockInfo);
 
-
-        if (!DWDAULT_LOCK_EXECUTOR.tryLock(lockInfo)) {
-            log.debug("DistributedLockUtil tryLock fail");
-            return null;
-        } else {
-            try {
+        try {
+            if (!DEFAULT_LOCK_EXECUTOR.tryLock(lockInfo)) {
+                log.debug("DistributedLockUtil tryLock fail");
+                return null;
+            } else {
                 return supplier.get();
-            } finally {
-                DWDAULT_LOCK_EXECUTOR.unlock(lockInfo);
             }
+        } finally {
+            DEFAULT_LOCK_EXECUTOR.unlock(lockInfo);
         }
     }
 
