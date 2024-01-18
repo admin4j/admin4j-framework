@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author andanyang
  * @since 2024/1/17 15:26
  */
-@SpringBootTest(classes = LockMain.class, properties = "logging.level.root=debug")
+@SpringBootTest(classes = LockMain.class, properties = "logging.level.root=error")
 public class LockSpringTest {
 
 
@@ -32,7 +32,7 @@ public class LockSpringTest {
 
         LockInfo lockInfo = new LockInfo();
         lockInfo.setLockKey(lockKey);
-        lockExecutor.setLockInstance(lockInfo);
+        lockExecutor.initSetLockInstance(lockInfo);
 
         return lockInfo;
     }
@@ -43,7 +43,7 @@ public class LockSpringTest {
         lockExecutor.lock(testLock);
         System.out.println("lock  getLock: " + testLock.getLockKey() + " " + i);
         try {
-            Thread.sleep(10000);
+            Thread.sleep(ThreadLocalRandom.current().nextInt(10000));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -58,16 +58,16 @@ public class LockSpringTest {
         if (lockExecutor.tryLock(testLock)) {
             System.out.println("lock  tryLock: " + testLock.getLockKey() + " " + i);
             try {
-                Thread.sleep(10);
+                Thread.sleep(ThreadLocalRandom.current().nextInt(1000));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
             System.out.println("unlock  tryLock: " + testLock.getLockKey() + " " + i);
             unlock(testLock);
+        } else {
+            System.out.println("tryLock failed: " + testLock.getLockKey() + " " + i);
         }
-        System.out.println("tryLock failed: " + testLock.getLockKey() + " " + i);
-
     }
 
     public void unlock(LockInfo testLock) {
@@ -83,10 +83,18 @@ public class LockSpringTest {
             int finalI = i;
             Thread thread = new Thread(() -> {
 
-                lock("key:" + finalI / 3, finalI);
-                countDownLatch.countDown();
-            });
+                try {
+                    lock("key:" + finalI / 3, finalI);
+                } catch (Exception e) {
+                    System.out.println("Exception = " + Thread.currentThread().getName() + " " + e.getMessage());
+                    e.printStackTrace();
+                } finally {
+                    countDownLatch.countDown();
+                }
 
+
+            });
+            thread.setName("A-LOCK_" + i);
             thread.start();
 
         }
@@ -104,7 +112,7 @@ public class LockSpringTest {
             Thread thread = new Thread(() -> {
 
                 try {
-                    Thread.sleep(ThreadLocalRandom.current().nextInt(50));
+                    Thread.sleep(ThreadLocalRandom.current().nextInt(5000));
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

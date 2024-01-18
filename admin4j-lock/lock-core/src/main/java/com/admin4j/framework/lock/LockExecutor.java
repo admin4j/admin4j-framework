@@ -23,7 +23,7 @@ public interface LockExecutor<T> {
      * @param lockInfo
      * @return 获取锁实例
      */
-    void setLockInstance(LockInfo lockInfo);
+    void initSetLockInstance(LockInfo lockInfo);
 
     /**
      * 加锁,获取到锁会block，直到解锁

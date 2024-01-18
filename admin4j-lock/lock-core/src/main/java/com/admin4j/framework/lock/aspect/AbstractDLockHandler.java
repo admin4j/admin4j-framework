@@ -42,10 +42,10 @@ public abstract class AbstractDLockHandler {
     public Object around(ProceedingJoinPoint joinPoint, LockInfo lockInfo) throws Throwable {
 
         LockExecutor lockExecutor = DistributedLockUtil.getLockExecutor(lockInfo);
-        lockExecutor.setLockInstance(lockInfo);
+        lockExecutor.initSetLockInstance(lockInfo);
 
         try {
-            
+
             // 获取超时时间并获取锁
             if (!lockInfo.isTryLock()) {
                 lockExecutor.lock(lockInfo);

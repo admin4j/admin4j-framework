@@ -14,12 +14,15 @@ public abstract class AbstractParentLockExecutor<T> implements LockExecutor<T> {
     protected LockExecutor<?> parent;
 
     @Override
-    public void setLockInstance(LockInfo lockInfo) {
+    public void initSetLockInstance(LockInfo lockInfo) {
 
         if (parent != null) {
-            parent.setLockInstance(lockInfo);
+            parent.initSetLockInstance(lockInfo);
             lockInfo.setParentLockInstance(lockInfo.getLockInstance());
             lockInfo.setLockInstance(null);
+        }
+        if (lockInfo.getLockInstance() != null) {
+            return;
         }
         T lockInstanceSelf = getLockInstanceSelf(lockInfo);
         lockInfo.setLockInstance(lockInstanceSelf);

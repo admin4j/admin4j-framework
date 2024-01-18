@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author andanyang
@@ -18,7 +19,7 @@ public class LocalLockExecutorTest {
 
         LockInfo lockInfo = new LockInfo();
         lockInfo.setLockKey(lockKey);
-        executor.setLockInstance(lockInfo);
+        executor.initSetLockInstance(lockInfo);
 
         return lockInfo;
     }
@@ -106,4 +107,18 @@ public class LocalLockExecutorTest {
     }
 
 
+    @Test
+    public void testUNUnLock() {
+
+        ReentrantLock lock = new ReentrantLock();
+
+        lock.lock();
+
+        System.out.println("lock = " + lock);
+
+        lock.unlock();
+        lock.isLocked();
+
+
+    }
 }
