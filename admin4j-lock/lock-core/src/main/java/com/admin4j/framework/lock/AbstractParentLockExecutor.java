@@ -2,11 +2,13 @@ package com.admin4j.framework.lock;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author andanyang
  * @since 2024/1/16 17:04
  */
+@Slf4j
 public abstract class AbstractParentLockExecutor<T> implements LockExecutor<T> {
 
     @Getter
@@ -76,11 +78,15 @@ public abstract class AbstractParentLockExecutor<T> implements LockExecutor<T> {
 
         if (parent != null) {
 
-            Object lockInstance = lockInfo.getLockInstance();
-            lockInfo.setLockInstance(lockInfo.getParentLockInstance());
-            // 先解锁本地锁
-            parent.unlock(lockInfo);
-            lockInfo.setLockInstance(lockInstance);
+            try {
+                Object lockInstance = lockInfo.getLockInstance();
+                lockInfo.setLockInstance(lockInfo.getParentLockInstance());
+                // 先解锁本地锁
+                parent.unlock(lockInfo);
+                lockInfo.setLockInstance(lockInstance);
+            } catch (Exception e) {
+                log.error("unlock local lock failed: {}", e.getMessage(), e);
+            }
         }
 
         unlockSelf(lockInfo);
