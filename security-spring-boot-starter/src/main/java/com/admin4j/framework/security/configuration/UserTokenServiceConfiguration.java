@@ -8,6 +8,7 @@ import com.admin4j.framework.security.jwt.JwtUserDetailsService;
 import com.admin4j.framework.security.jwt.JwtUserTokenService;
 import com.admin4j.framework.security.properties.ActuatorProperties;
 import com.admin4j.framework.security.properties.JwtProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -51,7 +52,7 @@ public class UserTokenServiceConfiguration {
 
 
     @Bean
-    public SecurityUserContextHolder securityUserContextHolder(@Autowired(required = false) JwtUserDetailsService jwtUserDetailsService) {
-        return new SecurityUserContextHolder(jwtUserDetailsService);
+    public SecurityUserContextHolder securityUserContextHolder(ObjectProvider<JwtUserDetailsService> jwtUserDetailsServiceObjectProvider) {
+        return new SecurityUserContextHolder(jwtUserDetailsServiceObjectProvider);
     }
 }

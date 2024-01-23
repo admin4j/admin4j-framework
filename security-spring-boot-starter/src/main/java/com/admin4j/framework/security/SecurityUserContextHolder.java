@@ -5,6 +5,7 @@ import com.admin4j.common.service.impl.TtlUserContextHolder;
 import com.admin4j.framework.security.factory.AuthenticationUserFactory;
 import com.admin4j.framework.security.jwt.JwtUserDetails;
 import com.admin4j.framework.security.jwt.JwtUserDetailsService;
+import org.springframework.beans.factory.ObjectProvider;
 
 import java.util.Objects;
 
@@ -14,11 +15,11 @@ import java.util.Objects;
  */
 
 public class SecurityUserContextHolder extends TtlUserContextHolder {
-    private final JwtUserDetailsService jwtUserDetailsService;
+    private final ObjectProvider<JwtUserDetailsService> jwtUserDetailsServiceObjectProvider;
 
-    public SecurityUserContextHolder(JwtUserDetailsService jwtUserDetails) {
+    public SecurityUserContextHolder(ObjectProvider<JwtUserDetailsService> jwtUserDetailsServiceObjectProvider) {
         super();
-        this.jwtUserDetailsService = jwtUserDetails;
+        this.jwtUserDetailsServiceObjectProvider = jwtUserDetailsServiceObjectProvider;
     }
 
     /**
@@ -32,9 +33,15 @@ public class SecurityUserContextHolder extends TtlUserContextHolder {
         if (Objects.equals(userId, getUserId())) {
             return;
         }
-        JwtUserDetails jwtUserDetails = jwtUserDetailsService.loadUserByUserId(userId);
-        AuthenticationUser authenticationUser = AuthenticationUserFactory.getByJwtUser(jwtUserDetails);
-        setAuthenticationUser(authenticationUser);
+        JwtUserDetailsService jwtUserDetailsService = jwtUserDetailsServiceObjectProvider.getIfAvailable();
+        if (jwtUserDetailsService != null) {
+            JwtUserDetails jwtUserDetails = jwtUserDetailsService.loadUserByUserId(userId);
+            AuthenticationUser authenticationUser = AuthenticationUserFactory.getByJwtUser(jwtUserDetails);
+            setAuthenticationUser(authenticationUser);
+        } else {
+            super.setUserId(userId);
+        }
+
     }
 
 
