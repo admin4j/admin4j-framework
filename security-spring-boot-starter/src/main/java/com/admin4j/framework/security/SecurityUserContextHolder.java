@@ -36,6 +36,11 @@ public class SecurityUserContextHolder extends TtlUserContextHolder {
         JwtUserDetailsService jwtUserDetailsService = jwtUserDetailsServiceObjectProvider.getIfAvailable();
         if (jwtUserDetailsService != null) {
             JwtUserDetails jwtUserDetails = jwtUserDetailsService.loadUserByUserId(userId);
+            // 禁止切换到其他租户的用户
+            Long tenantId = getTenantId();
+            if (tenantId != null && tenantId != 0 && !Objects.equals(tenantId, jwtUserDetails.getTenantId())) {
+                throw new IllegalArgumentException("switch user Illegal");
+            }
             AuthenticationUser authenticationUser = AuthenticationUserFactory.getByJwtUser(jwtUserDetails);
             setAuthenticationUser(authenticationUser);
         } else {
