@@ -135,6 +135,7 @@ public class SimpleUserContextHolder implements IUserContextHolder {
      */
     @Override
     public void setUserId(Long userId) {
+        // 如果需要切换其他资料信息字类需要实现 切换用户信息方法
         getLoginUser().setUserId(userId);
     }
 }
