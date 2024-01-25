@@ -45,7 +45,7 @@ public class UserTokenServiceConfiguration {
 
     @Bean
     @ConditionalOnClass(name = "org.springframework.boot.actuate.endpoint.annotation.Endpoint")
-    @ConditionalOnProperty(prefix = "admin4j.security.actuator", name = "enabled", matchIfMissing = false)
+    @ConditionalOnProperty(prefix = "admin4j.security.actuator", name = "enabled", matchIfMissing = true)
     public ActuatorFilter actuatorFilter() {
         return new ActuatorFilter();
     }
