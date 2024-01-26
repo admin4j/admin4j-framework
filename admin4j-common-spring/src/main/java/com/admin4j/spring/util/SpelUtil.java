@@ -1,5 +1,6 @@
 package com.admin4j.spring.util;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -25,6 +26,7 @@ public class SpelUtil {
      */
     private static final LocalVariableTableParameterNameDiscoverer U = new LocalVariableTableParameterNameDiscoverer();
     // 使用SPEL进行key的解析
+    @Getter
     private static final ExpressionParser EL_PARSER = new SpelExpressionParser();
 
     private SpelUtil() {
@@ -57,7 +59,7 @@ public class SpelUtil {
         try {
             return EL_PARSER.parseExpression(spel).getValue(context, String.class);
         } catch (ParseException | SpelEvaluationException e) {
-            return spel;
+            throw new RuntimeException(e);
         }
     }
 
