@@ -95,7 +95,7 @@ public abstract class AbstractDLockHandler {
             distributedLockKey.append(key);
         } else {
             // 按照 key 生成key
-            String parseElKey = SpelUtil.parse(joinPoint.getTarget(), key, method, args);
+            String parseElKey = SpelUtil.parse(joinPoint.getThis(), key, method, args);
 
             if (StringUtils.isBlank(parseElKey)) {
                 log.error("DistributedLockKey is null Signature: {}", joinPoint.getSignature());
