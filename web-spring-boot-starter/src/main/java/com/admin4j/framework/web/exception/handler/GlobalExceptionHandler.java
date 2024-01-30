@@ -52,6 +52,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<R> maxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        // TODO test
         log.error("MaxUploadSizeExceededException: getMaxUploadSize:{} getMessage: {}", e.getMaxUploadSize(), e.getMessage());
         long maxUploadSize = e.getMaxUploadSize() / 1024L / 1024L;
         Object[] objects = {maxUploadSize};
