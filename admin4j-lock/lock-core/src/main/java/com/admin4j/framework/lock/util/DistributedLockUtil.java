@@ -19,7 +19,7 @@ public class DistributedLockUtil {
     /**
      * redis key 前缀
      */
-    public static final String DISTRIBUTED_LOCK_PRE = "D_LOCK:";
+    public static final String DISTRIBUTED_LOCK_PRE = "DL:";
 
     private static LockExecutor<?> DEFAULT_LOCK_EXECUTOR;
 
