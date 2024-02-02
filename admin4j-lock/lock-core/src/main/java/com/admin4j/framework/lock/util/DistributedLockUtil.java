@@ -58,7 +58,7 @@ public class DistributedLockUtil {
     public static <T> T lock(String lockKey, Supplier<T> supplier) {
 
         LockInfo lockInfo = new LockInfo();
-        lockInfo.setLockKey(lockKey);
+        lockInfo.setLockKey(DISTRIBUTED_LOCK_PRE + lockKey);
         return lock(lockInfo, supplier);
     }
 
@@ -93,7 +93,7 @@ public class DistributedLockUtil {
     public static void lock(String lockKey, Runnable runnable) {
 
         LockInfo lockInfo = new LockInfo();
-        lockInfo.setLockKey(lockKey);
+        lockInfo.setLockKey(DISTRIBUTED_LOCK_PRE + lockKey);
 
         DEFAULT_LOCK_EXECUTOR.initSetLockInstance(lockInfo);
 
@@ -115,7 +115,7 @@ public class DistributedLockUtil {
     public static boolean tryLock(String lockKey, Runnable runnable) {
 
         LockInfo lockInfo = new LockInfo();
-        lockInfo.setLockKey(lockKey);
+        lockInfo.setLockKey(DISTRIBUTED_LOCK_PRE + lockKey);
         lockInfo.setTryLock(true);
 
         DEFAULT_LOCK_EXECUTOR.initSetLockInstance(lockInfo);
@@ -146,7 +146,7 @@ public class DistributedLockUtil {
     public static <T> T tryLock(String lockKey, Supplier<T> supplier) {
 
         LockInfo lockInfo = new LockInfo();
-        lockInfo.setLockKey(lockKey);
+        lockInfo.setLockKey(DISTRIBUTED_LOCK_PRE + lockKey);
         lockInfo.setTryLock(true);
         DEFAULT_LOCK_EXECUTOR.initSetLockInstance(lockInfo);
 
