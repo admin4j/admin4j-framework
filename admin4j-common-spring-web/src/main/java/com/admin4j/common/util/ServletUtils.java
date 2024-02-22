@@ -144,8 +144,8 @@ public class ServletUtils {
             response.getWriter().write(string);
             // 通常您不应该关闭流。在 servlet 完成生命周期之后，servlet 容器会自动关闭流。
             // 举个例子，如果你关闭了流的话，在你实现的 Filter 中就不能再使用了。
-            //out.flush();
-            //out.close();
+            // out.flush();
+            // out.close();
         } catch (IOException e) {
             throw new SystemException(e);
         }

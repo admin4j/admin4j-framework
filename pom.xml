@@ -42,6 +42,8 @@
         <module>feign-spring-boot-starter</module>
         <module>ttl-spring-boot-starter</module>
         <module>enum-spring-boot-starter</module>
+        <module>rocketmq-spring-boot-starter</module>
+        <module>alert-spring-boot-starter</module>
     </modules>
     <properties>
         <revision>0.9.5</revision>
