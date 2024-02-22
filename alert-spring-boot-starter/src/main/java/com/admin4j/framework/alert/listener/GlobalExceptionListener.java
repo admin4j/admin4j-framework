@@ -36,7 +36,7 @@ public class GlobalExceptionListener {
     /**
      * 需要排除的异常
      */
-    private static final Set<Class<?>> EXCLUDE_EXS = new HashSet<Class<?>>() {
+    protected static final Set<Class<?>> EXCLUDE_EXS = new HashSet<Class<?>>() {
         private static final long serialVersionUID = -3265602846432901507L;
 
         {
@@ -46,12 +46,11 @@ public class GlobalExceptionListener {
             add(BizException.class);
         }
     };
+    protected QyWeiXinChatBot qyWeiXinChatBot;
     @Autowired
     AlertProperties alertProperties;
     @Autowired
     Executor executor;
-
-    private QyWeiXinChatBot qyWeiXinChatBot;
 
     public QyWeiXinChatBot getChatBot() {
         if (qyWeiXinChatBot == null) {

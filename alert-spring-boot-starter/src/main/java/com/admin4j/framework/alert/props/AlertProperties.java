@@ -13,7 +13,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class AlertProperties {
 
-
+    /**
+     * 是否开启
+     */
+    private Boolean enable;
     /**
      * 企业微信的 webhookUrl
      */
