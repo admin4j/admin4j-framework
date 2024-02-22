@@ -87,6 +87,7 @@ public class GlobalExceptionListener {
                 "- env: " + active + "\n" +
                 "- message: " + e.getMessage() + "\n" +
                 "- Exception: " + e.getClass().getName() + "\n" +
+                "- Cause: " + e.getCause() == null ? "" : (e.getCause().getClass().getSimpleName() + " message: " + e.getCause().getMessage()) + "\n" +
                 "- url: " + url + "\n" +
                 "- UserId: " + (user == null ? "" : user.getUserId()) + "\n" +
                 "> " + collect;
