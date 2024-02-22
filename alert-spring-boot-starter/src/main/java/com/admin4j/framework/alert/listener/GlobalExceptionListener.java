@@ -1,7 +1,7 @@
 package com.admin4j.framework.alert.listener;
 
 import com.admin4j.chatbot.qwx.QyWeiXinChatBot;
-import com.admin4j.chatbot.qwx.core.msg.MarkdownBotMsg;
+import com.admin4j.chatbot.qwx.core.msg.TextBotMsg;
 import com.admin4j.common.exception.BizException;
 import com.admin4j.common.pojo.AuthenticationUser;
 import com.admin4j.common.pojo.event.GlobalExceptionEvent;
@@ -92,7 +92,7 @@ public class GlobalExceptionListener {
                 "> " + collect;
 
         executor.execute(() -> {
-            MarkdownBotMsg markdownBotMsg = new MarkdownBotMsg(error);
+            TextBotMsg markdownBotMsg = new TextBotMsg(error);
             getChatBot().sendMsg(markdownBotMsg);
         });
 
