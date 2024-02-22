@@ -16,7 +16,7 @@ public class AlertAutoconfigure {
 
     @Bean
     @ConditionalOnMissingBean(GlobalExceptionListener.class)
-    @ConditionalOnProperty(prefix = "admin4j.alert.enable")
+    @ConditionalOnProperty(prefix = "admin4j.alert", name = "enable")
     GlobalExceptionListener globalExceptionListener() {
         return new GlobalExceptionListener();
     }
