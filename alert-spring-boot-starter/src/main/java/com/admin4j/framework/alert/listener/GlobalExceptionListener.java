@@ -84,17 +84,17 @@ public class GlobalExceptionListener {
         }
         String error = "GlobalExceptionHandler\n" +
 
-                "- appname:" + name + "\n" +
-                "- env:" + active + "\n" +
-                "- message:" + e.getMessage() + "\n" +
-                "- Exception:" + e.getClass().getName() + "\n" +
-                "- url:" + url + "\n" +
-                "- UserId:" + (user == null ? "" : user.getUserId()) + "\n" +
+                "- appname: " + name + "\n" +
+                "- env: " + active + "\n" +
+                "- message: " + e.getMessage() + "\n" +
+                "- Exception: " + e.getClass().getName() + "\n" +
+                "- url: " + url + "\n" +
+                "- UserId: " + (user == null ? "" : user.getUserId()) + "\n" +
                 "> " + collect;
 
         executor.execute(() -> {
             MarkdownBotMsg markdownBotMsg = new MarkdownBotMsg(error);
-            qyWeiXinChatBot.sendMsg(markdownBotMsg);
+            getChatBot().sendMsg(markdownBotMsg);
         });
 
 
