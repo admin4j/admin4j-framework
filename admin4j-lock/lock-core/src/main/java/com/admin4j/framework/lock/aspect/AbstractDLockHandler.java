@@ -44,21 +44,22 @@ public abstract class AbstractDLockHandler {
         LockExecutor lockExecutor = DistributedLockUtil.getLockExecutor(lockInfo);
         lockExecutor.initSetLockInstance(lockInfo);
 
+        boolean tryLock = true;
         try {
 
             // 获取超时时间并获取锁
             if (!lockInfo.isTryLock()) {
                 lockExecutor.lock(lockInfo);
             } else {
-                boolean res = lockExecutor.tryLock(lockInfo);
-                if (!res) {
+                tryLock = lockExecutor.tryLock(lockInfo);
+                if (!tryLock) {
                     lockFailure();
                 }
             }
 
             return joinPoint.proceed();
         } finally {
-            lockExecutor.unlock(lockInfo);
+            if (tryLock) lockExecutor.unlock(lockInfo);
             // log.debug("释放Redis分布式锁[成功]，解锁完成，结束业务逻辑...");
         }
     }

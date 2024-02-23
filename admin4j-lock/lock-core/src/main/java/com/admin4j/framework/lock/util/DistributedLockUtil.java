@@ -120,15 +120,17 @@ public class DistributedLockUtil {
 
         DEFAULT_LOCK_EXECUTOR.initSetLockInstance(lockInfo);
 
+        boolean tryLock = true;
         try {
-            if (!DEFAULT_LOCK_EXECUTOR.tryLock(lockInfo)) {
+            tryLock = DEFAULT_LOCK_EXECUTOR.tryLock(lockInfo);
+            if (!tryLock) {
                 log.debug("DistributedLockUtil tryLock fail {}", lockKey);
                 return false;
             } else {
                 runnable.run();
             }
         } finally {
-            DEFAULT_LOCK_EXECUTOR.unlock(lockInfo);
+            if (tryLock) DEFAULT_LOCK_EXECUTOR.unlock(lockInfo);
         }
 
         return true;
@@ -150,15 +152,17 @@ public class DistributedLockUtil {
         lockInfo.setTryLock(true);
         DEFAULT_LOCK_EXECUTOR.initSetLockInstance(lockInfo);
 
+        boolean tryLock = true;
         try {
-            if (!DEFAULT_LOCK_EXECUTOR.tryLock(lockInfo)) {
+            tryLock = DEFAULT_LOCK_EXECUTOR.tryLock(lockInfo);
+            if (!tryLock) {
                 log.debug("DistributedLockUtil tryLock fail");
                 return null;
             } else {
                 return supplier.get();
             }
         } finally {
-            DEFAULT_LOCK_EXECUTOR.unlock(lockInfo);
+            if (tryLock) DEFAULT_LOCK_EXECUTOR.unlock(lockInfo);
         }
     }
 
