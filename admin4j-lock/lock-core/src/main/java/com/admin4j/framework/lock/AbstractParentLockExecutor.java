@@ -68,7 +68,15 @@ public abstract class AbstractParentLockExecutor<T> implements LockExecutor<T> {
             lockInfo.setLockInstance(lockInstance);
         }
 
-        return tryLockSelf(lockInfo);
+        boolean lockSelf = tryLockSelf(lockInfo);
+        if (!lockSelf) {
+            // 获取锁失败，先释放 parent 锁
+            Object lockInstance = lockInfo.getLockInstance();
+            lockInfo.setLockInstance(lockInfo.getParentLockInstance());
+            parent.unlock(lockInfo);
+            lockInfo.setLockInstance(lockInstance);
+        }
+        return lockSelf;
     }
 
     protected abstract boolean tryLockSelf(LockInfo lockInfo);
@@ -86,6 +94,10 @@ public abstract class AbstractParentLockExecutor<T> implements LockExecutor<T> {
                 parent.unlock(lockInfo);
             } catch (Exception e) {
                 log.error("unlock parent lock failed: {}", e.getMessage(), e);
+                // 解锁失败 设置锁无效
+                if (lockInfo.getLockInstance() instanceof InvalidLockInstance) {
+                    ((InvalidLockInstance) lockInfo).invalid();
+                }
             } finally {
                 lockInfo.setLockInstance(lockInstance);
             }

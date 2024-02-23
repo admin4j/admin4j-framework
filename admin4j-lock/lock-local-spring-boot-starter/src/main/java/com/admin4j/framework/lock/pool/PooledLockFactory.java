@@ -122,7 +122,7 @@ public class PooledLockFactory implements KeyedPooledObjectFactory<LockModel, Wr
      */
     @Override
     public boolean validateObject(LockModel key, PooledObject<WrapperLockObject> p) {
-        return false;
+        return !p.getObject().isInvalid();
     }
 
     /**
