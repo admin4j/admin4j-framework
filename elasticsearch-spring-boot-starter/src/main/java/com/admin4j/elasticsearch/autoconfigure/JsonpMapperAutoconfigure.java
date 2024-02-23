@@ -4,6 +4,7 @@ import co.elastic.clients.json.JsonpMapper;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import com.admin4j.common.time.DateFormatterPattern;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -32,11 +33,13 @@ public class JsonpMapperAutoconfigure {
     @Bean
     @ConditionalOnMissingBean(JsonpMapper.class)
     public JsonpMapper esJsonpMapper() {
-        
+
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(SerializationFeature.INDENT_OUTPUT, false)
                 .configure(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS, false)
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                // 反序列化 有多余属性不报错
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL).setTimeZone(TimeZone.getDefault());
 
         JavaTimeModule module = new JavaTimeModule();
