@@ -78,14 +78,16 @@ public abstract class AbstractParentLockExecutor<T> implements LockExecutor<T> {
 
         if (parent != null) {
 
+            Object lockInstance = lockInfo.getLockInstance();
             try {
-                Object lockInstance = lockInfo.getLockInstance();
+
                 lockInfo.setLockInstance(lockInfo.getParentLockInstance());
                 // 先解锁本地锁
                 parent.unlock(lockInfo);
-                lockInfo.setLockInstance(lockInstance);
             } catch (Exception e) {
-                log.error("unlock local lock failed: {}", e.getMessage(), e);
+                log.error("unlock parent lock failed: {}", e.getMessage(), e);
+            } finally {
+                lockInfo.setLockInstance(lockInstance);
             }
         }
 

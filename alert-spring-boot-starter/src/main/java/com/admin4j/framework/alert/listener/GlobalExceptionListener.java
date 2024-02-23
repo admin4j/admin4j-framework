@@ -82,13 +82,20 @@ public class GlobalExceptionListener {
             url = request.getRequestURI();
         }
 
+        StringBuilder cause = new StringBuilder();
+        Throwable et = e;
+        while (et.getCause() != null) {
+            cause.append("     ").append(et.getCause().getClass().getSimpleName()).append(" message: ").append(et.getCause().getMessage())
+                    .append("\n");
+            et = et.getCause();
+        }
         String error = "GlobalExceptionHandler\n" +
 
                 "- appname: " + name + "\n" +
                 "- env: " + active + "\n" +
                 "- message: " + e.getMessage() + "\n" +
                 "- Exception: " + e.getClass().getName() + "\n" +
-                "- Cause: " + (e.getCause() == null ? "" : (e.getCause().getClass().getSimpleName() + " message: " + e.getCause().getMessage())) + "\n" +
+                "- Cause:" + cause +
                 "- url: " + url + "\n" +
                 "- UserId: " + (user == null ? "" : user.getUserId()) + "\n" +
                 "> " + collect;
