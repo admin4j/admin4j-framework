@@ -24,7 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @since 2023/5/30 17:25
  */
 @EnableConfigurationProperties(ActuatorProperties.class)
-@AutoConfigureOrder(WebConstant.IUserContextHolderOrder + 2)
+@AutoConfigureOrder(WebConstant.IUserContextHolderOrder - 6)
 public class UserTokenServiceConfiguration {
 
     @Bean
