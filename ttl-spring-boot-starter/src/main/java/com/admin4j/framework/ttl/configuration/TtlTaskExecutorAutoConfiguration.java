@@ -45,6 +45,9 @@ public class TtlTaskExecutorAutoConfiguration {
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
         executor.setDaemon(true);
+        // 没有设置下面参数，在kill -15时，线程池没有执行结束，会被强制关闭
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(30);
         return TtlExecutors.getTtlExecutor(executor);
     }
 }
