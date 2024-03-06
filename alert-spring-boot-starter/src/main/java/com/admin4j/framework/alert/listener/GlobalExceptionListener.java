@@ -79,7 +79,7 @@ public class GlobalExceptionListener {
 
         HttpServletRequest request = ServletUtils.getRequest();
         if (request != null) {
-            url = request.getRequestURI();
+            url = request.getMethod() + " " + request.getRequestURI();
         }
 
         StringBuilder cause = new StringBuilder();
@@ -96,7 +96,7 @@ public class GlobalExceptionListener {
                 "- message: " + e.getMessage() + "\n" +
                 "- Exception: " + e.getClass().getName() + "\n" +
                 "- Cause:" + cause +
-                "- url: " + url + "\n" +
+                "\n- url: " + url + "\n" +
                 "- UserId: " + (user == null ? "" : user.getUserId()) + "\n" +
                 "> " + collect;
 
