@@ -74,6 +74,11 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         }
 
         PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), uploadFileVO.getKey(), is, uploadFileVO.getContentType());
+
+        if (uploadFileVO.getMd5() != null && !putObjectResult.getETag().equals(uploadFileVO.getMd5())) {
+            // md5 不一样存在丢包行为
+            throw new IllegalStateException("Upload file md5 error");
+        }
         uploadFileVO.setPreviewUrl(getPreviewUrl(uploadFileVO.getKey()));
         afterUpload(uploadFileVO, putObjectResult);
 
