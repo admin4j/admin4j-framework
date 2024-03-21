@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class RateLimitInterceptor implements HandlerInterceptor, ApplicationContextAware {
 
 
-    private RateLimiterContext rateLimiterContext;
+    private final RateLimiterContext rateLimiterContext;
     private ApplicationContext applicationContext;
 
     public RateLimitInterceptor(RateLimiterContext rateLimiterContext) {
@@ -66,9 +66,10 @@ public class RateLimitInterceptor implements HandlerInterceptor, ApplicationCont
         if (!rateLimiter.timeUnit().equals(TimeUnit.SECONDS)) {
             interval = rateLimiter.timeUnit().toSeconds(interval);
         }
-        if (!rateLimiterService.tryAcquire(keyBuilder.toString(), rateLimiter.maxAttempts(), interval)) {
+        String rateLimiterKey = keyBuilder.toString();
+        if (!rateLimiterService.tryAcquire(rateLimiterKey, rateLimiter.maxAttempts(), interval)) {
 
-            throw new RateLimiterException();
+            throw new RateLimiterException(rateLimiterKey);
         }
         return true;
     }

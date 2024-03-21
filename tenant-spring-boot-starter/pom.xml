@@ -9,7 +9,7 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>tenant-spring-boot-starter</artifactId>
-    <version>0.9.5</version>
+    <version>0.9.7</version>
 
     <name>tenant-spring-boot-starter</name>
     <description>多各大中间件的，多租户能力的适配</description>

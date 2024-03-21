@@ -10,7 +10,7 @@
     <groupId>com.admin4j.framework</groupId>
     <artifactId>elasticsearch-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
-    <version>8.x.3</version>
+    <version>8.x.5</version>
     <description>elasticsearch Spring boot 自动装配器</description>
     <name>elasticsearch-spring-boot-starter</name>
 

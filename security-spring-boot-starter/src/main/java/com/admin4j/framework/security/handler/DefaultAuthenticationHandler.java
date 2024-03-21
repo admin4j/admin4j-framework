@@ -62,7 +62,7 @@ public class DefaultAuthenticationHandler implements AuthenticationHandler {
             String token = userTokenService.createToken((JwtUserDetails) authentication.getPrincipal());
             map.put("token", token);
         }
-        ServletUtils.renderString(response, JSON.toJSONString(simpleResponse));
+        ServletUtils.renderString(response, JSON.toJSONString(simpleResponse), 200);
     }
 
     /**
@@ -74,7 +74,7 @@ public class DefaultAuthenticationHandler implements AuthenticationHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, Exception exception) {
         SimpleResponse simpleResponse = new SimpleResponse(ResponseEnum.FAIL_AUTH);
         simpleResponse.setMsg(exception.getMessage());
-        ServletUtils.renderString(response, JSON.toJSONString(simpleResponse));
+        ServletUtils.renderString(response, JSON.toJSONString(simpleResponse), 401);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class DefaultAuthenticationHandler implements AuthenticationHandler {
 
         SimpleResponse simpleResponse = new SimpleResponse(ResponseEnum.SUCCESS);
         simpleResponse.setMsg(ResponseEnum.SUCCESS.getMsg());
-        ServletUtils.renderString(response, JSON.toJSONString(simpleResponse));
+        ServletUtils.renderString(response, JSON.toJSONString(simpleResponse), 200);
     }
 
 
@@ -91,7 +91,7 @@ public class DefaultAuthenticationHandler implements AuthenticationHandler {
      */
     @Override
     public void accessDeniedHandler(HttpServletRequest httpServletRequest, HttpServletResponse response, AccessDeniedException e) {
-        ServletUtils.renderString(response, JSON.toJSONString(FAIL_AUTH_FORBIDDEN));
+        ServletUtils.renderString(response, JSON.toJSONString(FAIL_AUTH_FORBIDDEN), 403);
     }
 
     /**
@@ -106,6 +106,6 @@ public class DefaultAuthenticationHandler implements AuthenticationHandler {
 
 
         log.warn("请求访问：{}，认证失败: {}", request.getRequestURL().toString(), authException.getLocalizedMessage());
-        ServletUtils.renderString(response, JSON.toJSONString(FAIL_AUTH));
+        ServletUtils.renderString(response, JSON.toJSONString(FAIL_AUTH), 401);
     }
 }

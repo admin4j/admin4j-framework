@@ -30,6 +30,8 @@ import java.lang.reflect.Method;
 @Slf4j
 public abstract class AbstractDLockHandler {
 
+    private static DLockKeyGenerator LOCK_KEY_GENERATOR;
+
     /**
      * 切面环绕通知
      *
@@ -37,28 +39,28 @@ public abstract class AbstractDLockHandler {
      * @param lockInfo  锁信息
      * @return Object
      */
-    public Object around(ProceedingJoinPoint joinPoint, LockInfo<Object> lockInfo) throws Throwable {
+    public Object around(ProceedingJoinPoint joinPoint, LockInfo lockInfo) throws Throwable {
 
         LockExecutor lockExecutor = DistributedLockUtil.getLockExecutor(lockInfo);
+        lockExecutor.initSetLockInstance(lockInfo);
 
-        //获取超时时间并获取锁
-        Object lock = lockExecutor.getLock(lockInfo);
-        lockInfo.setLockInstance(lock);
-
-        if (!lockInfo.isTryLock()) {
-            lockExecutor.lock(lockInfo);
-        } else {
-            boolean res = lockExecutor.tryLock(lockInfo);
-            if (!res) {
-                lockFailure();
-            }
-        }
-
+        boolean tryLock = true;
         try {
+
+            // 获取超时时间并获取锁
+            if (!lockInfo.isTryLock()) {
+                lockExecutor.lock(lockInfo);
+            } else {
+                tryLock = lockExecutor.tryLock(lockInfo);
+                if (!tryLock) {
+                    lockFailure();
+                }
+            }
+
             return joinPoint.proceed();
         } finally {
-            lockExecutor.unlock(lockInfo);
-            //log.debug("释放Redis分布式锁[成功]，解锁完成，结束业务逻辑...");
+            if (tryLock) lockExecutor.unlock(lockInfo);
+            // log.debug("释放Redis分布式锁[成功]，解锁完成，结束业务逻辑...");
         }
     }
 
@@ -69,9 +71,8 @@ public abstract class AbstractDLockHandler {
         throw new DistributedLockException("failed to acquire lock");
     }
 
-
     protected String generateKeyByKeyGenerator(ProceedingJoinPoint joinPoint, String keyGenerator) {
-        //得到被切面修饰的方法的参数列表
+        // 得到被切面修饰的方法的参数列表
         Object[] args = joinPoint.getArgs();
         // 得到被代理的方法
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
@@ -81,7 +82,7 @@ public abstract class AbstractDLockHandler {
 
     protected String getDistributedLockKey(ProceedingJoinPoint joinPoint, DistributedLock distributedLock) {
 
-        //得到被切面修饰的方法的参数列表
+        // 得到被切面修饰的方法的参数列表
         Object[] args = joinPoint.getArgs();
         // 得到被代理的方法
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
@@ -90,12 +91,12 @@ public abstract class AbstractDLockHandler {
 
         String key = StringUtils.defaultIfEmpty(distributedLock.key(), distributedLock.value());
         if (StringUtils.isEmpty(key)) {
-            //按照 KeyGenerator 生成key
+            // 按照 KeyGenerator 生成key
             key = generateKeyByKeyGenerator(joinPoint, distributedLock.keyGenerator());
             distributedLockKey.append(key);
         } else {
-            //按照 key 生成key
-            String parseElKey = SpelUtil.parse(joinPoint.getTarget(), key, method, args);
+            // 按照 key 生成key
+            String parseElKey = SpelUtil.parse(joinPoint.getThis(), key, method, args);
 
             if (StringUtils.isBlank(parseElKey)) {
                 log.error("DistributedLockKey is null Signature: {}", joinPoint.getSignature());
@@ -105,14 +106,14 @@ public abstract class AbstractDLockHandler {
             distributedLockKey.append(parseElKey);
         }
 
-        //开启用户模式
+        // 开启用户模式
         if (distributedLock.user()) {
             ILoginUserInfoService loginUserService = SpringUtils.getBean(ILoginUserInfoService.class);
             Assert.notNull(loginUserService, "ILoginUserInfoService must implement");
             distributedLockKey.append(":U").append(loginUserService.getUserId());
         }
 
-        //开启租户
+        // 开启租户
         if (distributedLock.tenant()) {
             ILoginTenantInfoService loginTenantInfoService = SpringUtils.getBean(ILoginTenantInfoService.class);
             Assert.notNull(loginTenantInfoService, "ILoginTenantInfoService must implement");
@@ -122,8 +123,6 @@ public abstract class AbstractDLockHandler {
 
         return distributedLockKey.toString();
     }
-
-    private static DLockKeyGenerator LOCK_KEY_GENERATOR;
 
     protected DLockKeyGenerator defaultDLockKeyGenerator() {
 

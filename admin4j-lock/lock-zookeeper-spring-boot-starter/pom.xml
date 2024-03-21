@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -25,7 +25,7 @@
             <version>${admin4j-lock.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.admin4j</groupId>
+            <groupId>com.admin4j.framework</groupId>
             <artifactId>zookeeper-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>

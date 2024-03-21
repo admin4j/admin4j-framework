@@ -3,7 +3,6 @@ package com.admin4j.common.service.impl;
 import com.admin4j.common.pojo.AuthenticationUser;
 import com.admin4j.common.pojo.ResponseEnum;
 import com.admin4j.common.service.IUserContextHolder;
-import com.alibaba.ttl.TransmittableThreadLocal;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
@@ -18,7 +17,15 @@ public class SimpleUserContextHolder implements IUserContextHolder {
     /**
      * 支持父子线程之间的数据传递 THREAD_LOCAL_TENANT
      */
-    private final ThreadLocal<AuthenticationUser> THREAD_LOCAL_USER = new TransmittableThreadLocal<>();
+    protected final ThreadLocal<AuthenticationUser> THREAD_LOCAL_USER;
+
+    public SimpleUserContextHolder() {
+        THREAD_LOCAL_USER = new ThreadLocal<>();
+    }
+
+    public SimpleUserContextHolder(ThreadLocal<AuthenticationUser> threadLocal) {
+        THREAD_LOCAL_USER = threadLocal;
+    }
 
     /**
      * 当前会话注销登录
@@ -128,6 +135,7 @@ public class SimpleUserContextHolder implements IUserContextHolder {
      */
     @Override
     public void setUserId(Long userId) {
+        // 如果需要切换其他资料信息字类需要实现 切换用户信息方法
         getLoginUser().setUserId(userId);
     }
 }

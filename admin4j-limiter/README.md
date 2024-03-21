@@ -2,6 +2,13 @@
 
 基于redis的接口限流器。支持固定窗口，滑动窗口，滑动日志，漏桶算法，令牌桶算法
 
+# TODO
+
+添加本地锁
+https://mp.weixin.qq.com/s/1mBorW_B2xvJ_8FjE_JrCw
+多个规则
+https://mp.weixin.qq.com/s/RhYM4u10AtpwT-oat9fysA
+
 # 使用方式
 
 - pom 使用默认的 jackson

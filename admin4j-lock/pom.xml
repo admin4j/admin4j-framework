@@ -12,16 +12,19 @@
     <artifactId>admin4j-lock</artifactId>
     <version>${admin4j-lock.version}</version>
     <packaging>pom</packaging>
-    <description>基于Spring Boot 的分布式锁，支持redisson、zookeeper 分布式锁。提供工具类DistributedLockUtil</description>
+    <description>基于Spring Boot 的分布式锁，支持 本地锁,redisson,zookeeper
+        分布式锁,双通道锁(先获取本地锁,在获取远程锁),。提供工具类DistributedLockUtil
+    </description>
     <modules>
         <module>lock-core</module>
         <module>lock-zookeeper-spring-boot-starter</module>
         <module>lock-redisson-spring-boot-starter</module>
         <module>lock-spring-boot-starter</module>
+        <module>lock-local-spring-boot-starter</module>
     </modules>
 
     <properties>
-        <admin4j-lock.version>0.8.2</admin4j-lock.version>
+        <admin4j-lock.version>0.9.7</admin4j-lock.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

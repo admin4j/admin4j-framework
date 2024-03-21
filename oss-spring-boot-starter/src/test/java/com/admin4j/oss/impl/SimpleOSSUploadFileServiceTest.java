@@ -2,9 +2,14 @@ package com.admin4j.oss.impl;
 
 import com.admin4j.oss.AmazonS3Factory;
 import com.admin4j.oss.OssProperties;
+import com.admin4j.oss.entity.vo.UploadFileVO;
 import com.amazonaws.services.s3.AmazonS3;
+import lombok.Cleanup;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * @author andanyang
@@ -42,7 +47,14 @@ class SimpleOSSUploadFileServiceTest {
     }
 
     @Test
-    void getPrivateUrl() {
+    void upload() throws IOException {
+
+        // ReaderInputStream.builder().
+        String s = "hello oss";
+
+        @Cleanup ByteArrayInputStream inputStream = new ByteArrayInputStream(s.getBytes());
+        UploadFileVO test = simpleOSSUploadFileService.upload("test", "text.txt", "text/plain", inputStream);
+        System.out.println("test = " + test);
     }
 
     @Test

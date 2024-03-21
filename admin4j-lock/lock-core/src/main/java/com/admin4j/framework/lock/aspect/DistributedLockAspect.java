@@ -26,8 +26,8 @@ public class DistributedLockAspect extends AbstractDLockHandler {
             distributedLock = joinPoint.getTarget().getClass().getAnnotation(DistributedLock.class);
         }
 
-        //获取锁信息
-        LockInfo<Object> lockInfo = new LockInfo<>();
+        // 获取锁信息
+        LockInfo lockInfo = new LockInfo();
         lockInfo.setLockModel(distributedLock.lockModel());
         lockInfo.setLockKey(getDistributedLockKey(joinPoint, distributedLock));
         lockInfo.setTryLock(distributedLock.tryLock());

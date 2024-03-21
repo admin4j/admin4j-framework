@@ -3,27 +3,29 @@ package com.admin4j.framework.lock.configuration;
 import com.admin4j.framework.lock.LockExecutor;
 import com.admin4j.framework.lock.RedissonLockExecutor;
 import org.redisson.api.RedissonClient;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.annotation.Order;
 
 /**
  * @author andanyang
  * @since 2023/4/18 11:10
  */
-@AutoConfigureBefore(name = {"com.admin4j.framework.lock.configuration.DistributedLockAutoConfiguration"})
+@AutoConfigureOrder(800)
 public class RedissonLockAutoConfiguration {
 
     @Bean
-    @Order(800)
-    //@ConditionalOnBean(RedissonClient.class)
-    @DependsOn("redisson")
     @ConditionalOnClass(RedissonClient.class)
     @Primary
-    public LockExecutor redissonClient(RedissonClient redissonClient) {
-        return new RedissonLockExecutor(redissonClient);
+    @ConditionalOnMissingBean(RedissonLockExecutor.class)
+    public LockExecutor redissonClient(RedissonClient redissonClient, ApplicationContext applicationContext) {
+        RedissonLockExecutor redissonLockExecutor = new RedissonLockExecutor(redissonClient);
+        if (applicationContext.containsBean("parentLockExecutor")) {
+            redissonLockExecutor.setParent((LockExecutor<?>) applicationContext.getBean("parentLockExecutor"));
+        }
+        return redissonLockExecutor;
     }
 }

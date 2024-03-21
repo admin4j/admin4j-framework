@@ -5,8 +5,8 @@
 local tokens_key = KEYS[1]
 local timestamp_key = tokens_key .. ":timestamp"
 
-local rate = tonumber(ARGV[1])
-local capacity = tonumber(ARGV[2])
+local rate = tonumber(ARGV[2])
+local capacity = tonumber(ARGV[1])
 local now = tonumber(redis.call('time')[1])
 local requested = 1
 

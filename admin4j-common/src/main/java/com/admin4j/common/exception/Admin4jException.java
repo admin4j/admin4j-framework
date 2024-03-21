@@ -27,25 +27,19 @@ public class Admin4jException extends RuntimeException implements IResponse {
     private String msg;
 
 
-    @Override
-    public String getMsg() {
-
-        return StringUtils.isEmpty(msg) ? super.getMessage() : msg;
-    }
-
-
     public Admin4jException(Throwable throwable) {
         this(throwable.getMessage(), throwable);
     }
 
+
     public Admin4jException(String message, Throwable throwable) {
-        super(throwable);
+        super(message, throwable);
         setMsg(message);
         setCode(ResponseEnum.ERROR_E.getCode());
     }
 
     public Admin4jException(String message, Throwable throwable, Object... args) {
-        super(throwable);
+        super(message, throwable);
         setMsg(message);
         setCode(ResponseEnum.ERROR_E.getCode());
         this.args = args;
@@ -61,16 +55,16 @@ public class Admin4jException extends RuntimeException implements IResponse {
         this.code = code;
         this.msg = msg;
     }
-    
+
     public Admin4jException(String message, Object... args) {
         this(ResponseEnum.ERROR, message);
         this.args = args;
     }
 
-
     public Admin4jException(IResponse response, String message, Object... args) {
         this(response, message, null, args);
     }
+
 
     public Admin4jException(IResponse response, String message, Throwable cause, Object... args) {
         super(StringUtils.defaultString(message, response.getMsg()), cause);
@@ -79,6 +73,17 @@ public class Admin4jException extends RuntimeException implements IResponse {
             setMsg(message);
         }
         this.args = args;
+    }
+
+    @SneakyThrows
+    public static void throwException(Throwable exception) {
+        throw exception;
+    }
+
+    @Override
+    public String getMsg() {
+
+        return StringUtils.isEmpty(msg) ? super.getMessage() : msg;
     }
 
     protected void setResponse(IResponse response) {
@@ -91,10 +96,5 @@ public class Admin4jException extends RuntimeException implements IResponse {
      */
     public void throwException() {
         throw this;
-    }
-
-    @SneakyThrows
-    public static void throwException(Throwable exception) {
-        throw exception;
     }
 }

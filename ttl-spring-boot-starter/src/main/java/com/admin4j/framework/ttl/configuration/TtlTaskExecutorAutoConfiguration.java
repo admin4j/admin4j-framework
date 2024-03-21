@@ -2,6 +2,7 @@ package com.admin4j.framework.ttl.configuration;
 
 import com.admin4j.framework.ttl.props.ThreadPoolProperties;
 import com.alibaba.ttl.threadpool.TtlExecutors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
@@ -17,9 +18,10 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author andanyang
  * @since 2022/11/4 16:00
  */
-//TODO 参考 TaskExecutionAutoConfiguration 写一个
+// TODO 参考 TaskExecutionAutoConfiguration 写一个
 @AutoConfigureBefore(TaskExecutionAutoConfiguration.class)
 @EnableConfigurationProperties(ThreadPoolProperties.class)
+@Slf4j
 public class TtlTaskExecutorAutoConfiguration {
     @Autowired
     private ThreadPoolProperties threadPoolProperties;
@@ -42,7 +44,10 @@ public class TtlTaskExecutorAutoConfiguration {
         */
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
-        //System.out.println("ThreadPoolTaskExecutor = " + threadPoolProperties.getThreadNamePrefix());
+        executor.setDaemon(true);
+        // 没有设置下面参数，在kill -15时，线程池没有执行结束，会被强制关闭
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(30);
         return TtlExecutors.getTtlExecutor(executor);
     }
 }

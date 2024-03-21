@@ -26,12 +26,11 @@ import java.util.regex.Pattern;
  */
 public class ActuatorFilter extends OncePerRequestFilter {
 
+    @Autowired
+    ActuatorProperties actuatorProperties;
     @Value("${management.endpoints.web.basePath:/actuator}")
     private String actuatorBasePath;
     private AntPathRequestMatcher antPathRequestMatcher;
-
-    @Autowired
-    ActuatorProperties actuatorProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -57,8 +56,9 @@ public class ActuatorFilter extends OncePerRequestFilter {
      */
     private boolean canAccess(HttpServletRequest request) {
 
+        // 没有限制IP 默认可以访问
         if (actuatorProperties == null || actuatorProperties.getIps() == null || actuatorProperties.getIps().length == 0) {
-            return false;
+            return true;
         }
         String ipAddr = IpUtils.getIpAddr(request);
         if (StringUtils.isBlank(ipAddr)) {
@@ -76,8 +76,8 @@ public class ActuatorFilter extends OncePerRequestFilter {
 
     static class ActuatorAuthenticationToken extends AbstractAuthenticationToken {
 
-        private static List<GrantedAuthority> roleAnonymous = AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS");
-        private HttpServletRequest request;
+        private static final List<GrantedAuthority> roleAnonymous = AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS");
+        private final HttpServletRequest request;
 
         public ActuatorAuthenticationToken(HttpServletRequest request) {
             super(roleAnonymous);

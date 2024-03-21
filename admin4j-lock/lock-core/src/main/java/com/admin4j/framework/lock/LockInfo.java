@@ -10,7 +10,7 @@ import lombok.Data;
  * @since 2023/4/17 17:28
  */
 @Data
-public class LockInfo<T> {
+public class LockInfo {
 
     /**
      * 锁资源的key
@@ -32,11 +32,15 @@ public class LockInfo<T> {
     /**
      * 锁实例
      */
-    private T lockInstance;
+    private Object lockInstance;
+    /**
+     * 父锁实例
+     */
+    private Object parentLockInstance;
 
     /**
      * 指定的执行器
      */
     private Class<? extends LockExecutor> executor;
-    
+
 }

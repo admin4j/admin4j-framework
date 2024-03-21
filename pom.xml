@@ -42,10 +42,12 @@
         <module>feign-spring-boot-starter</module>
         <module>ttl-spring-boot-starter</module>
         <module>enum-spring-boot-starter</module>
+        <module>rocketmq-spring-boot-starter</module>
+        <module>alert-spring-boot-starter</module>
     </modules>
     <properties>
-        <revision>0.9.5</revision>
-        <admin4j-dependencies.version>0.9.5</admin4j-dependencies.version>
+        <revision>0.9.7</revision>
+        <admin4j-dependencies.version>0.9.7</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -25,7 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.filter.CorsFilter;
 
@@ -71,10 +71,6 @@ public class SecurityConfiguration {
     AnonymousAccessUrl anonymousAccessUrl;
     @Autowired
     LogoutSuccessHandler logoutSuccessHandler;
-    // @Autowired
-    // JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-    // @Autowired(required = false)
-    // List<UsernamePasswordAuthenticationFilter> usernamePasswordAuthenticationFilters;
     @Autowired(required = false)
     ActuatorFilter actuatorFilter;
     @Autowired(required = false)
@@ -137,11 +133,11 @@ public class SecurityConfiguration {
 
         // 添加CORS filter
         if (corsFilter != null) {
-            httpSecurity.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
+            httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
         }
 
         if (actuatorFilter != null) {
-            httpSecurity.addFilterBefore(actuatorFilter, UsernamePasswordAuthenticationFilter.class);
+            httpSecurity.addFilterAfter(actuatorFilter, LogoutFilter.class);
         }
 
         // 多渠道登录

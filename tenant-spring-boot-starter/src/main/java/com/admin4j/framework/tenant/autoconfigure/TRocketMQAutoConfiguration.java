@@ -2,6 +2,7 @@ package com.admin4j.framework.tenant.autoconfigure;
 
 import com.admin4j.common.service.IUserContextHolder;
 import com.admin4j.framework.tenant.rocketmq.MqSendMessageHook;
+import com.admin4j.framework.tenant.rocketmq.RocketmqAspect;
 import com.admin4j.framework.tenant.rocketmq.RocketmqBeanPostProcessor;
 import org.apache.rocketmq.client.hook.SendMessageHook;
 import org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration;
@@ -28,5 +29,10 @@ public class TRocketMQAutoConfiguration {
     @ConditionalOnBean(IUserContextHolder.class)
     public SendMessageHook mqSendMessageHook(IUserContextHolder userContextHolder) {
         return new MqSendMessageHook(userContextHolder);
+    }
+
+    @Bean
+    public RocketmqAspect rocketmqAspect() {
+        return new RocketmqAspect();
     }
 }

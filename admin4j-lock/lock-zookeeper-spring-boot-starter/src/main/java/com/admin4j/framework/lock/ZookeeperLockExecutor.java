@@ -4,6 +4,7 @@ import com.admin4j.framework.lock.exception.DistributedLockException;
 import com.admin4j.framework.lock.exception.UnSupportException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
@@ -17,7 +18,8 @@ import java.util.concurrent.TimeUnit;
  * @since 2023/4/18 11:25
  */
 @RequiredArgsConstructor
-public class ZookeeperLockExecutor implements LockExecutor<InterProcessLock> {
+@Slf4j
+public class ZookeeperLockExecutor extends AbstractParentLockExecutor<InterProcessLock> {
 
     private final CuratorFramework curatorFramework;
 
@@ -28,7 +30,7 @@ public class ZookeeperLockExecutor implements LockExecutor<InterProcessLock> {
      * @return 获取锁实例
      */
     @Override
-    public InterProcessLock getLock(LockInfo<InterProcessLock> lockInfo) {
+    public InterProcessLock getLockInstanceSelf(LockInfo lockInfo) {
         InterProcessReadWriteLock interProcessReadWriteLock;
         String lockKey = lockInfo.getLockKey();
         if (!StringUtils.startsWith(lockKey, "/")) {
@@ -36,18 +38,18 @@ public class ZookeeperLockExecutor implements LockExecutor<InterProcessLock> {
         }
         switch (lockInfo.getLockModel()) {
             case FAIR:
-                //公平锁
+                // 公平锁
                 throw new UnSupportException("Zookeeper Not supported FAIR Lock");
             case READ:
                 interProcessReadWriteLock = new InterProcessReadWriteLock(curatorFramework, lockKey);
                 return interProcessReadWriteLock.readLock();
             case WRITE:
-                //写之前加写锁，写锁加锁成功，读锁只能等待
+                // 写之前加写锁，写锁加锁成功，读锁只能等待
                 interProcessReadWriteLock = new InterProcessReadWriteLock(curatorFramework, lockKey);
                 return interProcessReadWriteLock.writeLock();
             case REENTRANT:
             default:
-                //可重入锁
+                // 可重入锁
                 return new InterProcessMutex(curatorFramework, lockKey);
         }
     }
@@ -60,8 +62,9 @@ public class ZookeeperLockExecutor implements LockExecutor<InterProcessLock> {
      */
     @Override
     @SneakyThrows
-    public void lock(LockInfo<InterProcessLock> lockInfo) {
-        lockInfo.getLockInstance().acquire();
+    protected void lockSelf(LockInfo lockInfo) {
+        ((InterProcessLock) lockInfo.getLockInstance()).acquire();
+        log.debug("zookeeper Lock success {}", lockInfo.getLockKey());
     }
 
     /**
@@ -72,8 +75,14 @@ public class ZookeeperLockExecutor implements LockExecutor<InterProcessLock> {
      */
     @Override
     @SneakyThrows
-    public boolean tryLock(LockInfo<InterProcessLock> lockInfo) {
-        return lockInfo.getLockInstance().acquire(-1, TimeUnit.SECONDS);
+    protected boolean tryLockSelf(LockInfo lockInfo) {
+        boolean acquire = ((InterProcessLock) lockInfo.getLockInstance()).acquire(lockInfo.getWaitTimeOutSeconds(), TimeUnit.SECONDS);
+        if (acquire) {
+            log.debug("zookeeper tryLock success {}", lockInfo.getLockKey());
+        } else {
+            log.debug("zookeeper tryLock failed {}", lockInfo.getLockKey());
+        }
+        return acquire;
     }
 
     /**
@@ -83,11 +92,14 @@ public class ZookeeperLockExecutor implements LockExecutor<InterProcessLock> {
      * @return 是否释放成功
      */
     @Override
-    public void unlock(LockInfo<InterProcessLock> lockInfo) {
+    protected void unlockSelf(LockInfo lockInfo) {
 
         try {
-            lockInfo.getLockInstance().release();
+            ((InterProcessLock) lockInfo.getLockInstance()).release();
+
+            log.debug("zookeeper UnLock success {}", lockInfo.getLockKey());
         } catch (Exception e) {
+            log.debug("zookeeper UnLock fail {}", lockInfo.getLockKey());
             throw new DistributedLockException(e);
         }
     }
