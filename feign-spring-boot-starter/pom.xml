@@ -9,7 +9,7 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>feign-spring-boot-starter</artifactId>
-    <version>0.9.7-SNAPSHOT</version>
+    <version>0.9.7</version>
     <packaging>jar</packaging>
 
     <name>feign-spring-boot-starter</name>

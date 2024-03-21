@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.9.7-SNAPSHOT</version>
+    <version>0.9.7</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -63,9 +63,8 @@
 
         <flowable.version>6.7.2</flowable.version>
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
-        <admin4j.version>0.9.5</admin4j.version>
-        <admin4j-lock.version>0.9.7-SNAPSHOT</admin4j-lock.version>
-        <admin4j-limiter.version>0.9.7-SNAPSHOT</admin4j-limiter.version>
+        <admin4j-lock.version>0.9.7</admin4j-lock.version>
+        <admin4j-limiter.version>0.9.7</admin4j-limiter.version>
         <admin4j-redis.version>0.8.0</admin4j-redis.version>
 
     </properties>
@@ -109,7 +108,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>feign-spring-boot-starter</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.dict</groupId>
@@ -119,12 +118,12 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>enum-spring-boot-starter</artifactId>
-                <version>0.9.5</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>alert-spring-boot-starter</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.spring</groupId>
@@ -134,17 +133,17 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>tenant-spring-boot-starter</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>ttl-spring-boot-starter</artifactId>
-                <version>0.9.0</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>excel-spring-boot-starter</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -154,7 +153,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>test-spring-boot-starter</artifactId>
-                <version>0.9.0</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -164,12 +163,12 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>security-spring-boot-starter</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -214,22 +213,22 @@
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common-spring</artifactId>
-                <version>${admin4j.version}</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common-spring-web</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>web-spring-boot-starter</artifactId>
-                <version>0.9.5</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -299,7 +298,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>oss-spring-boot-starter</artifactId>
-                <version>0.9.7-SNAPSHOT</version>
+                <version>0.9.7</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
