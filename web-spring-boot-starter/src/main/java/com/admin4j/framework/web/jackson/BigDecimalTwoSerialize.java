@@ -1,4 +1,4 @@
-package com.admin4j.framework.web.jsr310;
+package com.admin4j.framework.web.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

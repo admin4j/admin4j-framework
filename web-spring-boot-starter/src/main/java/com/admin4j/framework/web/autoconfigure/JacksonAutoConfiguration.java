@@ -1,7 +1,10 @@
 package com.admin4j.framework.web.autoconfigure;
 
 
+import com.admin4j.common.service.IUserConfigInfoService;
 import com.admin4j.common.time.DateFormatterPattern;
+import com.admin4j.framework.web.jackson.TimeZoneFormatService;
+import com.admin4j.framework.web.jackson.imp.TimeZoneFormatServiceImp;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -9,6 +12,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -54,5 +58,10 @@ public class JacksonAutoConfiguration {
             // 防止前端Long型丢失精度
             builder.serializerByType(Long.class, ToStringSerializer.instance);
         };
+    }
+
+    @Bean
+    public TimeZoneFormatService timeZoneFormatService(@Autowired(required = false) IUserConfigInfoService userConfigInfoService) {
+        return new TimeZoneFormatServiceImp(userConfigInfoService);
     }
 }
