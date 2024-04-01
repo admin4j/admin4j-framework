@@ -25,7 +25,7 @@ public class ExcelBatchListener<T> extends AnalysisEventListener<T> {
     /**
      * 每批大小
      */
-    private int batchSize = 100;
+    private int batchSize = 1000;
     private Consumer<List<T>> consumer;
 
     public ExcelBatchListener(Consumer<List<T>> consumer) {
@@ -39,7 +39,7 @@ public class ExcelBatchListener<T> extends AnalysisEventListener<T> {
         this.list = new ArrayList<>(batchSize);
     }
 
-    //每一条数据解析都会来调用
+    // 每一条数据解析都会来调用
     @Override
     public void invoke(T object, AnalysisContext context) {
 
