@@ -19,9 +19,15 @@ public class GlobalExceptionEvent {
      */
     private String name = "";
     private Throwable e;
+    private String message;
 
 
     public GlobalExceptionEvent(Exception e) {
+        this.e = e;
+    }
+
+    public GlobalExceptionEvent(String name, Throwable e) {
+        this.name = name;
         this.e = e;
     }
 }

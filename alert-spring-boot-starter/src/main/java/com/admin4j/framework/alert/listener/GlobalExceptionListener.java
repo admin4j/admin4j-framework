@@ -89,11 +89,12 @@ public class GlobalExceptionListener {
                     .append("\n");
             et = et.getCause();
         }
-        String error = "GlobalExceptionHandler\n" +
+        String error = event.getName() + "\n" +
 
                 "- appname: " + name + "\n" +
                 "- env: " + active + "\n" +
-                "- message: " + e.getMessage() + "\n" +
+                (event.getMessage() == null ? "" : "- message: " + event.getMessage() + "\n") +
+                "- errorMsg: " + e.getMessage() + "\n" +
                 "- Exception: " + e.getClass().getName() + "\n" +
                 "- Cause:" + cause +
                 "\n- url: " + url + "\n" +
