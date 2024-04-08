@@ -41,11 +41,7 @@ public class SysLogAspect {
         log.debug("SysLog[类名]:{},[方法]:{}", strClassName, strMethodName);
 
 
-        String content = sysLog.content();
-        if (StringUtils.isBlank(content)) {
-            content = sysLog.value();
-        }
-        SysLogEvent sysLogEvent = generateEvent(point, sysLog.type(), content, sysLog.args());
+        SysLogEvent sysLogEvent = generateEvent(point, sysLog);
 
         Long startTime = System.currentTimeMillis();
         Object obj;
@@ -58,22 +54,34 @@ public class SysLogAspect {
         } finally {
             Long endTime = System.currentTimeMillis();
             sysLogEvent.setDuration(endTime - startTime);
-            //只负责发送事件，不负责消费事件，具体时间由使用者实现
+            // 只负责发送事件，不负责消费事件，具体时间由使用者实现
             sysLogService.saveLog(sysLogEvent);
         }
 
         return obj;
     }
 
-    public SysLogEvent generateEvent(ProceedingJoinPoint point, String type, String content, String[] args) {
+    public SysLogEvent generateEvent(ProceedingJoinPoint point, SysLog sysLog) {
 
+        String content = sysLog.content();
+        String type = sysLog.type();
+        String[] args = sysLog.args();
+        
         Method method = ((MethodSignature) point.getSignature()).getMethod();
-        content = SpelUtil.parse(point.getTarget(), content, method, point.getArgs());
         if (args != null && args.length > 0) {
             for (int i = 0; i < args.length; i++) {
                 args[i] = SpelUtil.parse(point.getTarget(), args[i], method, point.getArgs());
             }
         }
+
+        if (StringUtils.isBlank(content)) {
+            content = sysLog.value();
+            return sysLogService.generateEvent(type, content, args);
+        }
+
+
+        content = SpelUtil.parse(point.getTarget(), content, method, point.getArgs());
+
 
         return sysLogService.generateEvent(type, content, args);
     }
