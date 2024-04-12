@@ -2,7 +2,6 @@ package com.admin4j.framework.web.pojo;
 
 import com.admin4j.common.pojo.IResponse;
 import com.admin4j.common.pojo.ResponseEnum;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,20 +18,17 @@ import lombok.Data;
 public class R<T> extends CommonResult<T> {
 
     /**
+     * 认证失败 401
+     */
+    public static final int FAIL_UNAUTHORIZED = ResponseEnum.ERROR.getCode();
+    /**
      * 成功
      */
     protected static final int SUCCESS = ResponseEnum.SUCCESS.getCode();
-
     /**
      * 失败
      */
     protected static final int FAIL_RESPONSE = ResponseEnum.ERROR.getCode();
-
-    /**
-     * 认证失败 401
-     */
-    public static final int FAIL_UNAUTHORIZED = ResponseEnum.ERROR.getCode();
-
     private static final R OK = restResult(null, SUCCESS, ResponseEnum.SUCCESS.getMsg());
     private static final R FAIL = restResult(null, FAIL_RESPONSE, ResponseEnum.ERROR.getMsg());
 
@@ -148,7 +144,6 @@ public class R<T> extends CommonResult<T> {
 
     @ApiModelProperty(hidden = true)
     @JsonIgnore
-    @JSONField(serialize = false, deserialize = false)
     public boolean isOk() {
         return getCode() == R.SUCCESS;
     }
