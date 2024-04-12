@@ -43,7 +43,7 @@ public class ValidatorUtils {
     public static <T> void validateFast(T domain, boolean showException, Class<?>... groups) {
         Set<ConstraintViolation<T>> validate = validateFast(domain, groups);
         if (showException && !CollectionUtils.isEmpty(validate)) {
-            throw new ValidateException(validate.stream().map(ConstraintViolation::getMessage).reduce((m1, m2) -> m1 + "；" + m2).orElse(""));
+            throw new ValidateException(validate.stream().map(i -> i.getPropertyPath() + i.getMessage()).reduce((m1, m2) -> m1 + "；" + m2).orElse(""));
         }
     }
 
@@ -73,7 +73,7 @@ public class ValidatorUtils {
     public static <T> void validateAll(T domain, boolean showException, Class<?>... groups) {
         Set<ConstraintViolation<T>> validate = validateAll(domain, groups);
         if (showException && !CollectionUtils.isEmpty(validate)) {
-            throw new ValidateException(validate.stream().map(ConstraintViolation::getMessage).reduce((m1, m2) -> m1 + "；" + m2).orElse(""));
+            throw new ValidateException(validate.stream().map(i -> i.getPropertyPath() + i.getMessage()).reduce((m1, m2) -> m1 + "；" + m2).orElse(""));
         }
     }
 }
