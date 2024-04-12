@@ -41,9 +41,9 @@ public class ValidatorUtils {
      * @Time 2020年6月22日 上午11:36:13
      */
     public static <T> void validateFast(T domain, boolean showException, Class<?>... groups) {
-        Set<ConstraintViolation<T>> validate = validateFast(domain, groups);
+        Set<ConstraintViolation<Object>> validate = validateFast(domain, groups);
         if (showException && !CollectionUtils.isEmpty(validate)) {
-            throw new ValidateException(validate.stream().map(i -> i.getPropertyPath() + i.getMessage()).reduce((m1, m2) -> m1 + "；" + m2).orElse(""));
+            throw new ValidateException(validate);
         }
     }
 
@@ -71,9 +71,9 @@ public class ValidatorUtils {
      * @Time 2020年6月22日 上午11:36:55
      */
     public static <T> void validateAll(T domain, boolean showException, Class<?>... groups) {
-        Set<ConstraintViolation<T>> validate = validateAll(domain, groups);
+        Set<ConstraintViolation<Object>> validate = validateAll(domain, groups);
         if (showException && !CollectionUtils.isEmpty(validate)) {
-            throw new ValidateException(validate.stream().map(i -> i.getPropertyPath() + i.getMessage()).reduce((m1, m2) -> m1 + "；" + m2).orElse(""));
+            throw new ValidateException(validate);
         }
     }
 }
