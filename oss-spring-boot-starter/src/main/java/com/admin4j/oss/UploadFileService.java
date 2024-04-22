@@ -15,37 +15,62 @@ import java.io.InputStream;
 public interface UploadFileService {
 
     /**
-     * 上传文件
+     * 上传文件,指定路径
      *
      * @param file 文件
      * @param path 路径
      */
-    UploadFileVO upload(String path, MultipartFile file) throws IOException;
+    UploadFileVO uploadByPath(String path, MultipartFile file) throws IOException;
 
     /**
-     * 上传文件
+     * 上传文件,指定路径
      *
-     * @param key 指定路径
-     * @param is  InputStream
+     * @param is   文件流
+     * @param path 路径
      */
-    UploadFileVO upload(String key, InputStream is) throws IOException;
+
+    default UploadFileVO uploadByPath(String path, InputStream is) throws IOException {
+        return uploadByPath(path, null, null, is);
+    }
 
     /**
      * 上传文件
      *
-     * @param key              指定路径（key）
+     * @param path             指定文件路径
      * @param originalFilename 文件原始名称
      * @param contentType      文件类型
      * @param is               上传流
      * @return
      * @throws IOException
      */
-    UploadFileVO upload(String key, String originalFilename, String contentType, InputStream is) throws IOException;
+    UploadFileVO uploadByPath(String path, String originalFilename, String contentType, InputStream is) throws IOException;
+
+    /**
+     * 上传文件，指定文件key
+     *
+     * @param key 指定文件key
+     * @param is  InputStream
+     */
+    default UploadFileVO uploadByKey(String key, InputStream is) throws IOException {
+        return uploadByKey(key, null, null, is);
+    }
 
     /**
      * 上传文件
      *
-     * @param uploadFileVO 文件描述
+     * @param key              指定文件key
+     * @param originalFilename 文件原始名称
+     * @param contentType      文件类型
+     * @param is               上传流
+     * @return
+     * @throws IOException
+     */
+    UploadFileVO uploadByKey(String key, String originalFilename, String contentType, InputStream is) throws IOException;
+
+    /**
+     * 上传文件
+     *
+     * @param uploadFileVO 文件描述,
      * @param is
      * @return
      * @throws IOException
