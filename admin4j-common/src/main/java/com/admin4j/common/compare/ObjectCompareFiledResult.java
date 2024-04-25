@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Field;
+
 /**
  * 对象字段比较结果
  *
@@ -15,10 +17,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ObjectCompareFiledResult {
 
+
     /**
      * 比较字段
      */
-    private String filed;
+    private Field field;
+    //private String fieldName;
     /**
      * 字段描述
      */
