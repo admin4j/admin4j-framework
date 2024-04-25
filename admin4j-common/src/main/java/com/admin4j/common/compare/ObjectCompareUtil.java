@@ -68,7 +68,7 @@ public class ObjectCompareUtil {
                 ObjectCompareFiledResult objectCompareFiledResult = new ObjectCompareFiledResult();
 
                 objectCompareFiledResult.setField(field);
-                //objectCompareFiledResult.setFieldName(fieldName);
+                objectCompareFiledResult.setFieldName(field.getName());
                 objectCompareFiledResult.setDescribe(fieldAnnotation == null ? "" : fieldAnnotation.value());
                 objectCompareFiledResult.setOriginValue(originValue);
                 objectCompareFiledResult.setNewValue(newValue);

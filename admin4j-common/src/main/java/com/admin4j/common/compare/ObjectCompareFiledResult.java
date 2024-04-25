@@ -22,7 +22,7 @@ public class ObjectCompareFiledResult {
      * 比较字段
      */
     private Field field;
-    //private String fieldName;
+    private String fieldName;
     /**
      * 字段描述
      */
@@ -36,7 +36,8 @@ public class ObjectCompareFiledResult {
      */
     private Object newValue;
 
-    public ObjectCompareFiledResult(String describe, Object originValue, Object newValue) {
+    public ObjectCompareFiledResult(String fieldName, String describe, Object originValue, Object newValue) {
+        this.fieldName = fieldName;
         this.describe = describe;
         this.originValue = originValue;
         this.newValue = newValue;
