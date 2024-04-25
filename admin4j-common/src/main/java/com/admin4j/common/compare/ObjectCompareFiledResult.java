@@ -36,6 +36,12 @@ public class ObjectCompareFiledResult {
      */
     private Object newValue;
 
+    public ObjectCompareFiledResult(String describe, Object originValue, Object newValue) {
+        this.describe = describe;
+        this.originValue = originValue;
+        this.newValue = newValue;
+    }
+
     @Override
     public String toString() {
         return String.format("%s : %s -> %s", describe, originValue, newValue);
