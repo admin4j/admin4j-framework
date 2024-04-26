@@ -16,9 +16,9 @@ import java.util.Objects;
  */
 public class ObjectCompareUtil {
 
-    private static Comparator<Object> DEFAULT_FIELD_COMPARATOR;
+    private static final Comparator<Object> DEFAULT_FIELD_COMPARATOR;
 
-    {
+    static {
         DEFAULT_FIELD_COMPARATOR = (o1, o2) -> {
             if (o1 instanceof BigDecimal) {
                 return ((BigDecimal) o1).compareTo((BigDecimal) o2);
