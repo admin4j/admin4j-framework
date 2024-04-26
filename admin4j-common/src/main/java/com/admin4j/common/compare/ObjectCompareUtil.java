@@ -89,7 +89,7 @@ public class ObjectCompareUtil {
             field.setAccessible(accessible);
 
             // 比较值
-            if (fieldComparator.compare(originValue, newValue) == 0) {
+            if (fieldComparator.compare(originValue, newValue) != 0) {
                 ObjectCompareFiledResult objectCompareFiledResult = new ObjectCompareFiledResult();
 
                 objectCompareFiledResult.setField(field);
