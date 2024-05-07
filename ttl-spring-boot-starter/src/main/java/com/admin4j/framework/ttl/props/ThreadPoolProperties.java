@@ -26,4 +26,8 @@ public class ThreadPoolProperties {
      * 线程池前缀
      */
     private String threadNamePrefix = "Admin4jExecutor-";
+    /**
+     * 设置此执行器在关闭时应该阻止的最大秒数
+     */
+    private int awaitTerminationMillis = 30;
 }
