@@ -30,7 +30,6 @@ public class FeignTraceConfiguration {
                 template.header(traceLogProperties.getHeaderTraceId(), traceId);
                 template.header(traceLogProperties.getHeaderSpanId(), traceLogService.getNextSpanId());
             }
-
         };
     }
 

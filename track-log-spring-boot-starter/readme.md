@@ -51,3 +51,49 @@ E，F 两个系统，那么 C 系统中对应的 SOFATracer RPC 客户端日志�
 ### RPC
 
 RPC 支持Feign、Dubbo调用
+
+### Logback 配置打印TID
+
+```xml
+<!--输出格式化-->
+<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} [%X{TID}] - %msg%n</pattern>
+```
+
+修改logback-spring.xml 文件示例
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!--日志存储路径-->
+    <property name="log" value="./log"/>
+    <!-- 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--输出格式化-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} [%X{TID}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- 按天生成日志文件 -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件名-->
+            <FileNamePattern>${log}/%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!--保留天数-->
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%X{TID}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+        <!--日志文件最大的大小-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <!-- 日志输出级别 -->
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+</configuration>
+```
