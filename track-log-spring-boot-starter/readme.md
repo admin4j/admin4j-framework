@@ -1,10 +1,3 @@
-## LogbackMDCAdapter
-
-LogbackMDCAdapter 中使用 ThreadLocal 多线程会造成子线程TID为空，使用 TransmittableThreadLocal/InheritableThreadLocal
-也没有，应为InheritableThreadLocal 存了 Map
-子线程服用时 只复制了 Map 没有进行深拷贝，所以挡在 Filter 中 remove 时，子线程的Map 也会remove调，解决方案使用
-TaskDecorator 拷贝一份
-
 ## 分布式链路跟踪
 
 > 在分布式服务架构下，一个 Web 请求从网关流入，有可能会调用多个服务对请求进行处理，拿到最终结果。在这个过程中每个服务之间的通信又是单独的网络请求，无论请求流经的哪个服务除了故障或者处理过慢都会对前端造成影响。
@@ -70,7 +63,7 @@ RPC 支持Feign、Dubbo调用
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--输出格式化-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} [%X{TID}] - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} [%X{traceId}] - %msg%n</pattern>
         </encoder>
     </appender>
     <!-- 按天生成日志文件 -->
@@ -82,7 +75,7 @@ RPC 支持Feign、Dubbo调用
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>[%X{TID}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>[%X{traceId}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
         <!--日志文件最大的大小-->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
@@ -97,3 +90,42 @@ RPC 支持Feign、Dubbo调用
     </root>
 </configuration>
 ```
+
+## 三、LogbackMDCAdapter
+
+LogbackMDCAdapter 中使用 ThreadLocal 多线程会造成子线程TID为空，使用 TransmittableThreadLocal/InheritableThreadLocal
+也没有，应为InheritableThreadLocal 存了 Map
+子线程服用时 只复制了 Map 没有进行深拷贝，所以挡在 Filter 中 remove 时，子线程的Map 也会remove调，解决方案使用
+TaskDecorator 拷贝一份
+
+## 四、 使用
+
+### 导入pom
+
+```xml
+
+<dependency>
+    <groupId>com.admin4j.framework</groupId>
+    <artifactId>track-log-spring-boot-starter</artifactId>
+</dependency>
+```
+
+### 配置(默认)
+
+```yml
+admin4j:
+  trace-log:
+    # 请求头字段
+    header-span-id: x-span-id
+    header-trace-id: trace-id
+    span-id: spanId
+    trace-id: traceId
+```
+
+### 效果
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/879a51bd450d4c3d9a525c31ca51c4b8.png)
+
+### 示例
+
+[https://github.com/admin4j/admin4j-example/tree/master/track-log](https://github.com/admin4j/admin4j-example/tree/master/track-log)
