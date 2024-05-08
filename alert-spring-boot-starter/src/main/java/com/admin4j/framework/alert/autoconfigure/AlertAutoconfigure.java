@@ -1,7 +1,9 @@
 package com.admin4j.framework.alert.autoconfigure;
 
+import com.admin4j.framework.alert.SendAlertMessageService;
 import com.admin4j.framework.alert.aspect.ExceptionHandlerAspect;
 import com.admin4j.framework.alert.listener.GlobalExceptionListener;
+import com.admin4j.framework.alert.listener.StartupListener;
 import com.admin4j.framework.alert.props.AlertProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,12 +20,22 @@ public class AlertAutoconfigure {
 
     @Bean
     @ConditionalOnMissingBean(GlobalExceptionListener.class)
-    GlobalExceptionListener globalExceptionListener() {
+    public GlobalExceptionListener globalExceptionListener() {
         return new GlobalExceptionListener();
     }
 
     @Bean
-    ExceptionHandlerAspect exceptionHandlerAspect() {
+    public ExceptionHandlerAspect exceptionHandlerAspect() {
         return new ExceptionHandlerAspect();
+    }
+
+    @Bean
+    public SendAlertMessageService sendAlertMessageService() {
+        return new SendAlertMessageService();
+    }
+
+    @Bean
+    public StartupListener startupListener() {
+        return new StartupListener();
     }
 }
