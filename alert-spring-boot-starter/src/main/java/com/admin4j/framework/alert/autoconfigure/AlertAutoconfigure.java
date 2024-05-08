@@ -30,6 +30,7 @@ public class AlertAutoconfigure {
     }
 
     @Bean
+    @ConditionalOnMissingBean(SendAlertMessageService.class)
     public SendAlertMessageService sendAlertMessageService() {
         return new SendAlertMessageService();
     }
