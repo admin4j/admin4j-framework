@@ -1,4 +1,6 @@
-## 分布式链路跟踪
+# 开箱即用，无侵入式的分布式链路跟踪
+
+## 分布式链路跟踪原理
 
 > 在分布式服务架构下，一个 Web 请求从网关流入，有可能会调用多个服务对请求进行处理，拿到最终结果。在这个过程中每个服务之间的通信又是单独的网络请求，无论请求流经的哪个服务除了故障或者处理过慢都会对前端造成影响。
 
@@ -91,14 +93,14 @@ RPC 支持Feign、Dubbo调用
 </configuration>
 ```
 
-## 三、LogbackMDCAdapter
+## LogbackMDCAdapter
 
 LogbackMDCAdapter 中使用 ThreadLocal 多线程会造成子线程TID为空，使用 TransmittableThreadLocal/InheritableThreadLocal
 也没有，应为InheritableThreadLocal 存了 Map
 子线程服用时 只复制了 Map 没有进行深拷贝，所以挡在 Filter 中 remove 时，子线程的Map 也会remove调，解决方案使用
 TaskDecorator 拷贝一份
 
-## 四、 使用
+## 使用
 
 ### 导入pom
 
