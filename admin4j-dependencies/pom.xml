@@ -63,8 +63,8 @@
 
         <flowable.version>6.7.2</flowable.version>
         <admin4j-plugin.version>0.1.2</admin4j-plugin.version>
-        <admin4j-lock.version>0.9.7</admin4j-lock.version>
-        <admin4j-limiter.version>0.9.7</admin4j-limiter.version>
+        <admin4j-lock.version>0.9.8-SNAPSHOT</admin4j-lock.version>
+        <admin4j-limiter.version>0.9.8-SNAPSHOT</admin4j-limiter.version>
         <admin4j-redis.version>0.9.7</admin4j-redis.version>
         <admin4j-json.version>0.9.7</admin4j-json.version>
 
@@ -136,7 +136,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>feign-spring-boot-starter</artifactId>
-                <version>0.9.7</version>
+                <version>0.9.8-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.dict</groupId>
@@ -196,7 +196,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>security-spring-boot-starter</artifactId>
-                <version>0.9.7</version>
+                <version>0.9.8-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
