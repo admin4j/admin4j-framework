@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author andanyang
@@ -16,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SimpleTraceLogService implements TraceLogService {
 
-    private static final TransmittableThreadLocal<Integer> SPAN_NUMBER = new TransmittableThreadLocal<>();
+    private static final TransmittableThreadLocal<AtomicInteger> SPAN_NUMBER = new TransmittableThreadLocal<>();
     private final TraceLogProperties traceLogProperties;
 
     /**
@@ -28,15 +29,12 @@ public class SimpleTraceLogService implements TraceLogService {
 
     @Override
     public String getNextSpanId() {
-        Integer i = SPAN_NUMBER.get();
-        i++;
-        SPAN_NUMBER.set(i);
-
+        int i = SPAN_NUMBER.get().incrementAndGet();
         return getSpanId() + "." + i;
     }
 
     protected void initSpanNumber() {
-        SPAN_NUMBER.set(0);
+        SPAN_NUMBER.set(new AtomicInteger());
     }
 
 
