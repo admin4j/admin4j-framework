@@ -47,9 +47,9 @@ public class SendAlertMessageService {
     @Value("${spring.profiles.active:''}")
     protected String applicationEnv;
     @Autowired
-    AlertProperties alertProperties;
+    protected AlertProperties alertProperties;
     @Autowired
-    Executor executor;
+    protected Executor executor;
 
     /**
      * 发送报警消息
