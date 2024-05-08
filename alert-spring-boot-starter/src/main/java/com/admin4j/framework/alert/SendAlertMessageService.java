@@ -67,6 +67,7 @@ public class SendAlertMessageService {
                     "- env: " + applicationEnv + "\n" +
                     (message == null ? "" : "> message: " + message + "\n");
             doSendMsg(alertMsg);
+            return;
         } else if (EXCLUDE_EXS.contains(e.getClass())) {
             return;
         }
