@@ -4,7 +4,7 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>spring-boot-parent</artifactId>
-    <version>0.9.7</version>
+    <version>0.9.8</version>
     <packaging>pom</packaging>
     <url>https://github.com/admin4j/admin4j-framework</url>
 
@@ -12,7 +12,7 @@
     <description>Spring Boot Parent for admin4j framework</description>
 
     <properties>
-        <admin4j-dependencies.version>0.9.7</admin4j-dependencies.version>
+        <admin4j-dependencies.version>0.9.8</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

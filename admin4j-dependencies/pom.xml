@@ -141,7 +141,7 @@
             <dependency>
                 <groupId>com.admin4j.dict</groupId>
                 <artifactId>dict-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -151,7 +151,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>alert-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.spring</groupId>
@@ -166,22 +166,22 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>ttl-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>track-log-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>excel-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>log-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -196,7 +196,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>security-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -251,7 +251,7 @@
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.common</groupId>
@@ -261,12 +261,12 @@
             <dependency>
                 <groupId>com.admin4j.common</groupId>
                 <artifactId>admin4j-common-spring-web</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>web-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
@@ -276,7 +276,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>prometheus-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j</groupId>
