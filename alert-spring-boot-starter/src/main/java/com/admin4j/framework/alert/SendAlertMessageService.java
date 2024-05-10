@@ -84,15 +84,17 @@ public class SendAlertMessageService {
         //错误堆栈
         StringBuilder cause = new StringBuilder();
         StringBuilder stackTraceSb = new StringBuilder();
+        stackTraceSb.append("- ")
+                .append(Arrays.stream(e.getStackTrace()).limit(6).map(String::valueOf).collect(Collectors.joining("\n")));
+
         Throwable et = e;
         while (et.getCause() != null) {
             cause.append("     ").append(et.getCause().getClass().getSimpleName()).append(" message: ").append(et.getCause().getMessage())
                     .append("\n");
 
             StackTraceElement[] stackTrace = et.getStackTrace();
-            stackTraceSb.append("- ")
-                    .append(Arrays.stream(stackTrace).limit(6).map(String::valueOf).collect(Collectors.joining("\n")))
-                    .append("\n");
+            stackTraceSb.append("\n- ")
+                    .append(Arrays.stream(stackTrace).limit(6).map(String::valueOf).collect(Collectors.joining("\n")));
 
             et = et.getCause();
         }

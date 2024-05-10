@@ -1,6 +1,7 @@
 package com.admin4j.framework.alert.listener;
 
 import com.admin4j.framework.alert.SendAlertMessageService;
+import com.admin4j.framework.alert.props.AlertProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationFailedEvent;
@@ -18,6 +19,8 @@ public class StartupListener {
 
     @Autowired
     private SendAlertMessageService sendAlertMessageService;
+    @Autowired
+    private AlertProperties alertProperties;
 
     /**
      * 监听启动成功事件
@@ -27,6 +30,9 @@ public class StartupListener {
     @EventListener
     public void applicationReadyEvent(ApplicationReadyEvent event) {
 
+        if (!alertProperties.isStartupSuccess()) {
+            return;
+        }
         try {
             sendAlertMessageService.sendMsg("应用启动成功", "启动时间:" + event.getTimeTaken().toString(), null);
         } catch (Exception e) {
@@ -42,6 +48,11 @@ public class StartupListener {
      */
     @EventListener
     public void startupFailureListener(ApplicationFailedEvent event) {
+
+
+        if (!alertProperties.isStartupFailure()) {
+            return;
+        }
         Throwable exception = event.getException();
         try {
             sendAlertMessageService.sendMsg("应用启动失败", null, exception);
