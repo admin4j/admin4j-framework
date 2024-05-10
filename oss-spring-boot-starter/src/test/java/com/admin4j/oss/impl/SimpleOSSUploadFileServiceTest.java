@@ -53,7 +53,7 @@ class SimpleOSSUploadFileServiceTest {
         String s = "hello oss";
 
         @Cleanup ByteArrayInputStream inputStream = new ByteArrayInputStream(s.getBytes());
-        UploadFileVO test = simpleOSSUploadFileService.upload("test", "text.txt", "text/plain", inputStream);
+        UploadFileVO test = simpleOSSUploadFileService.uploadByKey("test", "text.txt", "text/plain", inputStream);
         System.out.println("test = " + test);
     }
 

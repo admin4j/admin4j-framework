@@ -20,7 +20,7 @@ public class SensitivitySerializer extends JsonSerializer<String> implements Con
 
     @Override
     public void serialize(String value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        if (value == null || value.length() == 0) {
+        if (value == null || value.isEmpty()) {
             gen.writeNull();
         } else if (sensitivityEnum != SensitivityEnum.NONE) {
             gen.writeString(sensitivityEnum.desensitizer().apply(value));

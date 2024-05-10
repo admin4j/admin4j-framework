@@ -12,7 +12,7 @@
     <groupId>com.admin4j.framework</groupId>
     <artifactId>web-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
-    <version>0.9.7</version>
+    <version>0.9.8-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -69,11 +69,11 @@
         </dependency>
 
         <!-- Alibaba Fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <scope>provided</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba</groupId>-->
+        <!--            <artifactId>fastjson</artifactId>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
 
 
         <!-- Apache Lang3 -->

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.function.Consumer;
  */
 public class ExcelUtils {
 
-    //static ObjectProvider<ExcelReadLifecycle> excelReadLifecycles;
+    // static ObjectProvider<ExcelReadLifecycle> excelReadLifecycles;
     @Setter
     static ExcelWriteLifecycle excelWriteLifecycle;
 
@@ -100,7 +101,7 @@ public class ExcelUtils {
         response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8").replace("\\+", "%20"));
         response.setContentType("application/vnd.ms-excel;charset=UTF-8");
 
-        //autoCloseStream 不要自动关闭，交给 Servlet 自己处理
+        // autoCloseStream 不要自动关闭，交给 Servlet 自己处理
         write(response.getOutputStream(), null, data, aClass, false);
     }
 
@@ -121,6 +122,7 @@ public class ExcelUtils {
      * @return 解析结构
      * @throws IOException 读取失败的情况
      */
+    @Deprecated
     public static <T> void read(MultipartFile file, Class<T> clazz, ReadListener<T> readListener) throws IOException {
         ExcelReaderBuilder excelReaderBuilder = EasyExcelFactory.read(file.getInputStream(), clazz, readListener)
                 .autoCloseStream(false);
@@ -142,6 +144,7 @@ public class ExcelUtils {
      * @return 解析结构
      * @throws IOException 读取失败的情况
      */
+    @Deprecated
     public static <T> void readBatch(MultipartFile file, Class<T> clazz, int batchSize, Consumer<List<T>> consumer) throws IOException {
 
         ExcelBatchListener<T> readListener = new ExcelBatchListener<>(batchSize, consumer);
@@ -157,10 +160,64 @@ public class ExcelUtils {
      * @return 解析结构
      * @throws IOException 读取失败的情况
      */
+    @Deprecated
     public static <T> void readBatch(MultipartFile file, Class<T> clazz, Consumer<List<T>> consumer) throws IOException {
 
         ExcelBatchListener<T> readListener = new ExcelBatchListener<>(consumer);
         read(file, clazz, readListener);
+    }
+
+
+    /**
+     * 读取excel
+     *
+     * @param inputStream  inputStream
+     * @param clazz        返回 数据clazz
+     * @param readListener 监听器
+     * @param <T>          返回 数据clazz
+     * @return 解析结构
+     * @throws IOException 读取失败的情况
+     */
+    public static <T> void read(InputStream inputStream, Class<T> clazz, ReadListener<T> readListener) throws IOException {
+        ExcelReaderBuilder excelReaderBuilder = EasyExcelFactory.read(inputStream, clazz, readListener)
+                .autoCloseStream(false);
+        if (readListeners != null && !readListeners.isEmpty()) {
+            for (ReadListener<?> listener : readListeners) {
+                excelReaderBuilder.registerReadListener(listener);
+            }
+        }
+        excelReaderBuilder.doReadAll();
+    }
+
+    /**
+     * 批量读取excel
+     *
+     * @param inputStream inputStream
+     * @param clazz       返回 数据clazz
+     * @param batchSize   批量次数
+     * @param consumer    批量处理
+     * @return 解析结构
+     * @throws IOException 读取失败的情况
+     */
+    public static <T> void readBatch(InputStream inputStream, Class<T> clazz, int batchSize, Consumer<List<T>> consumer) throws IOException {
+
+        ExcelBatchListener<T> readListener = new ExcelBatchListener<>(batchSize, consumer);
+        read(inputStream, clazz, readListener);
+    }
+
+    /**
+     * 批量读取excel
+     *
+     * @param inputStream inputStream
+     * @param clazz       返回 数据clazz
+     * @param consumer    批量处理
+     * @return 解析结构
+     * @throws IOException 读取失败的情况
+     */
+    public static <T> void readBatch(InputStream inputStream, Class<T> clazz, Consumer<List<T>> consumer) throws IOException {
+
+        ExcelBatchListener<T> readListener = new ExcelBatchListener<>(consumer);
+        read(inputStream, clazz, readListener);
     }
 
 }

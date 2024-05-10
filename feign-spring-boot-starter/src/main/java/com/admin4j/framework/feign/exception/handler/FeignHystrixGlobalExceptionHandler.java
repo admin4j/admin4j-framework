@@ -1,6 +1,5 @@
 package com.admin4j.framework.feign.exception.handler;
 
-import com.admin4j.common.exception.handler.AbstractExceptionHandler;
 import com.admin4j.common.pojo.SimpleResponse;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @Slf4j
 @ConditionalOnClass(name = "com.netflix.hystrix.exception.HystrixRuntimeException")
-public class FeignHystrixGlobalExceptionHandler extends AbstractExceptionHandler {
+public class FeignHystrixGlobalExceptionHandler {
     // TODO SentinelInvocationHandler
 
     @ExceptionHandler(HystrixRuntimeException.class)
@@ -23,7 +22,7 @@ public class FeignHystrixGlobalExceptionHandler extends AbstractExceptionHandler
 
         String errorMessage = e.getCause() != null ? e.getMessage() : e.getCause().getMessage();
         log.error("HystrixRuntimeException:" + e.getMessage(), e);
-        publishGlobalExceptionEvent(e);
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(SimpleResponse.of(5102, errorMessage));
     }
 

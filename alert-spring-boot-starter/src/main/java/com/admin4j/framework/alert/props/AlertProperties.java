@@ -18,6 +18,14 @@ public class AlertProperties {
      */
     private Boolean enable;
     /**
+     * 应用启动失败告警
+     */
+    private boolean startupFailure = true;
+    /**
+     * 应用启动成功告警
+     */
+    private boolean startupSuccess = true;
+    /**
      * 企业微信的 webhookUrl
      */
     private String qyWeiXinWebhookUrl;

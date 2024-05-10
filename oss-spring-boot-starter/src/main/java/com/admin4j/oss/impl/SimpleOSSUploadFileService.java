@@ -8,6 +8,8 @@ import com.admin4j.oss.entity.vo.UploadFileVO;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      * @param path 路径，可以是文件类型
      */
     @Override
-    public UploadFileVO upload(String path, MultipartFile file) throws IOException {
+    public UploadFileVO uploadByPath(String path, MultipartFile file) throws IOException {
 
         UploadFileVO uploadFileVO = new UploadFileVO();
         uploadFileVO.setOriginalFilename(file.getOriginalFilename());
@@ -64,40 +66,39 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         return upload(uploadFileVO, file.getInputStream());
     }
 
-    @Override
-    public UploadFileVO upload(UploadFileVO uploadFileVO, InputStream is) throws IOException {
-
-        UploadFileVO beforeUploadFileVO = beforeUpload(uploadFileVO);
-        if (beforeUploadFileVO != null) {
-            beforeUploadFileVO.setOriginalFilename(uploadFileVO.getOriginalFilename());
-            return beforeUploadFileVO;
-        }
-
-        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), uploadFileVO.getKey(), is, uploadFileVO.getContentType());
-
-        if (uploadFileVO.getMd5() != null && !putObjectResult.getETag().equals(uploadFileVO.getMd5())) {
-            // md5 不一样存在丢包行为
-            throw new IllegalStateException("Upload file md5 error");
-        }
-        uploadFileVO.setPreviewUrl(getPreviewUrl(uploadFileVO.getKey()));
-        afterUpload(uploadFileVO, putObjectResult);
-
-        return uploadFileVO;
-    }
-
     /**
      * 上传文件
      *
-     * @param key 指定路径（key）
-     * @param is  InputStream
+     * @param path             指定文件路径
+     * @param originalFilename 文件原始名称
+     * @param contentType      文件类型
+     * @param is               上传流
      * @return
      * @throws IOException
      */
     @Override
-    public UploadFileVO upload(String key, InputStream is) throws IOException {
+    public UploadFileVO uploadByPath(String path, String originalFilename, String contentType, InputStream is) throws IOException {
 
+        MockMultipartFile file = new MockMultipartFile(path, is);
 
-        return upload(key, null, null, is);
+        UploadFileVO uploadFileVO = new UploadFileVO();
+        uploadFileVO.setOriginalFilename(originalFilename);
+        uploadFileVO.setSize(file.getSize());
+        uploadFileVO.setContentType(contentType);
+        uploadFileVO.setCreateTime(LocalDateTime.now());
+        uploadFileVO.setBucket(defaultBucketName());
+        // 计算文件md5
+        String md5 = DigestUtils.md5Hex(file.getBytes());
+        uploadFileVO.setMd5(md5);
+
+        if (StringUtils.isNotBlank(path)) {
+            uploadFileVO.setPrefix(path);
+        }
+
+        path = generateFilePath(uploadFileVO);
+        uploadFileVO.setKey(path);
+
+        return upload(uploadFileVO, file.getInputStream());
     }
 
     /**
@@ -111,7 +112,7 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      * @throws IOException
      */
     @Override
-    public UploadFileVO upload(String key, String originalFilename, String contentType, InputStream is) throws IOException {
+    public UploadFileVO uploadByKey(String key, String originalFilename, String contentType, InputStream is) throws IOException {
 
         MockMultipartFile file = new MockMultipartFile(key, is);
 
@@ -130,6 +131,27 @@ public class SimpleOSSUploadFileService implements UploadFileService {
         return upload(uploadFileVO, file.getInputStream());
     }
 
+    @Override
+    public UploadFileVO upload(UploadFileVO uploadFileVO, InputStream is) throws IOException {
+
+        UploadFileVO beforeUploadFileVO = beforeUpload(uploadFileVO);
+        if (beforeUploadFileVO != null) {
+            beforeUploadFileVO.setOriginalFilename(uploadFileVO.getOriginalFilename());
+            afterUpload(beforeUploadFileVO, null);
+            return beforeUploadFileVO;
+        }
+
+        PutObjectResult putObjectResult = ossTemplate.putObject(defaultBucketName(), uploadFileVO.getKey(), is, uploadFileVO.getContentType());
+
+        if (uploadFileVO.getMd5() != null && !putObjectResult.getETag().equals(uploadFileVO.getMd5())) {
+            // md5 不一样存在丢包行为
+            throw new IllegalStateException("Upload file md5 error");
+        }
+        uploadFileVO.setPreviewUrl(getPreviewUrl(uploadFileVO.getKey()));
+        afterUpload(uploadFileVO, putObjectResult);
+
+        return uploadFileVO;
+    }
 
     /**
      * 文件预览路径
@@ -269,8 +291,8 @@ public class SimpleOSSUploadFileService implements UploadFileService {
      * 上传完成钩子，可以保存上传记录等
      *
      * @param uploadFileVO
-     * @param putObjectResult
+     * @param putObjectResult 上传结果，为空表示未上传
      */
-    protected void afterUpload(UploadFileVO uploadFileVO, PutObjectResult putObjectResult) {
+    protected void afterUpload(@NonNull UploadFileVO uploadFileVO, @Nullable PutObjectResult putObjectResult) {
     }
 }
