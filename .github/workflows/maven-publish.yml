@@ -5,7 +5,7 @@ name: framework Deploy
 
 on:
   release:
-    types: [created]
+    types: [ created ]
   workflow_dispatch:
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
         run: mvn -B  -Dmaven.test.skip=true clean package --file pom.xml
 
       - name: Set up Apache Maven Central
-        run: mvn -Dmaven.test.skip=true deploy -N --file pom.xml
+        run: mvn -Dmaven.test.skip=true deploy -Possrh -N --file pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
