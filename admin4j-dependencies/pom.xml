@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.9.8</version>
+    <version>0.9.9</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>

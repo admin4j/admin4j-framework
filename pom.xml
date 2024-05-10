@@ -47,8 +47,8 @@
         <module>track-log-spring-boot-starter</module>
     </modules>
     <properties>
-        <revision>0.9.8</revision>
-        <admin4j-dependencies.version>0.9.8</admin4j-dependencies.version>
+        <revision>0.9.9</revision>
+        <admin4j-dependencies.version>0.9.9</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
