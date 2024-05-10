@@ -6,9 +6,9 @@ name: dependencies dependencies
 on:
   release:
     types: [ created ]
-  push:
-    branches:
-      - master
+  #  push:
+  #    branches:
+  #      - master
   workflow_dispatch:
 
 jobs:

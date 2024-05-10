@@ -5,7 +5,7 @@ name: limiter Deploy
 
 on:
   release:
-    types: [created]
+    types: [ created ]
   workflow_dispatch:
 
 jobs:
@@ -29,10 +29,10 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Build with Maven
-        run: mvn -B  -Dmaven.test.skip=true clean package --file admin4j-limiter/pom.xml
+        run: mvn -Possrh,!nexus-dev -B -Dmaven.test.skip=true clean install --file admin4j-dependencies/pom.xml && mvn -B -Possrh,!nexus-dev -Dmaven.test.skip=true clean package --file admin4j-limiter/pom.xml
 
       - name: Set up Apache Maven Central
-        run: mvn -Dmaven.test.skip=true deploy --file admin4j-limiter/pom.xml
+        run: mvn deploy -Possrh  -Dmaven.test.skip=true deploy --file admin4j-limiter/pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
