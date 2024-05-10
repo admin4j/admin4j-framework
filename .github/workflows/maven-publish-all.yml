@@ -31,8 +31,8 @@ jobs:
       - name: install admin4j-dependencies
         run: mvn -B -Dmaven.test.skip=true clean install --file admin4j-dependencies/pom.xml
 
-      - name: deploy framework
-        run: mvn -Dmaven.test.skip=true install --file pom.xml
+      - name: install framework
+        run: mvn -Dmaven.test.skip=true install
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
