@@ -136,7 +136,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>feign-spring-boot-starter</artifactId>
-                <version>0.9.8-SNAPSHOT</version>
+                <version>0.9.8</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.dict</groupId>
