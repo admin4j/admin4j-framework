@@ -17,7 +17,7 @@
     <description>接口限流器，支持固定窗口，滑动窗口，滑动日志，漏桶算法，令牌桶算法</description>
 
     <properties>
-        <admin4j-limiter.version>0.9.8</admin4j-limiter.version>
+        <admin4j-limiter.version>0.10.0</admin4j-limiter.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

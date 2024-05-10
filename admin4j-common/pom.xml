@@ -10,7 +10,6 @@
     <groupId>com.admin4j.common</groupId>
     <artifactId>admin4j-common</artifactId>
     <packaging>jar</packaging>
-    <version>0.9.8</version>
 
     <name>admin4j-common</name>
     <description>admin4j工具包</description>

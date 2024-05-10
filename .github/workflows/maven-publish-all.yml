@@ -1,0 +1,54 @@
+# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+
+name: All Deploy
+
+on:
+  release:
+    types: [ created ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: temurin
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: install admin4j-dependencies
+        run: mvn -B -Dmaven.test.skip=true clean install --file admin4j-dependencies/pom.xml
+
+      #      - name: deploy framework
+      #        run: mvn -Dmaven.test.skip=true deploy -Possrh -N --file pom.xml
+      #        env:
+      #          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+      #          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+      #          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      #          GITHUB_TOKEN: ${{ github.token }}
+      - name: deploy All
+        run: mvn -Dmaven.test.skip=true deploy -Possrh -pl=admin4j-common,admin4j-common-spring,admin4j-common-spring-web,admin4j-limiter,admin4j-lock,admin4j-redis,alert-spring-boot-starter,desensitize-spring-boot-starter,enum-spring-boot-starter,excel-spring-boot-starter,feign-spring-boot-starter,kaptcha-spring-boot-starter,log-spring-boot-starter,mybatis-plus-boot-starter,oss-spring-boot-starter,prometheus-spring-boot-starter,security-spring-boot-starter,tenant-spring-boot-starter,ttl-spring-boot-starter,web-spring-boot-starter
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
+# GPG_PRIVATE_KEY:
+
+# -----BEGIN PGP PRIVATE KEY BLOCK-----
+# ***
+# -----END PGP PRIVATE KEY BLOCK-----
+
+# GPG_PASSWORD GPG_PRIVATE_KEY 的密码

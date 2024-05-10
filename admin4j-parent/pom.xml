@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-parent</artifactId>
-    <version>0.9.8</version>
+    <version>0.10.0</version>
     <description>用于业务框架的父工程</description>
     <packaging>pom</packaging>
     <name>admin4j-parent</name>

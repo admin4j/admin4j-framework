@@ -24,7 +24,7 @@
     </modules>
 
     <properties>
-        <admin4j-lock.version>0.9.8</admin4j-lock.version>
+        <admin4j-lock.version>0.10.0</admin4j-lock.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -12,7 +12,6 @@
     <packaging>jar</packaging>
 
     <name>mybatis-plus-boot-starter</name>
-    <version>0.9.7</version>
 
 
     <properties>

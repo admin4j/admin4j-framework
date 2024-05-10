@@ -22,7 +22,7 @@
         <module>admin4j-redis-fastjson2</module>
     </modules>
     <properties>
-        <admin4j-redis.version>0.9.7</admin4j-redis.version>
+        <admin4j-redis.version>0.10.0</admin4j-redis.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

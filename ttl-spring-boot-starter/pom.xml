@@ -9,7 +9,6 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>ttl-spring-boot-starter</artifactId>
-    <version>0.9.8</version>
     <packaging>jar</packaging>
 
     <name>ttl-spring-boot-starter</name>
