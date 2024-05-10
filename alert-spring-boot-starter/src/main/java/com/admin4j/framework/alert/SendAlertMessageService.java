@@ -84,20 +84,17 @@ public class SendAlertMessageService {
         //错误堆栈
         StringBuilder cause = new StringBuilder();
         StringBuilder stackTraceSb = new StringBuilder();
-        stackTraceSb.append("- ")
-                .append(Arrays.stream(e.getStackTrace()).limit(6).map(String::valueOf).collect(Collectors.joining("\n")));
-
         Throwable et = e;
-        while (et.getCause() != null) {
-            cause.append("     ").append(et.getCause().getClass().getSimpleName()).append(" message: ").append(et.getCause().getMessage())
-                    .append("\n");
+        while (et != null) {
+
+            cause.append(et.getClass().getSimpleName()).append(" message: ").append(et.getMessage()).append("\n");
 
             StackTraceElement[] stackTrace = et.getStackTrace();
-            stackTraceSb.append("\n- ")
+            stackTraceSb.append("- ")
                     .append(Arrays.stream(stackTrace).limit(6).map(String::valueOf).collect(Collectors.joining("\n")));
-
             et = et.getCause();
         }
+        
         String alertMsg = name + "\n" +
 
                 "- appname: " + applicationName + "\n" +
@@ -105,8 +102,8 @@ public class SendAlertMessageService {
                 (message == null ? "" : "- message: " + message + "\n") +
                 "- errorMsg: " + e.getMessage() + "\n" +
                 "- Exception: " + e.getClass().getName() + "\n" +
-                "- Cause:" + cause +
-                "\n- url: " + url + "\n" +
+                "- Cause: " + cause +
+                "- url: " + url + "\n" +
                 "- UserId: " + (user == null ? "" : user.getUserId()) + "\n" +
                 "> " + stackTraceSb;
 
