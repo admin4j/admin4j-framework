@@ -27,7 +27,7 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+          gpg-passphrase: ${{ secrets.GPG_PASSWORD }}
 
       - name: install admin4j-dependencies
         run: mvn -B -Dmaven.test.skip=true clean install --file admin4j-dependencies/pom.xml
