@@ -30,7 +30,7 @@ jobs:
         run: mvn -B  -Dmaven.test.skip=true clean package --file elasticsearch-spring-boot-starter/pom.xml
 
       - name: Set up Apache Maven Central
-        run: mvn -Dmaven.test.skip=true deploy --file elasticsearch-spring-boot-starter/pom.xml
+        run: mvn -Dmaven.test.skip=true deploy -Possrh --file elasticsearch-spring-boot-starter/pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}

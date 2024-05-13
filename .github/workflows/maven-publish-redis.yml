@@ -27,10 +27,10 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Build with Maven
-        run: mvn -B  -Dmaven.test.skip=true clean package --file admin4j-redis/pom.xml
+        run: mvn -B  -Dmaven.test.skip=true clean install --file admin4j-redis/pom.xml
 
       - name: Set up Apache Maven Central
-        run: mvn -Dmaven.test.skip=true deploy --file admin4j-redis/pom.xml
+        run: mvn -Dmaven.test.skip=true deploy -Possrh --file admin4j-redis/pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
