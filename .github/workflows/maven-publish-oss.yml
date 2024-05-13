@@ -4,11 +4,6 @@
 name: oss
 
 on:
-  release:
-    types: [ created ]
-  #  push:
-  #    branches:
-  #      - master
   workflow_dispatch:
 
 jobs:

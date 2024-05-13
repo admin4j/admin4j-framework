@@ -4,8 +4,6 @@
 name: common Deploy
 
 on:
-  release:
-    types: [created]
   workflow_dispatch:
 
 jobs:
@@ -29,10 +27,10 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Build with Maven
-        run: mvn -B  -Dmaven.test.skip=true clean package --file admin4j-common/pom.xml
+        run: mvn -B  -Dmaven.test.skip=true clean install
 
       - name: Set up Apache Maven Central
-        run: mvn -Dmaven.test.skip=true deploy --file admin4j-common/pom.xml
+        run: mvn -Dmaven.test.skip=true deploy -pl=admin4j-common,admin4j-common-spring,admin4j-common-spring-web
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
