@@ -32,7 +32,7 @@ jobs:
         run: mvn -B  -Dmaven.test.skip=true clean package --file track-log-spring-boot-starter/pom.xml
 
       - name: Set up Apache Maven Central
-        run: mvn -Dmaven.test.skip=true deploy --file track-log-spring-boot-starter/pom.xml
+        run: mvn -Dmaven.test.skip=true deploy -Possrh,gpg.passphrase --file track-log-spring-boot-starter/pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
