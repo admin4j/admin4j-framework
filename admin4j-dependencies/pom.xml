@@ -205,7 +205,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>mybatis-plugin-spring-boot</artifactId>
-                <version>0.9.7</version>
+                <version>0.10.0</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>

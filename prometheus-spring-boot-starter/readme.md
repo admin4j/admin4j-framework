@@ -5,7 +5,7 @@
 <dependency>
     <groupId>com.admin4j.framework</groupId>
     <artifactId>prometheus-spring-boot-starter</artifactId>
-    <version>0.9.8</version>
+    <version>0.10.0</version>
 </dependency>
 ```
 

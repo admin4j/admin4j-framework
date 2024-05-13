@@ -20,7 +20,7 @@ Spring Security 最佳实践封装。
 <dependency>
     <groupId>com.admin4j.framework</groupId>
     <artifactId>security-spring-boot-starter</artifactId>
-    <version>0.9.5</version>
+    <version>0.10.0</version>
 </dependency>
 ```
 

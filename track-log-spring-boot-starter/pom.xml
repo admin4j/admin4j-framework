@@ -9,7 +9,6 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>track-log-spring-boot-starter</artifactId>
-    <version>0.9.8</version>
     <packaging>jar</packaging>
 
     <name>track-log-spring-boot-starter</name>
