@@ -204,11 +204,6 @@
             </dependency>
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
-                <artifactId>mybatis-plugin-spring-boot</artifactId>
-                <version>0.10.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.admin4j.framework</groupId>
                 <artifactId>elasticsearch-spring-boot-starter</artifactId>
                 <version>8.x.5</version>
             </dependency>
