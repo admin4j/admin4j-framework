@@ -28,24 +28,24 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      #      - name: deploy admin4j-dependencies
-      #        run: mvn clean install deploy -Dmaven.test.skip=true --file admin4j-dependencies/pom.xml
-      #        env:
-      #          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
-      #          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
-      #          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-      #          GITHUB_TOKEN: ${{ github.token }}
-      #
-      #      - name: deploy framework
-      #        run: mvn clean install deploy -Dmaven.test.skip=true -N --file ./pom.xml
-      #        env:
-      #          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
-      #          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
-      #          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-      #          GITHUB_TOKEN: ${{ github.token }}
+      - name: install admin4j-dependencies
+        run: mvn clean && mvn clean install -Dmaven.test.skip=true --file admin4j-dependencies/pom.xml
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: deploy framework
+        run: mvn install -Dmaven.test.skip=true -N --file ./pom.xml
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: deploy admin4j-parent
-        run: mvn clean install deploy -Possrh -Dmaven.test.skip=true --file admin4j-parent/pom.xml
+        run: mvn install deploy -Possrh -Dmaven.test.skip=true --file admin4j-parent/pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
