@@ -30,7 +30,7 @@ jobs:
         run: mvn -B -Dmaven.test.skip=true clean install --file admin4j-dependencies/pom.xml
 
       - name: deploy Apache Maven Central
-        run: cd admin4j-lock && mvn install -Dmaven.test.skip=true && mvn -Possrh -Dmaven.test.skip=true deploy -pl=!admin4j-lock
+        run: cd admin4j-lock && mvn install -Dmaven.test.skip=true && mvn -Possrh -Dmaven.test.skip=true deploy -Dmaven.ignore.parentPom=true
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
