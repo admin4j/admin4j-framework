@@ -2,12 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.admin4j</groupId>
+        <groupId>com.admin4j.framework</groupId>
         <artifactId>admin4j-lock</artifactId>
         <version>${admin4j-lock.version}</version>
     </parent>
 
-    <groupId>com.admin4j</groupId>
+    <groupId>com.admin4j.framework.lock</groupId>
     <artifactId>lock-local-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
 
@@ -25,7 +25,7 @@
             <version>2.11.0</version>
         </dependency>
         <dependency>
-            <groupId>com.admin4j</groupId>
+            <groupId>com.admin4j.framework.lock</groupId>
             <artifactId>lock-core</artifactId>
             <version>${admin4j-lock.version}</version>
             <scope>provided</scope>

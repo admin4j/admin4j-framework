@@ -303,27 +303,27 @@
                 <version>1.1</version>
             </dependency>
             <dependency>
-                <groupId>com.admin4j</groupId>
+                <groupId>com.admin4j.framework</groupId>
                 <artifactId>admin4j-lock</artifactId>
                 <version>${admin4j-lock.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.admin4j</groupId>
+                <groupId>com.admin4j.framework.lock</groupId>
                 <artifactId>lock-core</artifactId>
                 <version>${admin4j-lock.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.admin4j</groupId>
+                <groupId>com.admin4j.framework.lock</groupId>
                 <artifactId>lock-spring-boot-starter</artifactId>
                 <version>${admin4j-lock.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.admin4j</groupId>
+                <groupId>com.admin4j.framework.lock</groupId>
                 <artifactId>lock-zookeeper-spring-boot-starter</artifactId>
                 <version>${admin4j-lock.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.admin4j</groupId>
+                <groupId>com.admin4j.framework.lock</groupId>
                 <artifactId>lock-redisson-spring-boot-starter</artifactId>
                 <version>${admin4j-lock.version}</version>
             </dependency>
