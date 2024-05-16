@@ -1,12 +1,10 @@
-package com.admin4j.framework.alert;
+package com.admin4j.framework.alert.send;
 
-import com.admin4j.chatbot.qwx.QyWeiXinChatBot;
-import com.admin4j.chatbot.qwx.core.msg.TextBotMsg;
 import com.admin4j.common.exception.BizException;
 import com.admin4j.common.pojo.AuthenticationUser;
 import com.admin4j.common.util.ServletUtils;
 import com.admin4j.common.util.UserContextUtil;
-import com.admin4j.framework.alert.props.AlertProperties;
+import com.admin4j.framework.alert.AlertMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindException;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
  * @author andanyang
  * @since 2024/5/8 14:13
  */
-public class SendAlertMessageService {
+public abstract class AbstractSendAlertMessageService implements AlertMessageService {
 
     /**
      * 需要排除的异常
@@ -41,32 +39,32 @@ public class SendAlertMessageService {
         }
     };
 
-    protected QyWeiXinChatBot qyWeiXinChatBot;
+
     @Value("${spring.application.name:''}")
     protected String applicationName;
     @Value("${spring.profiles.active:''}")
     protected String applicationEnv;
-    @Autowired
-    protected AlertProperties alertProperties;
+
     @Autowired
     protected Executor executor;
 
     /**
      * 发送报警消息
      *
-     * @param name    报警名称
+     * @param title   报警名称
      * @param e       异常
      * @param message 显示消息详情
      */
-    public void sendMsg(String name, String message, Throwable e) {
+    @Override
+    public void sendMsg(String title, String message, Throwable e) {
 
 
         if (e == null) {
-            String alertMsg = name + "\n" +
+            String alertMsg = title + "\n" +
                     "- appname: " + applicationName + "\n" +
                     "- env: " + applicationEnv + "\n" +
                     (message == null ? "" : "> message: " + message + "\n");
-            doSendMsg(alertMsg);
+            doSendMsg(title, alertMsg);
             return;
         } else if (EXCLUDE_EXS.contains(e.getClass())) {
             return;
@@ -94,8 +92,8 @@ public class SendAlertMessageService {
                     .append(Arrays.stream(stackTrace).limit(6).map(String::valueOf).collect(Collectors.joining("\n")));
             et = et.getCause();
         }
-        
-        String alertMsg = name + "\n" +
+
+        String alertMsg = title + "\n" +
 
                 "- appname: " + applicationName + "\n" +
                 "- env: " + applicationEnv + "\n" +
@@ -107,21 +105,8 @@ public class SendAlertMessageService {
                 "- UserId: " + (user == null ? "" : user.getUserId()) + "\n" +
                 "> " + stackTraceSb;
 
-        doSendMsg(alertMsg);
+        doSendMsg(title, alertMsg);
     }
 
-    protected void doSendMsg(String alertMsg) {
-        executor.execute(() -> {
-            TextBotMsg markdownBotMsg = new TextBotMsg(alertMsg);
-            getChatBot().sendMsg(markdownBotMsg);
-        });
-    }
-
-    protected QyWeiXinChatBot getChatBot() {
-        if (qyWeiXinChatBot == null) {
-            qyWeiXinChatBot = new QyWeiXinChatBot(alertProperties.getQyWeiXinWebhookUrl());
-        }
-        return qyWeiXinChatBot;
-    }
-
+    abstract void doSendMsg(String title, String alertMsg);
 }

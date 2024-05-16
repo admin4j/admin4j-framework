@@ -26,7 +26,27 @@ public class AlertProperties {
      */
     private boolean startupSuccess = true;
     /**
-     * 企业微信的 webhookUrl
+     * 企业微信机器人的 webhookUrl
      */
     private String qyWeiXinWebhookUrl;
+    /**
+     * 钉钉机器人的 webhookUrl
+     */
+    private String dingTalkWebhookUrl;
+    /**
+     * 钉钉机器人微信的 Secret
+     */
+    private String dingTalkSecret;
+
+    /**
+     * 限速 rateLimiterInterval 时间内可以发送的次数
+     * 0 不限速
+     */
+    private int rateLimiterCapacity = 0;
+    /**
+     * 限速 时间间隔秒
+     * 0 不限速
+     */
+    private int rateLimiterInterval = 0;
+
 }

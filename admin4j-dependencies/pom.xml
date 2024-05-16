@@ -6,7 +6,7 @@
 
     <groupId>com.admin4j</groupId>
     <artifactId>admin4j-dependencies</artifactId>
-    <version>0.10.0</version>
+    <version>0.10.1</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -134,8 +134,13 @@
             <!-- admin4j相关-->
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
-                <artifactId>feign-spring-boot-starter</artifactId>
+                <artifactId>mybatis-plugin-spring-boot</artifactId>
                 <version>0.10.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.admin4j.framework</groupId>
+                <artifactId>feign-spring-boot-starter</artifactId>
+                <version>0.10.1</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.dict</groupId>
@@ -150,7 +155,7 @@
             <dependency>
                 <groupId>com.admin4j.framework</groupId>
                 <artifactId>alert-spring-boot-starter</artifactId>
-                <version>0.10.0</version>
+                <version>0.10.1</version>
             </dependency>
             <dependency>
                 <groupId>com.admin4j.spring</groupId>
