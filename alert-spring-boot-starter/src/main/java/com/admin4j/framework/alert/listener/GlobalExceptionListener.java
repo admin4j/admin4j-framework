@@ -1,11 +1,11 @@
 package com.admin4j.framework.alert.listener;
 
 import com.admin4j.common.pojo.event.GlobalExceptionEvent;
-import com.admin4j.framework.alert.SendAlertMessageService;
+import com.admin4j.framework.alert.AlertMessageService;
+import com.admin4j.framework.alert.props.AlertProperties;
 import com.admin4j.limiter.core.constant.LimiterType;
 import com.admin4j.limiter.core.util.RateLimiterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationFailedEvent;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.DigestUtils;
@@ -19,7 +19,9 @@ import java.nio.charset.StandardCharsets;
 public class GlobalExceptionListener {
 
     @Autowired
-    private SendAlertMessageService sendAlertMessageService;
+    AlertProperties alertProperties;
+    @Autowired
+    private AlertMessageService alertMessageService;
 
     /**
      * 监听全局异常
@@ -35,14 +37,13 @@ public class GlobalExceptionListener {
 
         key = "GlobalException:" + DigestUtils.md5DigestAsHex(key.getBytes(StandardCharsets.UTF_8));
 
-        if (RateLimiterUtil.rateLimiter(LimiterType.TOKEN_BUCKET, key, 20, 1)) {
-            sendAlertMessageService.sendMsg(event.getName(), event.getMessage(), event.getE());
+        if (alertProperties.getRateLimiterCapacity() == 0 || alertProperties.getRateLimiterInterval() == 0) {
+            alertMessageService.sendMsg(event.getName(), event.getMessage(), event.getE());
+        } else if (RateLimiterUtil.rateLimiter(LimiterType.TOKEN_BUCKET, key, 20, 1)) {
+            alertMessageService.sendMsg(event.getName(), event.getMessage(), event.getE());
         }
+
     }
 
-    @TransactionalEventListener(fallbackExecution = true, phase = TransactionPhase.AFTER_COMMIT)
-    public void startupFailureListener(ApplicationFailedEvent event) {
-        Throwable exception = event.getException();
-        sendAlertMessageService.sendMsg("应用启动失败", null, exception);
-    }
+
 }

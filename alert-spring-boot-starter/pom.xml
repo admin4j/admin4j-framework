@@ -9,6 +9,7 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>alert-spring-boot-starter</artifactId>
+    <version>0.10.1</version>
     <packaging>jar</packaging>
 
     <name>alert-spring-boot-starter</name>
@@ -34,7 +35,7 @@
         <dependency>
             <groupId>com.admin4j</groupId>
             <artifactId>chat-bot</artifactId>
-            <version>0.1.0</version>
+            <version>0.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
