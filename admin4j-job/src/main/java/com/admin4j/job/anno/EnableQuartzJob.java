@@ -3,6 +3,7 @@ package com.admin4j.job.anno;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
+ * EnableQuartzJob
  * @author andanyang
  * @since 2023/5/24 14:34
  */
