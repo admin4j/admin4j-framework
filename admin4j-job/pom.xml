@@ -45,11 +45,6 @@
             <optional>true</optional>
             <scope>provided</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.alibaba</groupId>-->
-        <!--            <artifactId>druid</artifactId>-->
-        <!--            <version>1.2.18</version>-->
-        <!--        </dependency>-->
         <!-- Quartz定时任务 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
