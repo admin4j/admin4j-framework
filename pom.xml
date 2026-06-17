@@ -47,8 +47,8 @@
         <module>track-log-spring-boot-starter</module>
     </modules>
     <properties>
-        <revision>0.10.0</revision>
-        <admin4j-dependencies.version>0.10.0</admin4j-dependencies.version>
+        <revision>0.11.0</revision>
+        <admin4j-dependencies.version>0.11.0</admin4j-dependencies.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -84,18 +84,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <!--    <repositories>-->
-    <!--        &lt;!&ndash;        snapshots支持&ndash;&gt;-->
-    <!--        <repository>-->
-    <!--            <id>ossrh</id>-->
-    <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
-    <!--            <snapshots>-->
-    <!--                <updatePolicy>always</updatePolicy>-->
-    <!--                <enabled>true</enabled>-->
-    <!--            </snapshots>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
 
     <issueManagement>
         <system>GitHub</system>
@@ -175,27 +163,6 @@
             <timezone>+8</timezone>
         </developer>
     </developers>
-    <!-- 发布项目到 sonatype -->
-    <!--    <distributionManagement>-->
-    <!--        <snapshotRepository>-->
-    <!--            <id>ossrh</id>-->
-    <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
-    <!--        </snapshotRepository>-->
-    <!--        <repository>-->
-    <!--            <id>ossrh</id>-->
-    <!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-    <!--        </repository>-->
-    <!--    </distributionManagement>-->
-    <distributionManagement>
-        <repository>
-            <id>${repository.releases.id}</id>
-            <url>${repository.releases.url}</url>
-        </repository>
-        <snapshotRepository>
-            <id>${repository.releases.id}</id>
-            <url>${repository.snapshots.url}</url>
-        </snapshotRepository>
-    </distributionManagement>
 
 
     <profiles>
@@ -204,13 +171,6 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <properties>
-                <repository.releases.id>ossrh</repository.releases.id>
-                <repository.releases.url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
-                </repository.releases.url>
-                <repository.snapshots.url>https://s01.oss.sonatype.org/content/repositories/snapshots
-                </repository.snapshots.url>
-            </properties>
             <build>
                 <plugins>
                     <!-- 生成java source.jar -->
@@ -250,28 +210,22 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.13</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.7.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoDropAfterRelease>true</autoDropAfterRelease>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>ossrh</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                            <ignorePublishedComponents>true</ignorePublishedComponents>
                         </configuration>
                     </plugin>
+                    <!-- GPG 签名-->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>3.1.0</version>
-                        <configuration>
-                            <!-- Prevent gpg from using pinentry programs -->
-                            <gpgArguments>
-                                <arg>--pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
