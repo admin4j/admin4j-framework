@@ -33,13 +33,13 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: deploy admin4j-dependencies
-        run: mvn -B -Dmaven.test.skip=true clean deploy --file admin4j-dependencies/pom.xml
+        run: mvn -B -Dmaven.test.skip=true clean deploy -Possrh --file admin4j-dependencies/pom.xml
 
       - name: show settings.xml
         run: cat ~/.m2/settings.xml
 
       - name: deploy All
-        run: mvn -Dmaven.test.skip=true deploy -Possrh -N --file pom.xml
+        run: mvn -Dmaven.test.skip=true clean deploy -Possrh -N --file pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
