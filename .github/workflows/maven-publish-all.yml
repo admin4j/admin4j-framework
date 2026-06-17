@@ -34,6 +34,11 @@ jobs:
 
       - name: deploy admin4j-dependencies
         run: mvn -B -Dmaven.test.skip=true clean deploy -Possrh --file admin4j-dependencies/pom.xml
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: show settings.xml
         run: cat ~/.m2/settings.xml
