@@ -39,7 +39,7 @@ jobs:
         run: cat ~/.m2/settings.xml
 
       - name: deploy All
-        run: mvn -Dmaven.test.skip=true clean deploy -Possrh -N --file pom.xml
+        run: mvn -B -Dmaven.test.skip=true clean deploy -Possrh -N --file pom.xml
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
