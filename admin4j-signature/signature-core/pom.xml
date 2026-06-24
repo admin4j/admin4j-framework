@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.admin4j.signature</groupId>
         <artifactId>admin4j-signature</artifactId>
-        <version>${admin4j-signature.version}</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>signature-core</artifactId>
