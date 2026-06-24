@@ -11,6 +11,7 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>admin4j-lock</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <description>基于Spring Boot 的分布式锁，支持 本地锁,redisson,zookeeper
         分布式锁,双通道锁(先获取本地锁,在获取远程锁),。提供工具类DistributedLockUtil

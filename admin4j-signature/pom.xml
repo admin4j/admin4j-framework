@@ -11,6 +11,7 @@
 
     <groupId>com.admin4j.signature</groupId>
     <artifactId>admin4j-signature</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
     <properties>
