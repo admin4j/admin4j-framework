@@ -7,7 +7,6 @@
         <version>${revision}</version>
     </parent>
 
-    <version>1.0.0</version>
     <artifactId>xss-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
 

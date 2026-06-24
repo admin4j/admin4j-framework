@@ -11,7 +11,6 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>admin4j-lock</artifactId>
-    <version>${admin4j-lock.version}</version>
     <packaging>pom</packaging>
     <description>基于Spring Boot 的分布式锁，支持 本地锁,redisson,zookeeper
         分布式锁,双通道锁(先获取本地锁,在获取远程锁),。提供工具类DistributedLockUtil
@@ -25,7 +24,6 @@
     </modules>
 
     <properties>
-        <admin4j-lock.version>0.10.0</admin4j-lock.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

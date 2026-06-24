@@ -9,7 +9,6 @@
 
     <groupId>com.admin4j.framework</groupId>
     <artifactId>zookeeper-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
 
     <name>zookeeper-spring-boot-starter</name>
     <description>zookeeper springboot 自动配置 starter</description>
