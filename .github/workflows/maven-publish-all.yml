@@ -43,8 +43,15 @@ jobs:
       - name: show settings.xml
         run: cat ~/.m2/settings.xml
 
-      - name: deploy All
+      - name: deploy framework parent
         run: mvn -B -Dmaven.test.skip=true clean deploy -Possrh -N --file pom.xml
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: deploy ALL
+        run: mvn -B -Dmaven.test.skip=true clean deploy -Possrh -pl '!framework'
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
